@@ -21,7 +21,6 @@ decide which sampler works best for their models. DE-MCMC is good for models
 with moderate number of parameters, (less than 10), but may find it
 challenging for complex models.
 
-
 3. **_ggdmc_** uses a different variant of _migration_ operator, which safeguards
 the detailed balance. It is not imperative to turn off the _migration_ operator. 
 But one might still consider to turn it off, because it is essentially a 
