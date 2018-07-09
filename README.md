@@ -1,66 +1,48 @@
-# Edition
+# Cognitive Models
 
-Product documentation template for Jekyll. Browse through a [live demo](https://long-pig.cloudvent.net/).
-Start documenting your product, application, service or website with this configurable theme.
+This is the tutorial site for the software, [ggdmc](https://github.com/yxlin/ggdmc/).
 
-![Edition template screenshot](images/_screenshot.png)
+The package, evolving from dynamic model of choice (_DMC_,
+Heathcote, Lin, et al., 2018), is a generic tool for conducting Bayesian Computations on
+cognitive models, with a specific emphasis on the challenging hierarchical models
+and likelihood-free methods.
 
-Edition was made by [CloudCannon](http://cloudcannon.com/), the Cloud CMS for Jekyll.
+1. Instead of using Gibbs or HMC, **_ggdmc_** uses population-based MCMC (pMCMC) 
+samplers. A notable Gibbs example is the Python-based 
+HDDM (Wiecki, Sofer & Frank, 2013), which does not allow the user to 
+conveniently set the variability parameter in the diffusion decision model (DDM). 
 
-Find more templates, themes and step-by-step Jekyll tutorials at [CloudCannon Academy](https://learn.cloudcannon.com/).
+2. Differing from DMC (Heathcote, Lin, et al., 2018), with only the DE-MCMC 
+(Turner, Sederberg, Brown, & Steyvers, 2013) sampler, **_ggdmc_** provides a number 
+of different pMCMC samplers. It is up to the user to 
+decide which sampler works best for their models. DE-MCMC is good for models
+with moderate number of parameters, (less than 10), but may find it
+challenging for complex models.
 
-## Features
+3. **_ggdmc_** uses a different variant of _migration_ operator, which safeguards
+the detailed balance. It is not imperative to turn off the _migration_ operator. 
+But one might still consider to turn it off, because it is essentially a 
+sampler, similar to random-walk Metropolis, which is very inefficient when
+it works alone.  Mostly, pMCMC is efficient when a combination of 
+operatoers is applied together. **_ggdmc_** records rejection rates, allowing
+the user to monitor a sampler's performance
 
-* Two column layout
-* Full text search
-* Pre-styled components
-* Auto-generated navigation based on category
-* Optimised for editing in [CloudCannon](http://cloudcannon.com/)
-* Change log
-* RSS/Atom feed
-* SEO tags
-* Google Analytics
+### Getting Started
 
-## Setup
+Here is a quick getting start guide:
 
-1. Add your site and author details in `_config.yml`.
-2. Get a workflow going to see your site's output (with [CloudCannon](https://app.cloudcannon.com/) or Jekyll locally).
+1. Download **_ggdmc_** from [CRAN](https://cran.r-project.org/web/packages/ggdmc/index.html),
+ [GitHub](https://github.com/yxlin/ggdmc), or click here.
+2. [Windows only] Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile
+C++ codes in **_ggdmc_**.
+3. Install the package:
 
-## Develop
+> install.packages("ggdmc")
 
-Edition was built with [Jekyll](http://jekyllrb.com/) version 3.3.1, but should support newer versions as well.
+or from GitHub 
 
-Install the dependencies with [Bundler](http://bundler.io/):
+> devtools::install_github("yxlin/ggdmc")
 
-~~~bash
-$ bundle install
-~~~
+or from source tarball you have downloaded from CRAN (or from _click here_)
 
-Run `jekyll` commands through Bundler to ensure you're using the right versions:
-
-~~~bash
-$ bundle exec jekyll serve
-~~~
-
-## Editing
-
-Edition is already optimised for adding, updating and removing documentation pages in CloudCannon.
-
-### Documentation pages
-
-* Add, update or remove a documentation page in the *Documentation* collection.
-* Change the category of a documentation page to move it to another section in the navigation.
-* Documentation pages are organised in the navigation by category, with URLs based on the path inside the `_docs` folder.
-
-### Change log
-
-* Add, update or remove change log entries from your posts.
-* Tag entries as minor or major in the front matter.
-
-### Search
-
-* Add `excluded_in_search: true` to any documentation page's front matter to exclude that page in the search results.
-
-### Navigation
-
-* Change `site.show_full_navigation` to control all or only the current navigation group being open.
+> install.packages("ggdmc_0.2.2.1.tar.gz", repos = NULL, type="source")
