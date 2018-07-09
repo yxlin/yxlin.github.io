@@ -27,7 +27,7 @@ the detailed balance. It is not imperative to turn off the _migration_ operator.
 But one might still consider to turn it off, because it is essentially a 
 sampler, similar to random-walk Metropolis, which is very inefficient when
 it works alone.  Mostly, pMCMC is efficient when a combination of 
-operatoers is applied together. **_ggdmc_** records rejection rates, allowing
+operators is applied together. **_ggdmc_** records rejection rates, allowing
 the user to monitor a sampler's performance
 
 ### Getting Started
