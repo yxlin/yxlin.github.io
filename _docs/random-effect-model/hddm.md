@@ -52,7 +52,7 @@ As usual, I want to visually check if the assumed mechanism is reasonable.
 plot(pop.prior)
 ```
 
-![hpopprior]({{"/images/random-effect-model/hpopprior.png" | absolute_url}})
+![hpopprior]({{"/images/random-effect-model/hpopprior.png" | relative_url}})
 
 
 After making sure that the data generating mechanism is proper, I then
