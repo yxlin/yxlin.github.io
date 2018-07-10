@@ -4,16 +4,17 @@ category: Cognitive Model
 order: 1
 ---
 
-
-Here I used an experimental design with a binary stimulus factor (S),
-which for example left vs. right motion random dots. The LBA model,
-presumes one matching (M) factor and an observable accumulator factor (R),
-corresponding responses. 
-
+This lesson will demonstrate a "golem" (McElreath, 2016), the canonical LBA
+model (Brown & Heathcote, 2008).  The reader can read more details
+regarding to the LBA model in Brown and Heathcote's paper (2008).  I used
+an imaginary experiment with a design of one binary stimulus factor (S),
+such as left vs. right motion random dots. The LBA model presumes one
+matching (M) factor and an observable accumulator factor (R), corresponding
+responses.
 
 ```
 model <- BuildModel(p.map = list(A = "1", B = "1", t0 = "1", mean_v = "M",
-                         sd_v = "M", st0 = "1"),
+                                 sd_v = "M", st0 = "1"),
   constants = c(st0 = 0, sd_v.false = 1, mean_v.false = 0),
   match.map = list(M = list(left = "LEFT", right = "RIGHT")),
   factors   = list(S = c("left", "right")),
@@ -21,19 +22,17 @@ model <- BuildModel(p.map = list(A = "1", B = "1", t0 = "1", mean_v = "M",
   type      = "norm")
 ```
 
-
 This specific design assumes no manipulation, affecting any the LBA
 parameters. That is, no factor affects any latent cognitive
 processes (e.g., drift rate, response threshold etc.). The only effect
-is that the
-drift rate for a correct response is usually
+is that the drift rate for a correct response is usually
 larger than that for an error response (from psychological literature ).
-This is artificial set at
+This is artificially set at
 
 > constants = c(st0 = 0, sd_v.false = 1, mean_v.false = 0),
 
-, which enforces **mean_v.false = 0**. This is to enforce the
-assumption (also frequent observed phenomenon) that manifested
+, which enforces **mean_v.false = 0**. This is to presume
+(also frequent observed phenomenon) that manifested
 accuracy rate should usually be greater than chance (50%).
 
 1. Fast and error prone performance
