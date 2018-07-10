@@ -102,11 +102,11 @@ the _ps_ matrix.
 I already have the likelihood, which is the DDM equation (Ratcliff &
 Tuerlinckx, 2002). I will need to set up my prior belief, namely
 prior distributions for the seven DDM parameters. In the case of
-hierarchical model, there are two set of prior distributions: one is
+hierarchical model, there are two sets of prior distributions: one is
 usually called hyper-prior distributions  and the other simply prior
 distributions.  The former is my prior belief about the distributions
 (_pp.prior_ below) accounted by _pop.mean_ and _pop.scale_. The latter 
-is my prior belief about separate DDM mechanism for each individual
+is my prior belief about separate DDM mechanisms for each individual
 participant (_p.prior_ below).
 
 ```
@@ -141,10 +141,9 @@ pp.prior <- list(mu.prior, sigma.prior)
 
 
 Then, the following sampling procedure mostly will not return results
-immediately. I will record the time to show, so you can know what to
+immediately. I recorded the computation times, so you can know what to
 expect.  The option, _debug = TRUE_, is to use the conventional
-migration (Turner et al., 2013), which I do not recommend,
-because it is biased.
+migration (Turner et al., 2013).
 
 ```
 ## run the "?" to see the details of function options
