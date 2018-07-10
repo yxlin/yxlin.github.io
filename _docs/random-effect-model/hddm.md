@@ -180,30 +180,38 @@ save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
 ```
 
 Similar to many standard modeling works, I must diagnose the
-modeling process so as to make sure I drew a reliable posterior
+models so as to make sure I drew a reliable posterior
 distribution, reflecting the target distribution. I
 can check visually as well as calculating some statistics. First,
 I conducted visually checks for the trace plots and posterior
 distributions.
 
-1. posterior log-likelihood at hyper level
-2. hyper parameters
-3. posterior log-likelihood at the data level
-4. data level parameters for each participants
-5. posterior distributions
+1. Trace plots of posterior log-likelihood at hyper level
+2. Trace plots of the hyper parameters
+3. Trace plots of posterior log-likelihood at the data level
+4. Trace plots of each DDM parameters for each participants
+5. Posterior density plots (i.e., marginal posterior distributions)
+for the hyper parameters
+6. Posterior density plots the DDM parameters for each
+parameters
 
 
 ```
-plot(hsam, hyper = TRUE)
-plot(hsam, hyper = TRUE, pll = FALSE)
-plot(hsam)
-plot(hsam, pll = FALSE)
+plot(hsam, hyper = TRUE)                           ## 1.
+plot(hsam, hyper = TRUE, pll = FALSE)              ## 2.
+plot(hsam)                                         ## 3.
+plot(hsam, pll = FALSE)                            ## 4.
+plot(hsam, hyper = TRUE, pll = FALSE, den = TRUE)  ## 5.
+plot(hsam, pll = FALSE, den = TRUE)                ## 6.
+
 ```
+
 
 ![hyper-level]({{"/images/random-effect-model/hyper-level.png" | relative_url}})
 
 
-These are a lot of figures to check. I then calculated the potential scale
+These are a lot of figures to check. I have not included the figures of (6.) here,
+because there are too many.  Then, I calculated the potential scale
 reduction factor, for both the hyper parameters and each participant.
 
 ```
@@ -220,9 +228,9 @@ rhat <- hgelman(hsam)
 ##  1.01  1.01
 ```
 
-Finally, I want to know if I do recover the true data generating mechanism and
-true parameter values for every participant. This can be achieved by the
-_summary_ function.
+Finally, I want to know if I do recover the mechanism of data generation and
+true parameter values for every participant (i.e., _ps_). This can be achieved
+by the _summary_ function.
 
 
 ```
