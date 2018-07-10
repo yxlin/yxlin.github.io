@@ -79,7 +79,7 @@ plot(pop.prior)
 
 ```
 
-![popprior]({{"/images/popprior.png" | absolute_url}})
+![popprior]({{"/images/popprior.png" | relative_url}})
 
 
 ```
