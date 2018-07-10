@@ -9,7 +9,7 @@ the pMCMC method to conduct hierarchical DDM for a relatively simple
 factorial design.
 
 
-## Set up a model object,
+## Set-up a model object
 This particular design is drawn from Heathcote et al's (2018) DMC tutorial,
 which assumes that a word frequency (my interpretation) factor affecting
 the mean drift rate (_v_). Note it is not a good practice to use "F" notation
@@ -181,7 +181,8 @@ save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
 ```
 
 Similar to many standard modeling works, I must diagnose the
-modeling process to check the posterior distribution is reliable. I
+modeling process so as to make sure I drew a reliable posterior
+distribution, reflecting the target distribution. I
 can check visually as well as calculating some statistics. First,
 I conducted visually checks for the trace plots and posterior
 distributions.
@@ -196,6 +197,17 @@ distributions.
 ```
 plot(hsam, hyper = TRUE)
 plot(hsam, hyper = TRUE, pll = FALSE)
+plot(hsam)
+plot(hsam, pll = FALSE)
+```
+
+![hyper-level]({{"/images/random-effect-model/hyper-level.png" | absolute_url}})
+
+
+These are a lot of figures to check. I then calculated the potential scale
+reduction factor, for both the hyper parameters and each participant.
+
+```
 rhat <- hgelman(hsam)
 ## Diagnosing theta for many participants separately
 ## Diagnosing the hyper parameters, phi
@@ -207,4 +219,41 @@ rhat <- hgelman(hsam)
 ##  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
 ##    39    40
 ##  1.01  1.01
+```
+
+Finally, I want to know if I do recover the true data generating mechanism and
+true parameter values for every participant. This can be achieved by the
+_summary_ function.
+
+
+```
+hest1 <- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.mean, type = 1)
+hest2 <- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.scale, type = 2)
+round(hest1, 2)
+round(hest2, 2)
+ests <- summary(hsam, recovery = TRUE, ps = ps)
+
+##                   a    sv    sz    t0  v.f1  v.f2    z
+## True           2.00  1.00  0.30  0.30  4.00  3.00 0.50
+## 2.5% Estimate  1.83  0.69  0.22  0.28  3.69  2.76 0.49
+## 50% Estimate   2.00  0.88  0.29  0.29  3.87  2.93 0.52
+## 97.5% Estimate 2.17  0.99  0.34  0.31  4.07  3.12 0.55
+## Median-True    0.00 -0.12 -0.01 -0.01 -0.13 -0.07 0.02
+
+##                   a   sv    sz    t0  v.f1 v.f2    z
+## True           0.50 0.30  0.10  0.05  0.50 0.50 0.10
+## 2.5% Estimate  0.43 0.15  0.03  0.03  0.38 0.41 0.08
+## 50% Estimate   0.53 0.30  0.07  0.04  0.49 0.53 0.10
+## 97.5% Estimate 0.71 0.58  0.14  0.05  0.65 0.68 0.13
+## Median-True    0.03 0.00 -0.03 -0.01 -0.01 0.03 0.00
+
+
+## Summary each participant separately
+##          a  v.f1 v.f2    z    sz   sv   t0
+## Mean  2.00  3.87 2.94 0.52  0.29 0.72 0.29
+## True  1.98  3.86 2.94 0.52  0.28 0.78 0.29
+## Diff -0.02 -0.01 0.00 0.00 -0.01 0.06 0.00
+## Sd    0.51  0.44 0.49 0.10  0.04 0.15 0.04
+## True  0.52  0.47 0.51 0.10  0.09 0.19 0.04
+## Diff  0.00  0.02 0.02 0.00  0.05 0.04 0.00
 ```
