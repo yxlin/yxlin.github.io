@@ -201,7 +201,7 @@ plot(hsam)
 plot(hsam, pll = FALSE)
 ```
 
-![hyper-level]({{"/images/random-effect-model/hyper-level.png" | absolute_url}})
+![hyper-level]({{"/images/random-effect-model/hyper-level.png" | relative_url}})
 
 
 These are a lot of figures to check. I then calculated the potential scale
