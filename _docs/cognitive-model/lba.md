@@ -1,7 +1,7 @@
 ---
 title: The Linear Ballistics Accumulation Model
 category: Cognitive Model
-order: 1
+order: 2
 ---
 
 This lesson will demonstrate a "golem" (McElreath, 2016), the canonical LBA
