@@ -1,5 +1,5 @@
 ---
-title: Shooting Decision Model II
+title: Shooting Decision Model I - Empirical Data
 category: Hierarchical Model
 order: 5
 ---
@@ -8,8 +8,8 @@ I continue the shooting decision model by fitting the empirical data in study 3 
 Cesario and Johnson (2017).
 
 
-First I loaded the empirical data and the model and prior distributions I had set up
-in previous tutorial.
+First I loaded the empirical data. Then I loaded the model object and prior distributions that
+had set up in the previous tutorial.
 
 ```
 require(ggdmc)
@@ -45,7 +45,8 @@ To match the abbreviations used in the model object, I changed the "non", and
 Then I converted the _data.table_ to _data.frame_, which was then bound to the
 model object.
 
-> edat <- data.frame(study3_subset)
+> edat <- data.frame(study3_subset);
+
 > edmi <- BindDataModel(edat, model)
 
 Next is just to repeat what I had done in the recovery study.
@@ -54,7 +55,7 @@ Next is just to repeat what I had done in the recovery study.
 ehsam <- run(StartNewHypersamples(5e2, edmi, p.prior, pp.prior, 32),
   pm = .3, hpm = .3) ## 18 mins
 ehsam <- run(RestartHypersamples(5e2, hsam, thin = 32),
-  pm = .3, hpm = .3) ## 3 hrs
+  pm = .3, hpm = .3) 
 
 save(model, p.prior, pp.prior, pop.prior, nsubject, ntrial, dat, dmi, hsam,
   npar, pop.mean, pop.scale, ps, study3, edat, edmi, ehsam,
@@ -66,7 +67,6 @@ As usual, I set up an automatic fitting routine to fit the model until it
 converge.
 
 ```
-## 8 hr
 counter <- 1
 repeat {
   ehsam <- run(RestartHypersamples(5e2, hsam, thin = 32),
@@ -85,11 +85,4 @@ repeat {
 ## Reference
 Pleskac, T.J., Cesario, J. & Johnson, D.J. (2017). How race affects evidence accumulation during the decision to shoot.
 _Psychonomic Bulletin & Review_, 1-30. https://doi.org/10.3758/s13423-017-1369-6
-
-Wong, J. C. (2016, Aprial, 18). ['Scapegoated?' The police killing that left Asian Americans angry – and divided](https://www.theguardian.com/world/2016/apr/18/peter-liang-akai-gurley-killing-asian-american-response).
-_The Guardian_.
-
-[Chinese Community Reels After Brooklyn NYPD Shooting](https://www.nbcnews.com/news/asian-america/chinese-community-reels-after-brooklyn-nypd-shooting-n273931). (2014, December 24). _NBC News_.
-
-[American's police on trial](https://www.economist.com/leaders/2014/12/11/americas-police-on-trial). (2014, December, 11). _The Economist_.
 
