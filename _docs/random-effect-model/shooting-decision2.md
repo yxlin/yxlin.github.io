@@ -4,7 +4,7 @@ category: Hierarchical Model
 order: 5
 ---
 
-I continue the shooting decision model by fitting the empirical data in study 3 in Pleskac,
+I continued the shooting decision model by fitting the empirical data in study 3 in Pleskac,
 Cesario and Johnson (2017).
 
 
@@ -64,7 +64,7 @@ save(model, p.prior, pp.prior, pop.prior, nsubject, ntrial, dat, dmi, hsam,
 
 
 As usual, I set up an automatic fitting routine to fit the model until it
-converge.
+converges.
 
 ```
 counter <- 1

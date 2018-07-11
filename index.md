@@ -47,5 +47,5 @@ or from GitHub
 
 or from source tarball you have downloaded from CRAN (or from _click here_)
 
-> install.packages("ggdmc_0.2.2.1.tar.gz", repos = NULL, type="source")
+> install.packages("ggdmc_0.2.2.3.tar.gz", repos = NULL, type="source")
 
