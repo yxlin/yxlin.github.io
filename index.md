@@ -45,7 +45,8 @@ or from GitHub
 
 > devtools::install_github("yxlin/ggdmc")
 
-or from source tarball you have downloaded from CRAN (or from _click here_)
+or from source tarball. You can email me at, <yishin.lin@utas.edu.au>
+to request a copy of the software for FREE!)
 
 > install.packages("ggdmc_0.2.2.3.tar.gz", repos = NULL, type="source")
 
