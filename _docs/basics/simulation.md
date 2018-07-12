@@ -78,4 +78,4 @@ par(mfrow=c(1, 1))
 
 ```
 
-![distributions]({{"/images/density.png" | absolute_url}})
+![distributions]({{"/images/density.png" | relative_url}})

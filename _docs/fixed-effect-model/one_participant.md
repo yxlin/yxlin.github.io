@@ -26,7 +26,7 @@ sigma <- 1
 dat <- rnorm(1e3, mu, sigma)
 ```
 
-![Gaussian]({{"/images/Gaussian.png" | relative_url}})
+![Gaussian]({{"/images/fixed-effect-model/Gaussian.png" | relative_url}})
 
 The usual situation is that we would collect data (_dat_) by inviting
 participants to visit our lab, having them perform some sort of
@@ -90,7 +90,7 @@ p.prior  <- BuildPrior(
 plot(p.prior)
 ```
 
-![prior]({{"/images/prior.png" | relative_url}})
+![prior]({{"/images/fixed-effect-model/prior.png" | relative_url}})
 
 
 _StartNewsamples_ use p.prior to randomly draw start points. _pm_ means
@@ -109,7 +109,7 @@ plot(sam, start = 101)
 _plot_ by default draws posterior log-likelihood, with the option, _start_,
 indicating that drawing from 101st sample, instead of from the first one.
 
-![pll]({{"/images/pll.png" | relative_url}})
+![pll]({{"/images/fixed-effect-model/pll.png" | relative_url}})
 
 The left panel showed the chains quickly converged to posterior log-likelihoods
 around 25, and the right panel showed all chains converged about 300
@@ -122,7 +122,7 @@ plot(sam, pll = FALSE, den= TRUE)
 
 ```
 
-![den]({{"/images/den.png" | relative_url}})
+![den]({{"/images/fixed-effect-model/den.png" | relative_url}})
 
 We can also check reject rates to see the efficiency of the
 sampler.
