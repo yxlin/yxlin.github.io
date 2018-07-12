@@ -1,5 +1,5 @@
 ---
-title: The Linear Ballistics Accumulation Model
+title: The Linear Ballistic Accumulation Model
 category: Cognitive Model
 order: 2
 ---
