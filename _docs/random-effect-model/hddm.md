@@ -4,10 +4,9 @@ category: Hierarchical Model
 order: 2
 ---
 
-In this section, I will conduct parameter recovery study, demonstrating
-the pMCMC method to conduct hierarchical DDM for a relatively simple
+In this tutorial, I conducted a parameter recovery study, demonstrating
+the pMCMC method to fit a hierarchical DDM for a relatively simple
 factorial design.
-
 
 ## Set-up a model object
 This particular design is drawn from Heathcote et al's (2018) DMC tutorial,
@@ -210,9 +209,12 @@ plot(hsam, pll = FALSE, den = TRUE)                ## 6.
 ![hyper-level]({{"/images/random-effect-model/hyper-level.png" | relative_url}})
 
 
-These are a lot of figures to check. I have not included the figures of (6.) here,
-because there are too many.  Then, I calculated the potential scale
-reduction factor, for both the hyper parameters and each participant.
+These are a lot of figures to check. I have not presented the figures of posterior
+probability density for every participant (i.e., figure 6), because there are too
+many. You can print them in a pdf file to check.
+
+Then, I calculated the potential scale reduction factor, for both the hyper
+parameters and each participant.
 
 ```
 rhat <- hgelman(hsam)

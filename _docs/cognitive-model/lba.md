@@ -4,16 +4,17 @@ category: Cognitive Model
 order: 2
 ---
 
-This lesson demonstrates a "golem" (McElreath, 2016), the canonical LBA
-model (Brown & Heathcote, 2008).   Please refer to the LBA paper
-for more details. Here I focus on how to use this model in a practical
-Bayesian MCMC context.
+This lesson demonstrates how to control the "golem" (McElreath, 2016), the
+canonical linear ballistic accumulation (LBA) model (Brown & Heathcote, 2008).
+Please refer to the LBA paper for more details. Here I focused only on how 
+to use this model in a practical Bayesian MCMC context.
 
 Here I used an imaginary experiment with a design of one binary stimulus
 factor (S), such as left vs. right motion random dots. In a later tutorial,
 I will fit the model to a real world data set. The LBA model presumes
 one latent matching (M) factor and an observable accumulator factor (R),
-corresponding responses. These two factors are easily to get confused.
+corresponding to responses. For most beginners to learn this model, these
+two factors are easily to get confused.
 
 > match.map = list(M = list(left = "LEFT", right = "RIGHT")),
 
@@ -41,9 +42,10 @@ dplyr::tbl_df(dat1)
 ## # ... with 32,758 more rows
 ```
 
-From an experimenter's perspective, this imaginary experiment only
-has one stimulus (S) factor, which has two levels, random dots moving towards
-right and moving towards left as defined below.
+So "left" and "LFET" mean the random dots moving left and a left
+response. From an experimenter's perspective, this imaginary
+experiment only has one stimulus (S) factor, which has two levels,
+random dots moving towards right and moving towards left as defined below.
 
 > factors = list(S = c("left", "right")),
 
