@@ -287,21 +287,24 @@ lapply(list(hest1, hest2), round, 2)
 
 ```
 
-The recovery study supports that the race-threshold model can
-recover the parameters reliably and confirm / reject the hypothesis that
-a police office has a higher shoot threshold towards a African American 
-than than towards European American target (i.e., _a.A > a.E_). Both
-at the level of individual participants and at the level of
-hyper parameters. Of course this presumes that the hierarchical model
-is an appropriate model to better reflect the true phenomenon. That is,
-if the data do reflect this hypothesis, my hierarchical DDM is able
-to reveal it.
+The recovery study supports the hypothesis that the race-threshold model 
+can recover the parameters reliably. Therefore, if this model is a true
+model, we can use it to confirm or reject the hypothesis that 
+a police office has a higher shoot threshold towards a black than 
+a white target (i.e., _a.A > a.E_). Both at the level of individual
+participants and at the level of hyper parameters. Of course, this
+presumes that the hierarchical race-threshold model is an appropriate
+model to better reflect the true phenomenon. That is, if the data do
+reflect this hypothesis, my hierarchical DDM is able to reveal it. I
+will return to the technique of model selection in a later tutorial.
+Note without highly efficient software, like _ggdmc_, the model
+selection work is very difficult to conduct.
 
+Another strength in _ggdmc_ (as well as DMC), relative to the
+Python-HDDM (Wiecki, Sofer & Frank, 2013) is that _ggdmc_ estimates
+the DDM variabilities at the hyper level [^1]. I will return this
+particular strength of _ggdmc_ in another tutorial.
 
-Also note more interesting in my software (as well as DMC), relative
-to the python HDDM is that it can also informe you the variabilities
-at the hyper level. I will return this particular strength of _ggdmc_
-in another tutorial.
 ```
 ## SD
 ##                 a.A  a.E   sv   sz   t0  v.G  v.N    z
@@ -315,6 +318,8 @@ in another tutorial.
 Now I am ready to fit the empirical data with the race-threshold model.
 
 
+[^1]: If one wishes to estimate the DDM variabilities at the hyper level in Python-HDDM, s/he would need to modify the Python-HDDM source codes, which is possible but less convenient.
+
 ## Reference
 Pleskac, T.J., Cesario, J. & Johnson, D.J. (2017). How race affects evidence accumulation during the decision to shoot.
 _Psychonomic Bulletin & Review_, 1-30. https://doi.org/10.3758/s13423-017-1369-6
@@ -325,4 +330,7 @@ _The Guardian_.
 [Chinese Community Reels After Brooklyn NYPD Shooting](https://www.nbcnews.com/news/asian-america/chinese-community-reels-after-brooklyn-nypd-shooting-n273931). (2014, December 24). _NBC News_.
 
 [American's police on trial](https://www.economist.com/leaders/2014/12/11/americas-police-on-trial). (2014, December, 11). _The Economist_.
+
+
+
 
