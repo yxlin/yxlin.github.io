@@ -236,9 +236,9 @@ plot(hsam, pll = FALSE)
 ![density-hyper]({{"/images/random-effect-model/HLBA/trace-data.png" | relative_url}})
 
 
-Last, I checked the posterior density plots at the data level. There are too many
-trace plot and posterior density plots for each participants, so I did not present
-them here.
+Last, I checked the (posterior) density plots at the data level. There are too many
+density plots for each participants (nsubject x nparameter = 360), so I did not 
+present them here.
 
 - Posterior density plots the LBA parameters for each parameters
 
@@ -249,7 +249,7 @@ all participant as well as the mechanism of data generation, namely, _pop.mean_
 and _pop.scale_.
 
 There are five arguments in the _summary_ function you need to know to trigger
-the smart parameter recovery computation. First is **hyper == TRUE**, which
+the smart parameter recovery computation. First is **hyper = TRUE**, which
 calculate the phi array / matrix, which stores hyper parameters. Second is
 the **recovery = TRUE**, which informs the function to look for a true
 parameter vector, which you should enter it at **ps** argument (**ps = pop.mean**).
