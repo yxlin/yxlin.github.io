@@ -237,7 +237,7 @@ file.path(dp)
 ## [1] "data/Holmes_etal_CogPsych_2016_Data"
 file.path(dp, fn[1])
 ## [1] "data/Holmes_etal_CogPsych_2016_Data/S125.2014-04-23_6-22-36.txt"
-``
+```
 
 The function, _file.path_ returns the complete relative file path to the data file, which
 is then read by the _fread_ function.
