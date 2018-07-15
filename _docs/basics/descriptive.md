@@ -153,11 +153,13 @@ from participant, **S125**. There are 47 of them. All are in the same format. La
 will illustrate how to handle similar but not identical formatted data files.
 
 ```
-block	trial	target	CO1	CO2	ST	resp	RT	correct
-    1	1	    R	    50	 -1	-1	1	    1076	1
-    1	2	    L	    50	 -1	-1	0	    733	    1
-    1	3	    R	    50	 -1	-1	1	    637	    1
-    1	4	    R	    50	 -1	-1	1	    517	    1
+block	trial	target	 CO1	CO2	ST	resp	RT	correct
+    1	    1	     R    50	 -1	-1	   1   1076       1
+    1	    2	     L    50	 -1	-1	   0    733       1
+    1	    3	     R    50	 -1	-1	   1    637       1
+    1	    4	     R    50	 -1	-1	   1    517       1
+...
+	
 ```
 
 I stored data files in a standard location of usual R packaging. The
