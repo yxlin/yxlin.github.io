@@ -86,26 +86,30 @@ repeat {
 
 ```
 rhats <- hgelman(ehsam)
-# Diagnosing theta for many participants separately
-# Diagnosing the hyper parameters, phi
-# hyper    1     2     3     4     5     6     7     8     9    10    11    12    13
-# 1.03  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
-#   14    15    16    17    18    19    20    21    22    23    24    25    26    27
-# 1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
-#   28    29    30    31    32    33    34    35    36    37    38
-# 1.00  1.00  1.00  1.00  1.00  1.00  1.01  1.01  1.01  1.01  1.01
-
-effectiveSize(ehsam, hyper = TRUE)
-# a.E.h1 a.A.h1 v.G.h1 v.N.h1   z.h1  sz.h1  sv.h1  t0.h1 a.E.h2 a.A.h2 v.G.h2 v.N.h2
-# 2047   1985   1337   1819   1995    981   1444   2084   1724   1874   1314   1666
-# z.h2  sz.h2  sv.h2  t0.h2
-# 1936   1072   1267   1957
+effectiveSize(ehsam, hyper  = TRUE)
 effectiveSize(ehsam, verbose = TRUE)
-#       a.E  a.A  v.G  v.N    z   sz   sv   t0
-# MEAN 6295 5888 5464 6021 7029 5339 5895 6457
-# SD    940  937  964  922  987  767  948  612
-# MAX  7366 7202 6483 7403 7979 6783 7350 7372
-# MIN  2042 1873 1922 2037 1922 1930 2147 3914
+
+## Diagnosing theta for many participants separately
+## Diagnosing the hyper parameters, phi
+## hyper    1     2     3     4     5     6     7     8     9    10    11    12    13
+## 1.03  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
+##   14    15    16    17    18    19    20    21    22    23    24    25    26    27
+## 1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
+##   28    29    30    31    32    33    34    35    36    37    38
+## 1.00  1.00  1.00  1.00  1.00  1.00  1.01  1.01  1.01  1.01  1.01
+
+## Effective sample sizes of the hyper parameters
+## a.E.h1 a.A.h1 v.G.h1 v.N.h1   z.h1  sz.h1  sv.h1  t0.h1 a.E.h2 a.A.h2 v.G.h2 v.N.h2
+##   2047   1985   1337   1819   1995    981   1444   2084   1724   1874   1314   1666
+##   z.h2  sz.h2  sv.h2  t0.h2
+##   1936   1072   1267   1957
+
+## Mean, Sd, Max and Min of the Effective sample sizes
+##       a.E  a.A  v.G  v.N    z   sz   sv   t0
+## MEAN 6295 5888 5464 6021 7029 5339 5895 6457
+## SD    940  937  964  922  987  767  948  612
+## MAX  7366 7202 6483 7403 7979 6783 7350 7372
+## MIN  2042 1873 1922 2037 1922 1930 2147 3914
 ```
 
 - Trace plots for the log-posterior likelihood at the hyper level
@@ -127,17 +131,22 @@ p5 <- plot(ehsam, pll = FALSE, den = TRUE)
 ![hyper]({{"/images/random-effect-model/shooting/hyper.png" | relative_url}})
 
 Because this is not a parameter recovery study, the next step is to estimate
-the DDM parameters. In the race-threshold model, we, following Pleskac, Cesario
+the DDM parameters. In the race-threshold model, I, following Pleskac, Cesario
 and Johson's (2017) hypothesis, expected to see a higher
 threshold (at the boundary separation parameter) for a black target than for
 a white target. One particular strength in the hierarchical modeling is that
-we can ask the question that _whether this specific hypothesis happens at
+we can ask a direct question that _whether this specific hypothesis happens at
 the population level_, because the hierarchical modeling assumes the 38
 participants in this study are just a small subset of people the researchers
 (pseudo-)randomly drew from a large population, presumably the
-entire population in U.S.A.  This is in contrast to the fixed-effect model,
-which assumes each participant has her / his own DDM mechanism 
-of data generation. The following is how you may do these in _ggdmc_ syntax.
+entire population in U.S.A.  More importantly, hierarchical model estimates
+this large population, namely the hyper parameters. This is in contrast to
+the fixed-effect model, which assumes each participant has her / his own
+DDM mechanism of data generation. Hence, in a fixed-effect model, researchers
+usually follow up with various group comparison techniques, such as Bayes
+factor, Bayesian t-test / ANOVA / HDI to determine whether two or more
+conditions differs. The following is to show how I ask similar question
+by directly examining the estimates at the hyper level parameters.
 
 When entering **hmean = TRUE**, the _summary_ function will calculate the
 average values for the hyper parameters. Similarly, the option,
@@ -198,6 +207,10 @@ study3[, .N, .(s, S, B, CT, RACE)]
 > range(study3[, .N, .(s, S, B, CT, RACE)]$N)
 ## [1]  6 33
 ```
+
+Of course, it is also possible that the other two interesting factors, the
+neighborhood context and the blurring of the object, may play roles
+in resulting in their findings with no difference in boundary separation. 
 
 In case you may be interested, I listed the estimates for each participants below.
 Not every participant has a higher threshold for black targets than white targets.
