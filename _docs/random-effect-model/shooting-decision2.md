@@ -1,5 +1,5 @@
 ---
-title: Shooting Decision Model I - Empirical Data
+title: Shooting Decision Model - Empirical Data
 category: Hierarchical Model
 order: 5
 ---
