@@ -159,9 +159,9 @@ block	trial	target	 CO1	CO2	ST	resp	RT	correct
     1	    3	     R    50	 -1	-1	   1    637       1
     1	    4	     R    50	 -1	-1	   1    517       1
 ...
-	
 ```
 
+### How to read large data sets efficiently
 I stored data files in a standard location of usual R packaging. The
 folder, named _data_ unsurprisingly, immediately in a project folder. And the
 analysis scripts are stored in a folder, called _R_. I then used
@@ -261,8 +261,11 @@ d <- data.table::fread(file.path(dp, fn[1]))
 ## 1280:    20    72     LR  15  15 529    0 1311       1
 ```
 
-The following four lines were simply to convert the original column names to my 
-factor naming convention. For example, _target_ column indicates whether a
+The following four lines were simply to temporarily save the columns,
+"target", "resp", "RT" (converted to second), and "correct" to four different
+R vectors, "S", "R", "RTSec", and "C".  These operations just converted
+the original column naming to my factor naming convention. For example,
+_target_ column indicates whether a
 stimulus was one of the four levels:
 1. right (stationary trial),
 2. left (stationary trial),
@@ -278,10 +281,86 @@ R     <- d$resp
 RTSec <- d$RT / 1e3
 C     <- d$correct
 ```
+These four R vectors were then grouped together as a R list.
+```
+list(s, S, R, RTSec, C)
 
+## [[1]]
+## [1] "S125"
+## [[2]]
+##    [1] "R"  "L"  "R"  "R"  "L"  "R"  "R"  "R"  "L"  "L"  "L"  "R"  "L"  "L" 
+##   [15] "L"  "R"  "L"  "R"  "R"  "L"  "L"  "R"  "R"  "L"  "R"  "L"  "L"  "R" 
+##   [29] "L"  "R"  "L"  "R"  "L"  "R"  "L"  "L"  "R"  "R"  "R"  "L"  "R"  "R" 
+##   ...
+## [[3]]
+##    [1]  1  0  1  1  0  1  1  1  0  0  0  1  0  0  0  1  0  0  1  0  0  1  1  0
+##   [25]  1  0  0  1  0  1  0  1  0  1  0  0  1  0  1  0  1  1  1  1  0  1  1  1
+##   [49]  1  0 -1  1  1  0  0  1  0  1  1  0  1  1  1  1  1  0  1  1  1  1  0  1
+##   ...
+## [[4]]
+##    [1]  1.076  0.733  0.637  0.517  0.476  0.419  0.493  0.486  0.685  0.581
+##   [11]  0.460  0.462  0.666  0.557  0.446  0.438  0.549  0.358  0.486  0.516
+##   [21]  0.484  0.589  0.679  0.743  0.550  0.646  0.516  0.486  0.588  0.463
+## [[5]]
+##    [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##   [38] 0 1 1 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 1 1 0 0 1 1 0 0 0 0 1 1 1 1 1 1 0 1 1
+##   [75] 1 1 0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 0 1 0 1 0 0 1 1 0 1 0 1 1
+##   ...
+```
 
+This list was directly inserted into the data.table, _d_, which created five new
+columns on top the original ones (i.e., block, trial, etc.).
+```
+d[, c("s", "S", "R", "RT", "C") := list(s, S, R, RTSec, C)]
+```
 
-## To be continue..
+The result was then returned to the _lapply_ function as its output. *:=* is
+just the assignment symbol in data.table syntax.
+```
+return(d[, c("s", "S", "R", "RT", "C") := list(s, S, R, RTSec, C)])
+```
+
+Each participant file was looped through in a fastest possible way in
+R language and finally, each of them was glued together via the data.table
+function, _rbindlist_, which return as the output for my homemade _DTLapply_
+function.
+
+```
+## # A tibble: 60,160 x 13
+##    block trial target   CO1   CO2    ST  resp    RT correct s     S         R
+##    <int> <int> <chr>  <int> <int> <dbl> <int> <dbl>   <int> <chr> <chr> <int>
+##  1     1     1 R         50    -1    -1     1 1.08        1 S125  R         1
+##  2     1     2 L         50    -1    -1     0 0.733       1 S125  L         0
+##  3     1     3 R         50    -1    -1     1 0.637       1 S125  R         1
+##  4     1     4 R         50    -1    -1     1 0.517       1 S125  R         1
+##  5     1     5 L         50    -1    -1     0 0.476       1 S125  L         0
+##  6     1     6 R         50    -1    -1     1 0.419       1 S125  R         1
+##  7     1     7 R         50    -1    -1     1 0.493       1 S125  R         1
+##  8     1     8 R         50    -1    -1     1 0.486       1 S125  R         1
+##  9     1     9 L         50    -1    -1     0 0.685       1 S125  L         0
+## 10     1    10 L         50    -1    -1     0 0.581       1 S125  L         0
+## # ... with 60,150 more rows, and 1 more variable: C <int>
+
+```
+
+### How to trim off irregular participants
+It is not uncommon in a data set to have few participants who did not engage in
+performing a task or drop out in the middle of an experiment. With convincing
+evidence, the analyst usually wish to exclude these participants. Here I demonstrated
+one way to conduct this operation in R language.
+
+This simply is to apply the _match_ function, which has a symbol form, *%in%*. This
+is an R internal function, which uses efficient algorithm.
+```
+## Excluding 3 + 13 participants from model fitting, due to
+## (1) a computer error and,
+## (2) less than 70% accuracy on the stationary trials in 4-18  blocks.
+## They are 126, 129, 130, 133, 134, 138, 139, 140, 143, 147, 148, 150, 155,
+## 156, 161, 162
+badsubjs <- c("S126", "S129", "S130", "S133", "S134", "S138", "S139", "S140",
+              "S143", "S147", "S148", "S150", "S155", "S156", "S161", "S162")
+x1 <- x0[ !(s %in% badsubjs) ]
+```
 
 ## Reference
 Heathcote A., and Love J. (2012) Linear deterministic accumulator models of simple choice.
