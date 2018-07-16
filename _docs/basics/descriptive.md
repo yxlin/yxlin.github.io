@@ -143,7 +143,7 @@ prop
 ```
 
 ## Real-world Example
-In this section, I will demonstrate advanced data processing techniques, using an
+In this section, I will demonstrate more data processing techniques, using an
 empirical data (Holmes, Trueblood & Heathcote (2016). This data set can be downloaded
 from my [OSF site](https://osf.io/p4pdh/).
 
@@ -214,7 +214,7 @@ seq_along(fn)
 a function used internally by the _lappy_ function. Inside this anonymous function is
 basically a quicker R for loop. The first line in the anonymous function is to extract
 the label for a participant. For example, if I just processed the first text file,
-the _strsplit_ function split the string whenever it finds a dot symbol **.**.
+the _strsplit_ function splits the string whenever it finds a dot symbol.
 Because _strsplit_ returns an R list, I took the first element in the first list.
 
 ```
@@ -230,7 +230,7 @@ print(s)
 ## [1] "S125"
 ```
 
-Next line uses the convenient function, _file.path__ in R base to construct
+Next line uses the convenient function, **file.path** in _R_ base to construct
 a file path to a particular file. For example, if I extract the first participant.
 
 ```
@@ -242,7 +242,8 @@ file.path(dp, fn[1])
 ```
 
 The function, _file.path_ returns the complete relative file path to the data file, which
-is then read by the _fread_ function.
+is then read by the _fread_ function. Note I can easily use the relative path method,
+because the folder structure follows strictly R packaging structure.
 
 ```
 d <- data.table::fread(file.path(dp, fn[1]))
@@ -260,11 +261,16 @@ d <- data.table::fread(file.path(dp, fn[1]))
 ## 1280:    20    72     LR  15  15 529    0 1311       1
 ```
 
-The following four lines were simply convert the original column names to my factor
-naming convention. For example, _target_ column indicates whether a stimulus was
-right, left, left and right, or right and left moving dot, so I converted it to as
-stimulus, namely _S_ factor. Similarly, R factor is from the _resp_ response column,
-RT column was converted to second, and _correct_ column was converted to _C_.
+The following four lines were simply to convert the original column names to my 
+factor naming convention. For example, _target_ column indicates whether a
+stimulus was one of the four levels:
+1. right (stationary trial),
+2. left (stationary trial),
+3. left and right (switching trial) or
+4. right and left moving dot (switching trial),
+so I converted it to as stimulus, _S_, factor. Similarly, R factor is from
+the _resp_ response column, RT column was converted to second, 
+and _correct_ column was converted to _C_.
 
 ```
 S     <- d$target

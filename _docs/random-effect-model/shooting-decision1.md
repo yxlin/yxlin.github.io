@@ -1,5 +1,5 @@
 ---
-title: Shooting Decision Model I - Recovery Study
+title: Shooting Decision Model - Recovery Study
 category: Hierarchical Model
 order: 4
 ---
