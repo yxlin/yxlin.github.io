@@ -113,18 +113,46 @@ beta.prior <- BuildPrior(
   upper = c( 4, 4, 4, 4, 1))
 ```
 
-You can plot the prior distribution by using _plot_ function. 
+You can plot and print the prior distribution by using the _plot_ and _print_ functions. 
 
 > plot(beta.prior)
 
 
 ![betaprior]({{"/images/bayes/prior1.png" | relative_url}})
 
+> print(p.prior)
 
-## Other Useful Information ...
-for setting up prior distributions.
+```
+##               p1 p2 lower upper log    dist  untrans
+## meanlog.true   1  1    -4     4   1 beta_lu identity
+## meanlog.false  1  1    -4     4   1 beta_lu identity
+## sdlog.true     1  1     0     4   1 beta_lu identity
+## sdlog.false    1  1     0     4   1 beta_lu identity
+## t0             1  1   0.1     1   1 beta_lu identity
+```
 
-Key points here are to look for first whether prior distributions cover broad range (i.e., relatively uninformative) and second whether their range cover abnormal values. For example, it is not possible to have negative standard devation, so sd_v.true subpanel should not cover negative values.
+
+This is how to calculate log-prior likelihoods (i.e., probability densities)
+for each model parameter and add them all together.
+
+> dprior(p.vector, p.prior)
+
+```
+## meanlog.true meanlog.false    sdlog.true   sdlog.false            t0 
+##    -2.0794415    -2.0794415    -1.3862944    -1.3862944     0.1053605
+```
+
+> sumlogpriorNV(p.vector, p.prior)
+
+```
+## [1] -6.826111
+```
+
+### What to look for when set up prior distributions
+For setting up prior distributions, key points are to look for first whether prior
+distributions cover broad range (i.e., relatively uninformative) and second whether
+their range cover abnormal values. For example, it is not possible to have
+negative standard devation, so sd_v.true subpanel should not cover negative values.
 
 
 
