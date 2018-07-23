@@ -6,17 +6,23 @@ order: 6
 
 One advantage of model fitting is it informs more than just parameter estimations.
 In previous two tutorials, I demonstrated one parameter-recovery 
-study and one model fitting for the empirical data. The real tough job is to
-conduct many hierarchical model fitting, which _ggdmc_ is designed to do well, with
+study and one model fitting to the empirical data. The real challenge is to
+conduct many hierarchical model fits, which _ggdmc_ is designed to do well, with
 the help of parallel computing. The purpose of model selection is to find a best
 model accounting for the data. Because one aim of shooting decision study was to
-examine whether the race stereotype affects shooting decision, I listed the
+examine whether race stereotypes affects shooting decision, I listed the
 model-of-interest below.
 
 1. a ~ 1    & v ~ S
 2. a ~ RACE & v ~ S
 3. a ~ 1    & v ~ RACE + S
 4. a ~ RACE & v ~ RACE + S
+
+Pleskac, Cesario and Johnson's (2017) showed an interesting finding that
+their participants appeared to bias (reflected in starting point parameter)
+towards not shoot a black target and to increase thresholds (reflected
+in the boundary separation parameter) towards a black target. Also their
+main findings suggest that research participants is at the decision rate.
 
 The main question is whether the race stereotype is true. In other words,
 do people decide to shoot a black target faster than a white target? This
