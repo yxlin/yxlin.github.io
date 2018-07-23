@@ -9,22 +9,26 @@ Chinese Community Reels After Brooklyn NYPD Shooting, 2014; American's police on
 whether a police officer's decision, _to shoot or not to shoot_, is
 affected by the race of a shooting target and many other related factors. This is an
 important question that cognitive experiments might able to provide some insights. They
-analyzed four data sets with the hierarchical diffusion decision model. They kindly
-provide their data and JAGS codes at their project
-[OSF](https://osf.io/9qku5/). You may also want to read their [article](https://doi.org/10.3758/s13423-017-1369-6),
-which describes the findings. In this tutorial, I used these data sets,
-demonstrating how to use pMCMC to fit hierarchical DDM and LBA model to real world data,
-although one might account for the decision scenario more relatistically by using the
+analyzed four data sets with the hierarchical diffusion decision model. . They kindly
+provide their data and JAGS codes at their project [OSF](https://osf.io/9qku5/). You may
+also want to read their [article](https://doi.org/10.3758/s13423-017-1369-6), which
+describes the findings. A previous study, fitting data from also a first-person-shooter
+task with fixed-effect DDM, is reported in Correll, Wittenbrink, Crawford and
+Sadler (2015).
+
+In this tutorial, I used the data in Pleskac, Cesario and Johnson (2017) to demonstrate
+how to use pMCMC to fit hierarchical DDM in empirical data, although one might account
+for the decision scenario more relatistically by using the
 urgency-gating model (Cisek, Puskas, & El-Murr, 2009). That says, I did not argue the urgency-
-gating model is better than the DDM, as the story about the LCA model suggested
+gating model is better than the HDDM, as the story about the LCA model suggested
 (Miletic, Turner, Forstmann, & van Maanen, 2017). Only when we put them into tests can we know
-better whether the urgency-gating model is better than the DDM to account for the shooting
+better whether the urgency-gating model is better than the HDDM to account for the shooting
 decisions.
 
-In the case of fitting real world data I need to rely on other techniques, for example
+In the case of fitting empirical data I need to rely on other techniques, for example
 _posterior predective check_ (Gelman, Carlin, Stern, Dunson, Vehtari, & Rubin, 2014), to 
-check whether posterior distributions appropriately reflect target distributions, because I do
-not know the true data-generation mechanism.
+check whether posterior distributions appropriately reflect target distributions, because 
+I do not know the true data-generation mechanism.
 
 ## Set-up a model object
 First, I defined a race-threshold model,based on the stereotype findings in classic

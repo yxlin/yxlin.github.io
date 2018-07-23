@@ -6,15 +6,14 @@ order: 3
 
 In most RT modelling work, researchers usually want to examine the manifested
 statistics.  Often, these are the average response times (RTs) and accuracy rates.
-In the following, I used a model not yet fully implemented here,
-LNR (Heathcote & Love, 2012), as an example to illustrate a method in _R_ to
+In the following, I used the LNR model
+LNR (Heathcote & Love, 2012), as an example to illustrate a method to
 calculate these statistics efficiently. The user wishes to understand and
 apply LNR model on her / his work can find useful information in the DMC tutorials
-(Heathcote et al., 2018). Because LNR is not computationally intensive, I
-have yet fully implemented it here.
+(Heathcote et al., 2018).
 
-This LNR model presumes one stimulus (S) factor, and similar to the LBA model, it
-has a latent matching (M) factor.
+This particular LNR model presumes one stimulus (S) factor, and similar to the LBA
+model, it has a latent matching (M) factor.
 
 
 ```
@@ -85,7 +84,7 @@ regarding the hit, correct rejection, false alarm and miss responses.
 ## 4: right  LEFT 238  ## false alarm
 ```
 
-I used a ifelse chain to calculate a C column to indicate correct (TRUE)
+I used a _ifelse_ chain to calculate a _C_ column to indicate correct (TRUE)
 and error (FALSE) responses. In real world data, there would be some
 responses missing or participants pressing wrong keys, so the last else
 is "NA" to catch these situations.
@@ -128,7 +127,7 @@ calculated the counts for hit, correct rejection, miss, and false
 alarm and store them in _prop_. Then I made up a new column, called _NN_, to store
 the total number of trial. Lastly, I divided the four conditions by
 the total number of trial. I also used a _round_ to print only to the
-two decimal place below zero.
+two decimal place below zero. These are almost 25% error rates, as promised.
 
 ```
 prop <- d[, .N, .(S, R)]
@@ -143,14 +142,15 @@ prop
 ```
 
 ## Real-world Example
-In this section, I will demonstrate more data processing techniques, using an
+In this section, I will demonstrate more data processing techniques, using the
 empirical data (Holmes, Trueblood & Heathcote (2016). This data set can be downloaded
 from my [OSF site](https://osf.io/p4pdh/).
 
-One raw data format often found in an psychological experiment is one subject per file
+One raw data format often found is one subject per text or csv file
 (*.txt or *.csv). For example, the file, "S125.2014-04-23_6-22-36.txt", stores the data
-from participant, **S125**. There are 47 of them. All are in the same format. Later, I
-will illustrate how to handle similar but not identical formatted data files.
+from participant, **S125**. There are 47 of them. All are in the same format.
+In another tutorial, I will illustrate how to handle similar but not
+identical formatted data files.
 
 ```
 block	trial	target	 CO1	CO2	ST	resp	RT	correct
@@ -344,12 +344,12 @@ function.
 ```
 
 ### How to trim off irregular participants
-It is not uncommon in a data set to have few participants who did not engage in
+It is not uncommon in a data set to have few participants who do not engage in
 performing a task or drop out in the middle of an experiment. With convincing
-evidence, the analyst usually wish to exclude these participants. Here I demonstrated
-one way to conduct this operation in R language.
+evidence, we can exclude these participants. Here I demonstrated
+one way to conduct this operation.
 
-This simply is to apply the _match_ function, which has a symbol form, *%in%*. This
+I used the _match_ function, which has a symbol form, *%in%*. This
 is an R internal function, which uses efficient algorithm.
 ```
 ## Excluding 3 + 13 participants from model fitting, due to
@@ -363,9 +363,9 @@ x1 <- x0[ !(s %in% badsubjs) ]
 ```
 
 ## Reference
-Heathcote A., and Love J. (2012) Linear deterministic accumulator models of simple choice.
+- Heathcote A., and Love J. (2012) Linear deterministic accumulator models of simple choice.
    frontiers in Psychology, 23. https://doi.org/10.3389/fpsyg.2012.00292.
 
-Holmes, W.R. et al, A new framework for modeling decisions about changing
+- Holmes, W.R. et al, A new framework for modeling decisions about changing
    information: The Piecewise Linear Ballistic Accumulator model”, 2015,
    _Cognitive Psychology_ 85, 1-29.
