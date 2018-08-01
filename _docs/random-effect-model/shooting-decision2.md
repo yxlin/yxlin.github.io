@@ -145,8 +145,8 @@ average values for the hyper parameters. Similarly, the option,
 parameters.
 
 ```
-hest1 <- summary(hsam, hyper = TRUE, type = 1, hmean = TRUE)
-hest2 <- summary(hsam, hyper = TRUE, type = 1, hci = TRUE)
+hest1 <- summary(hsam, hyper = TRUE, hmean = TRUE)
+hest2 <- summary(hsam, hyper = TRUE, hci = TRUE)
 #    a.E.h1 a.A.h1 v.G.h1 v.N.h1 z.h1 sz.h1 sv.h1 t0.h1
 # h1   1.57   2.60   4.11   3.00 0.48  0.29  0.96  0.22
 # h2   0.53   0.86   0.52   0.68 0.11  0.18  0.52  0.05
