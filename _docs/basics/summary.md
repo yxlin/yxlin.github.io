@@ -14,10 +14,13 @@ illustrate one method to calculate average RTs and response proportions
 across participants.
 
 Firstly, I use _fread_ function to load the data file, which is in csv
-format. The data set provides a very clear and good column names.
+format. The data set provides clear and good column names.
 That is, the column names have informed the coding method. I simply
 just followed column names to code the factor levels and later checked
-against the data in the paper. 
+against the data in the paper. Of course, I had also checked against
+the figures of behaviour analyses in the paper to make sure I did
+correctly identify the dependent and independent variables, which are
+listed in the following. 
 
 - S: stimulus factor, gun vs. non-gun objects.
 - BC: blurry or clear object
@@ -39,8 +42,10 @@ study3$RT   <- study3$RT / 1e3
 study3$s    <- factor(study3$Subject)
 ```
 
-After reorganizing the columns, I removed the replicated columns by assigning
-them as _NULL_.
+_factor_ is a R function converting variables, numeric or character, to
+categorical (i.e., nominal) variable.  After reorganizing the columns,
+I removed the replicated columns by assigning them as _NULL_. This is
+a data.table specific syntax.
 
 ```
 study3[, c("Subject", "NewSubject", "conditionRaceDangerBlurbject",
@@ -48,10 +53,11 @@ study3[, c("Subject", "NewSubject", "conditionRaceDangerBlurbject",
 "Context1Safe2Danger", "Race012B", "Resp0NS1Sh", "DiffusionRT") := NULL]
 ```
 
-There are NaN response times in this data set, so I simply replaced them with
-random RTs drawn from the range of all valid RTs. This was achieved by using
-the **data.table** internal function *.I*.  I firstly found the (row) index of
-these NaN RTs, and then replaced them.
+There are NaN response times in this data set. One method is to replace
+them with random RTs drawn from uniform distribution, with the range of
+valid RTs. This was achieved by using the **data.table** internal
+function *.I*.  I firstly found the (row) index of these NaN RTs, and
+then replaced them. Of course, we can simply just remove them.
 
 ```
 ## save organized data to a temporary object, so I can roll back.
@@ -86,16 +92,16 @@ dplyr::tbl_df(d)
 ##  9 0.724 gun   clear safe  white shoot 11    TRUE
 ## 10 0.656 non   blur  safe  white not   11    TRUE
 ## # ... with 12,023 more rows
-
 ```
 
 
 ### Censoring RT data
-Censoring data is often an hard to decide what and how to do.  Here
-I illustrated one way to do it via Heathcote's _rc_, a collection of
-his useful R functions and my _summarise_, a collection of my
-useful R functions.  First, I used R's _source_ function to load
-this large collection of R functions.
+Dealing with data with outliers is a difficult task
+(Ratcliff, 1993). Here I illustrated one way to do it via
+Heathcote's _rc_, a collection of very useful R functions
+and my _summarise_, also a collection of useful R functions.
+First, I used R's _source_ function to load this large
+collection of R functions.
 
 ```
 source("~/rc/data.analysis.R")
@@ -292,3 +298,4 @@ names(figB) <- c("BC", "CT", "RACE", "S", "N", "y", "sd", "se", "ci")
 ```
 
 ## Reference
+Ratcliff, R. (1993). Methods for dealing with reaction time outliers. Psychological bulletin, 114(3), 510.
