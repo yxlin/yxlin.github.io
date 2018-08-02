@@ -96,9 +96,9 @@ dplyr::tbl_df(d)
 
 
 ### Censoring RT data
-Dealing with data with outliers is a difficult task
-(Ratcliff, 1993). Here I illustrated one way to do it via
-Heathcote's _rc_, a collection of very useful R functions
+Censoring outliers is a difficult task (Ratcliff, 1993).
+Here I illustrated one way to do it via Heathcote's _rc_, a
+collection of very useful R functions
 and my _summarise_, also a collection of useful R functions.
 First, I used R's _source_ function to load this large
 collection of R functions.
