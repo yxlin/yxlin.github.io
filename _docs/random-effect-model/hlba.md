@@ -140,7 +140,7 @@ hsam <- run(StartNewHypersamples(nmc = 100, p.prior = p.prior,
    data = data.model, thin = 2, pp.prior = pp.prior), debug = TRUE)
    hsam <- run(RestartHypersamples(512, hsam, thin = 64), pm = 0, hpm = 0,
    debug = TRUE)
-save(hsam0, hsam, dat, dmi, p.prior, pp.prior, thin, pop.mean, pop.scale,
+save(hsam, dat, dmi, p.prior, pp.prior, thin, pop.mean, pop.scale,
 pop.prior, file = "data/hierarchical/ggdmc_4_6_HLBA1.rda")
 ```
 
