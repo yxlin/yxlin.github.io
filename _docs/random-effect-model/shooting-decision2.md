@@ -4,13 +4,242 @@ category: Hierarchical Model
 order: 5
 ---
 
-I continued the shooting decision model by fitting the empirical data in study 3 in Pleskac,
-Cesario and Johnson (2017). First I loaded the empirical data. Then I loaded the model
-object and prior distributions that had set up in the previous tutorial.
+I continued the shooting decision model by fitting the empirical data in study 1 in Pleskac,
+Cesario and Johnson (2017). First I started from the pre-processing of the data. The aim
+of the pre-process is to replicate their behaviour analysis, so I can be sure that
+my data pre-processing is in line with theirs.
+
+First, I used a combination of _sapply_ and _table_ functions to check all coding
+numbers in the categorical variables / columns.
 
 ```
 require(ggdmc)
-load("data/race/study3.rda")
+dat <- fread("data/race/Study1TrialData.csv")
+dplyr::tbl_df(dat)
+##  A tibble: 5,600 x 11
+##    subject race0W1B object0NG1G conditionRaceObj conditionRace    rt resp0DS1S
+##      <int>    <int>       <int>            <int>         <int> <dbl>     <dbl>
+##  1       1        1           1                4             2   464         1
+##  2       1        1           0                2             2   658         0
+##  3       1        1           1                4             2   776         1
+##  4       1        0           1                3             1   646         1
+##  5       1        0           0                1             1   624         0
+##  6       1        0           1                3             1   518         1
+##  7       1        1           0                2             2   678         0
+##  8       1        0           1                3             1   511         1
+##  9       1        0           0                1             1   602         1
+## 10       1        1           1                4             2   808         1
+##  ... with 5,590 more rows, and 4 more variables: diffusionRT <dbl>, ybin <int>,
+##    lowerLim <dbl>, upperLim <dbl>
+
+sapply(dat[, c("subject", "race0W1B", "object0NG1G", "conditionRaceObj",
+               "conditionRace", "resp0DS1S")], table)
+## $subject
+## 
+##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22 
+## 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 
+##  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44 
+## 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 
+##  45  46  47  48  49  50  51  52  53  54  55  56 
+## 100 100 100 100 100 100 100 100 100 100 100 100 
+## 
+## $race0W1B
+## 
+##    0    1 
+## 2800 2800 
+## 
+## $object0NG1G
+## 
+##    0    1 
+## 2800 2800 
+## 
+## $conditionRaceObj
+## 
+##    1    2    3    4 
+## 1400 1400 1400 1400 
+## 
+## $conditionRace
+## 
+##    1    2 
+## 2800 2800 
+## 
+## $resp0DS1S
+## 
+##    0    1 
+## 2636 2796
+```
+
+Second, I relabeled their numerical coding to character strings, using _ifelse_ and _factor_
+functions.  In the "object0NG1G" for example, _ifelse_ function finds "0" and converts it
+to "non", meaning non-gun condition. Otherwise, it converts any numbers it found to "gun",
+meaning gun condition. Because I have used _table_ to check all available numbers, leaving
+all other number to else is OK.  _factor_ function converts the integer column (which will
+be interpreted as continuous variable) to categorical (i.e., nominal) variables.
+
+Next, I used the _data.table_ way to remove the redundant columns, because I have
+reformatted them to follow our convention / standard (e.g., using single uppercase letters
+referring to experimental factors).
+
+```
+dat$S    <- factor(ifelse(dat$object0NG1G == 0, "non", "gun"))
+dat$RACE <- factor(ifelse(dat$race0W1B == 0, "white", "black"))
+dat$R    <- factor(ifelse(dat$resp0DS1S == 0, "not", "shoot"))
+dat$RT   <- dat$rt / 1e3
+dat$s    <- factor(dat$subject)
+dat[, c("subject", "race0W1B", "object0NG1G", "conditionRaceObj",
+  "conditionRace", "rt", "resp0DS1S", "diffusionRT", "ybin", "lowerLim", "upperLim") := NULL]
+```
+
+Real data sets often contain some abnormal responses, such as outliers,
+very slow, very quick, and wrong key responses. I used _is.nan_ function to check whether
+the RT columns have this type of responses. _is.nan_ returns a logical vector, indicating
+that if an element it found is "Not a number", it will return FALSE, otherwise TRUE.
+I then added all elements in the vector to see how many TRUEs (1) are there. Logical TRUE
+in R is interpreted as 1, relative to logical FALSE, which is interpreted as 0.
+
+I found there are 168 such responses, which I removed them by a simple _data.table_
+syntax and stored the result as _d_. 
+
+```
+is.nan(dat$RT)
+## FALSE FALSE FALSE FALSE FALSE FALSE ...
+sum(is.nan(dat$RT))
+## [1] 168
+d <- dat[!is.nan(dat$RT)]
+```
+
+To help the calculation of the proportions of correct and error responses, I created
+two logical columns, C and error, to store whether a trial records a correct or error
+response.
+
+```
+d$C <- ifelse(d$S == "gun"  & d$R == "shoot",  TRUE,
+       ifelse(d$S == "non" & d$R == "not", TRUE,
+       ifelse(d$S == "gun"  & d$R == "not", FALSE,
+       ifelse(d$S == "non" & d$R == "shoot",  FALSE, NA))))
+d$error <- ifelse(d$S == "gun"  & d$R == "shoot",  FALSE,
+           ifelse(d$S == "non" & d$R == "not", FALSE,
+           ifelse(d$S == "gun"  & d$R == "not", TRUE,
+           ifelse(d$S == "non" & d$R == "shoot",  TRUE, NA))))
+
+```
+
+Next I examine how many trials in each experimental condition. This can be achieved by
+a simple data.table syntax.
+
+```
+d[, .N, .(s, S,  RACE)]
+#        s    S  RACE  N
+#   1:   1  gun black 25
+#   2:   1  non black 25
+#   3:   1  gun white 25
+#   4:   1  non white 25
+#   5:   2  non black 25
+# ---
+# 220:  55  non white 25
+# 221:  56  gun black 25
+# 222:  56  gun white 25
+# 223:  56  non black 25
+# 224:  56  non white 25
+```
+
+Applying _table_ function on the N column in the above resulting data table, I
+can check exactly the per-condition trial numbers.
+
+```
+table(d[, .N, .(s, S, RACE)]$N)
+## 19  21  22  23  24  25
+##  1   3  11  33  51 125
+```
+
+There are six trial numbers: 19, 21, 22, 23, 24, 25, with mostly subject-conditions
+combination (125) have 25 trials. 
+
+
+```
+nrow(d[, .N, .(s)])
+unique(d$s)
+```
+
+```
+## Fig. 3
+source("~/rc/data.analysis.R")
+source("~/rc/utils.R")
+source("~/functions/summarise.R")
+d
+acc0 <- summarySE(d, mv = "error", gvs = c("s", "RACE", "S"))
+mrt0 <- summarySE(d[C == TRUE], mv = "RT",    gvs = c("s", "RACE", "S"))
+## Within se average across subjects for pc and nt
+figA <- summarySEwithin(acc0, wvs = c("RACE", "S"), mv = "error")
+figB <- summarySEwithin(mrt0, wvs = c("RACE", "S"), mv = "RT")
+names(figA) <- c("RACE", "S", "N", "y", "sd", "se", "ci")
+names(figB) <- c("RACE", "S", "N", "y", "sd", "se", "ci")
+head(figA)
+dplyr::tbl_df(figA)
+levels(figA$RACE)
+figA$RACE <- factor(figA$RACE, levels = c("white", "black"), labels = c("White", "Black"))
+figA$S <- factor(figA$S, levels = c("non", "gun"), labels = c("Non-Gun", "Gun"))
+# figA$gp   <- factor(paste(figA$CT, figA$S),
+#   levels = c("safe non", "safe gun", "danger non", "danger gun"),
+#   labels = c("Neutral Non-Gun", "Neutral Gun", "Dangerous Non-Gun", "Dangerous Gun"))
+
+figB$RACE <- factor(figB$RACE, levels = c("white", "black"), labels = c("White", "Black"))
+figB$S <- factor(figB$S, levels = c("non", "gun"), labels = c("Non-Gun", "Gun"))
+# figB$gp   <- factor(paste(figB$CT, figB$S),
+#   levels = c("safe non", "safe gun", "danger non", "danger gun"),
+#   labels = c("Neutral Non-Gun", "Neutral Gun", "Dangerous Non-Gun", "Dangerous Gun"))
+
+# figA$parameter <- "ER"
+# figB$parameter <- "RT"
+# fig7 <- rbind(figA, figB)
+# head(fig7)
+# Error bars represent standard error of the mean
+p1 <- ggplot(figA, aes(x = S, y = y, fill = RACE)) +
+  geom_bar(position = position_dodge(), color = "black", stat="identity") +
+  geom_errorbar(aes(ymin = y - se, ymax = y + se), width=.1,
+    position=position_dodge(.9)) +
+  coord_cartesian(ylim = c(0, .20)) +
+  scale_fill_manual(values = c("#FFFFFF", "#CCCCCC")) +
+  ylab("Error Rate") +
+  coord_cartesian(ylim = c(0, .08)) +
+
+  # facet_grid(.~BC) +
+  theme_bw() +
+  theme(legend.position = c(.85, .75),
+    strip.background = element_blank(),
+    axis.title.y = element_text(size = 20),
+    strip.text.x = element_text(size = 18),
+    axis.title.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.text.y = element_text(size = 18),
+    axis.text.x = element_blank())
+
+p2 <- ggplot(figB, aes(x = S, y = y, fill = RACE)) +
+  geom_bar(position = position_dodge(), color = "black", stat="identity") +
+  geom_errorbar(aes(ymin = y - se, ymax = y + se), width=.1,
+    position=position_dodge(.9)) +
+  scale_fill_manual(values = c("#FFFFFF", "#CCCCCC")) +
+  ylab("Correct Response Time (s)") +
+  coord_cartesian(ylim = c(.54, .65)) +
+  # facet_grid(.~BC) +
+  theme_bw() +
+  theme(legend.position = "none",
+    strip.text.x = element_blank(),
+    axis.title.y = element_text(size = 20),
+    axis.text.x = element_text(size = 18),
+    axis.text.y = element_text(size = 18),
+    axis.title.x = element_blank())
+
+
+png("figs/race/fig3.png", 800, 600)
+grid.arrange(p1, p2, ncol = 1)
+dev.off()
+
+save(dat, d, file = "data/race/study1.rda")
+
+
+load("data/race/study1.rda")
+
 load("data/race/shoot-decision-recovery.rda")
 
 study3_subset <- study3[, c("s", "S", "RACE", "R", "RT")]
