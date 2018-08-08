@@ -5,14 +5,15 @@ title:
 This is the tutorial site for the software, [ggdmc](https://github.com/yxlin/ggdmc/).
 
 The package, evolving from dynamic model of choice (_DMC_,
-Heathcote, Lin, et al., 2018), is a generic tool for conducting Bayesian Computations on
-cognitive models, with a specific emphasis on the challenging hierarchical models
-and likelihood-free methods.
+Heathcote, Lin, et al., 2018), is a generic tool for conducting Bayesian Computations 
+on cognitive models, with a specific emphasis on the challenging hierarchical models
+and likelihood approximation methods.
 
 1. Instead of using Gibbs or HMC, **_ggdmc_** uses population-based MCMC (pMCMC) 
 samplers. A notable Gibbs example is the Gibbs-based Python software,
-HDDM (Wiecki, Sofer & Frank, 2013), which does not allow the user to 
-conveniently set the variability parameters in the diffusion decision model (DDM).
+HDDM (Wiecki, Sofer & Frank, 2013), which fit the Wiener diffusion model.
+This specific diffusion model presume no variability at the starting point
+and drift rates.
 
 2. An HMC example aiming for conducting Bayesian RT models is Ahn, Haines, and
 Zhang's _hBayesDM_, which is an R package providing convenient wrapper functions
@@ -46,7 +47,7 @@ Here is a quick getting start guide:
 #### Installation
 
 1. Download **_ggdmc_** from [CRAN](https://cran.r-project.org/web/packages/ggdmc/index.html),
- [GitHub](https://github.com/yxlin/ggdmc), or click here.
+[GitHub](https://github.com/yxlin/ggdmc).
 2. [Windows only] Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile
 C++ codes in **_ggdmc_**.
 3. Install the package:
@@ -66,8 +67,6 @@ to request a copy of the software for FREE!)
 #### Load _ggdmc_ Package
 
 > require(ggdmc)
-
-#### Test Examples
 
 #### FAQ
 

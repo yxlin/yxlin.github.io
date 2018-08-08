@@ -12,7 +12,7 @@ models.
 
 In this tutorial, I illustrated the method to conduct Bayesian MCMC sampling
 on a single participant. Given a data set containing (1) response times and
-(2) response choice, our general aim is to estimate the parameters generating
+(2) response choices, our general aim is to estimate the parameters generating
 these response time (RT) and choice data. The sampling technique based on Bayesian MCMC helps
 us to draw (posterior) samples from the probability distribution generating
 the data, even we do not know the true parameters. For example, we know

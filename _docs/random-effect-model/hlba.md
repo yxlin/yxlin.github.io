@@ -135,11 +135,11 @@ Next, I started the sampling. When the _debug_ argument is set TRUE,
 the _run_ function uses the conventional DE-MCMC sampler, with the
 its original migration operator.
 
+DO NOT use debug.  It is slow.
 ```
 hsam <- run(StartNewHypersamples(nmc = 100, p.prior = p.prior,
-   data = data.model, thin = 2, pp.prior = pp.prior), debug = TRUE)
-   hsam <- run(RestartHypersamples(512, hsam, thin = 64), pm = 0, hpm = 0,
-   debug = TRUE)
+   data = data.model, thin = 2, pp.prior = pp.prior))
+   hsam <- run(RestartHypersamples(512, hsam, thin = 64), pm = 0, hpm = 0)
 save(hsam, dat, dmi, p.prior, pp.prior, thin, pop.mean, pop.scale,
 pop.prior, file = "data/hierarchical/ggdmc_4_6_HLBA1.rda")
 ```
