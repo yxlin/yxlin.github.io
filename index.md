@@ -1,7 +1,6 @@
 ---
 title: 
 ---
-
 This is the tutorial site for the software, [ggdmc](https://github.com/yxlin/ggdmc/).
 
 The package, evolving from dynamic model of choice (_DMC_,
@@ -61,8 +60,7 @@ or from GitHub
 or from source tarball. You can email me at, <yishin.lin@utas.edu.au>
 to request a copy of the software for FREE!)
 
-> install.packages("ggdmc_0.2.2.3.tar.gz", repos = NULL, type="source")
-
+> install.packages("ggdmc_0.2.3.7.tar.gz", repos = NULL, type="source")
 
 #### Load _ggdmc_ Package
 
@@ -70,8 +68,12 @@ to request a copy of the software for FREE!)
 
 #### FAQ
 
+#### Advertisement
 
+!!!Warning!!! This is an self-promoting advertisement.
 
+I am looking for a job! If you are interested in my Bayesian software here and / or
+my [CUDA C software](https://github.com/TasCL/ppda), please get in touch with me.
 
 
 
