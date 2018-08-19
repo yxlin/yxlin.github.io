@@ -70,7 +70,7 @@ to request a copy of the software for FREE!)
 
 #### Advertisement
 
-!!!Warning!!! This is an self-promoting advertisement.
+!!!Warning!!! This is an advertisement
 
 I am looking for a job! If you are interested in my Bayesian software here and / or
 my [CUDA C software](https://github.com/TasCL/ppda), please get in touch with me.
