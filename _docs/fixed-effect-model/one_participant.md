@@ -4,21 +4,23 @@ category: Fixed Effects Model
 order: 1
 ---
 
-Fixed effects models refer to a scenario / hypothesis that each participant
-has her / his own parameter generating mechanisms. This is relative to
-another scenario that all participants are under one common mechanism
+Fixed effects models refer to a scenario that each participant
+has her own parameter generating mechanism. This is relative to
+the other scenario that all participants are under one common mechanism
 of parameter generation, namely random effects / hierarchical / multi-level
 models.
 
-In this tutorial, I illustrated the method to conduct Bayesian MCMC sampling
-on a single participant. Given a data set containing (1) response times and
-(2) response choices, our general aim is to estimate the parameters generating
-these response time (RT) and choice data. The sampling technique based on Bayesian MCMC helps
-us to draw (posterior) samples from the probability distribution generating
-the data, even we do not know the true parameters. For example, we know
-the [Gaussian (normal distribution) function](https://en.wikipedia.org/wiki/Gaussian_function).
-If we also know the values of its parameters, mean and standard deviation, 
-we can draw its samples by, for instance, using R's _rnorm_ function,
+In this tutorial, I illustrate the method of conducting Bayesian MCMC sampling
+in the fixed-effects scenario. Given a data set containing (1) response times
+and (2) response choices, our general aim is to estimate the parameters
+generating the response latency and choices. The sampling technique based on
+Bayesian MCMC helps to draw (posterior) samples from the probability
+distribution generating the data, even we do not know the exact
+mathematical form of this particular probability distribution.
+
+For example, we know the [Gaussian (normal distribution) function](https://en.wikipedia.org/wiki/Gaussian_function). If we also know the values of its parameters,
+mean and standard deviation, we can draw its samples by, for instance,
+using R's _rnorm_ function,
 
 ```
 mu <- 0
