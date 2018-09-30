@@ -11,7 +11,7 @@ and likelihood approximation methods.
 1. Instead of using Gibbs or HMC, **_ggdmc_** uses population-based MCMC (pMCMC) 
 samplers. A notable Gibbs example is the Gibbs-based Python software,
 HDDM (Wiecki, Sofer & Frank, 2013), which fit the Wiener diffusion model.
-This specific diffusion model presume no variability at the starting point
+This specific diffusion model presumes no variability at the starting point
 and drift rates.
 
 2. An HMC example aiming for conducting Bayesian RT models is Ahn, Haines, and
@@ -28,16 +28,17 @@ experimental designs of, for instance, DDM and LBA model.
 (Turner, Sederberg, Brown, & Steyvers, 2013) sampler, **_ggdmc_** provides a number 
 of different pMCMC samplers. It is up to the user to 
 decide which sampler works best for their models. DE-MCMC is good for models
-with moderate number of parameters, (less than 10), but may find it
-challenging for complex models.
+with moderate number of parameters, (~ 10), but may find it 
+challenging for complex models (note this is still a less unexplored topic).
 
 4. **_ggdmc_** uses a different variant of _migration_ operator, which safeguards
 the detailed balance. It is not imperative to turn off the _migration_ operator. 
-But one might still consider to turn it off, because it is essentially a 
+But you need to use it intelligently, because (1)  it is essentially a 
 sampler, similar to random-walk Metropolis, which is very inefficient when
-it works alone.  Mostly, pMCMC is efficient when a combination of 
-operators is intelligently applied together. **_ggdmc_** records rejection rates,
-allowing the user to monitor a sampler's performance. 
+it works alone and (2) it is designed as a tool to resolve immature convergence
+happening sometimes in the _crossover_ operator.  pMCMC is efficient when
+a combination of operators is intelligently applied together. **_ggdmc_**
+records rejection rates, allowing the user to monitor a sampler's performance. 
 
 ### Getting Started
 
