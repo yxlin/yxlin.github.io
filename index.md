@@ -57,7 +57,7 @@ or from GitHub
 
 > devtools::install_github("yxlin/ggdmc")
 
-or from source tarball. You can email me at, <yishin.lin@utas.edu.au>
+or from source tarball. You can email me at, <yishinlin001@gmail.com>
 to request a copy of the software for FREE!)
 
 > install.packages("ggdmc_0.2.3.7.tar.gz", repos = NULL, type="source")
@@ -74,6 +74,7 @@ to request a copy of the software for FREE!)
 
 I am looking for a job! If you are interested in my Bayesian software here and / or
 my [CUDA C software](https://github.com/TasCL/ppda), please get in touch with me.
+
 
 
 
