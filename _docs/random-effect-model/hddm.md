@@ -60,7 +60,7 @@ condition.
 
 ```
 dat <- simulate(model, prior = pop.prior, nsim = 250, nsub = 40)
-dmi <- BindDataModel(dat, model)
+dmi <- BuildDMI(dat, model)
 ps  <- attr(dat, "parameters")
 ```
 
