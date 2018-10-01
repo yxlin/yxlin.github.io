@@ -139,10 +139,8 @@ pp.prior <- list(mu.prior, sigma.prior)
 ```
 
 
-Then, the following sampling procedure mostly will not return results
-immediately. I recorded the computation times, so you can know what to
-expect.  The option, _debug = TRUE_, is to use the conventional
-migration (Turner et al., 2013).
+Then, the following run sampling.
+
 
 ```
 ## run the "?" to see the details of function options
@@ -150,15 +148,15 @@ migration (Turner et al., 2013).
 ?run
 
 hsam0 <- run(StartNewHypersamples(5e2, dmi, p.prior, pp.prior, 2),
-             pm = .05, hpm = .05, debug = TRUE) ## 35 mins
+             pm = .05, hpm = .05) ## 35 mins
 hsam <- run(RestartHypersamples(5e2, hsam0, thin = 8),
-            pm = 0, hpm = 0, debug = TRUE)      ## 150 mins
+            pm = 0, hpm = 0)      ## 150 mins
 hsam <- run(RestartHypersamples(5e2, hsam0, thin = 16),
-            pm = 0, hpm = 0, debug = TRUE)      ## 5 hrs
+            pm = 0, hpm = 0)      ## 5 hrs
 hsam <- run(RestartHypersamples(5e2, hsam0, thin = 32),
-            pm = 0, hpm = 0, debug = TRUE)      ## 10 hrs
+            pm = 0, hpm = 0)      ## 10 hrs
 hsam <- run(RestartHypersamples(5e2, hsam0, thin = 64),
-            pm = 0, hpm = 0, debug = TRUE)      ## 20.6 hrs
+            pm = 0, hpm = 0)      ## 20.6 hrs
 save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
      hsam0, hsam, file = "data/hierarchical/ggdmc_4_7_DDM.rda")
 
@@ -166,12 +164,12 @@ save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
 thin <- 8
 repeat {
      hsam <- run(RestartHypersamples(5e2, hsam, thin = thin),
-                 pm = 0, hpm = 0, debug = TRUE)
+                 pm = 0, hpm = 0)
      save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
           hsam0, hsam, file = "data/hierarchical/ggdmc_4_7_DDM.rda")
      rhats <- hgelman(hsam)
      thin <- thin * 2
-     if (all(rhats < 1.1) || counter > 1e2) break
+     if (all(rhats < 1.1)) break
 }
 
 save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
