@@ -59,9 +59,9 @@ or from GitHub
 > devtools::install_github("yxlin/ggdmc")
 
 or from source tarball. You can email me at, <yishinlin001@gmail.com>
-to request a copy of the software for FREE!)
+to request a free copy of the latest software)
 
-> install.packages("ggdmc_0.2.3.7.tar.gz", repos = NULL, type="source")
+> install.packages("ggdmc_0.2.5.4.tar.gz", repos = NULL, type="source")
 
 #### Load _ggdmc_ Package
 
