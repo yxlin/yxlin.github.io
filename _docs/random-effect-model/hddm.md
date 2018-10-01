@@ -59,7 +59,7 @@ simulated a data set with 40 participants and 250 trials for each
 condition.
 
 ```
-dat <- simulate(model, p.prior = pop.prior, nsim = 250, nsub = 40)
+dat <- simulate(model, prior = pop.prior, nsim = 250, nsub = 40)
 dmi <- BindDataModel(dat, model)
 ps  <- attr(dat, "parameters")
 ```
