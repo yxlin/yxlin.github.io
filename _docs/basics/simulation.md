@@ -55,25 +55,14 @@ dat <- simulate(model, nsim = 1, ps = p.vector)
 ```
 
 
-The following simulates 100 observations per condition. So in total,
-there are 200 observations.
+The following simulates 500 observations per condition. So in total,
+there are 1000 observations.
 
 ```
-ntrial <- 1e2  ## number of trials per condition
+ntrial <- 5e2  ## number of trials per condition
 dat <- simulate(model, nsim = ntrial, ps = p.vector)
-data.table::data.table(dat)
-##       S  R        RT
-##   1: s1 r2 0.5228495
-##   2: s1 r1 0.4627093
-##   3: s1 r1 0.4418045
-##   4: s1 r1 0.5376318
-##   5: s1 r1 0.3119197
-##  ---                
-## 196: s2 r2 0.3706081
-## 197: s2 r1 0.4762363
-## 198: s2 r1 0.4797071
-## 199: s2 r2 0.5076515
-## 200: s2 r2 0.3883532
+dplyr::tbl_df(dat)
+
 ```
 
 Note that model and data are in fact two separate objects. To fit data
@@ -85,17 +74,52 @@ I used a term, data-model instance (dmi), coined by Matthew Gretton.
 
 > dmi <- BuildDMI(dat, model)
 
-We can use DMC's base plot function to check the accuracy and RT distributions
-for each stimulus level. Correct responses are in black and error responses are
-in red.
+We can the codes introduced in the "Descriptive Statistics" to check
+the correct 10%, 50%, 90% quantile RTs and accuracy, separately, for
+each level of the stimulus factor.
+
+First I convert the dmi data frame to a data table and then create a
+new accuracy (logical) column, _C_.
+> d <- data.table(dmi)
 
 
 
 ```
-par(mfrow = c(1, 2), mar = c(4, 5.3, 0.82, 1))
-plot.cell.density(dmi[dmi$S=="s1",], C="r1", xlim=c(0,4))
-plot.cell.density(dmi[dmi$S=="s2",], C="r2", xlim=c(0,4))
-par(mfrow=c(1, 1))
+d$C <- ifelse(d$S == "s1" & d$R == "r1", TRUE,
+       ifelse(d$S == "s2" & d$R == "r2", TRUE,
+       ifelse(d$S == "s1" & d$R == "r2", FALSE,
+       ifelse(d$S == "s2" & d$R == "r1", FALSE, NA))))
+
+d[, .(q1 = round(quantile(RT, .1), 2),
+      q5 = round(quantile(RT, .5), 2),
+      q9 = round(quantile(RT, .9), 2)), .(C, S)]
+##        C  S   q1   q5   q9
+## 1:  TRUE s1 0.32 0.42 0.56
+## 2:  TRUE s2 0.28 0.39 0.52
+## 3: FALSE s1 0.27 0.37 0.50
+## 4: FALSE s2 0.32 0.39 0.54
+
+pro <- d[, .N, .(C, S)]
+pro[, NN := sum(N), .(S)]
+pro[, value := N/NN]
+cp <- pro[C == TRUE] ## correct percentage
+##       C  S   N  NN value
+## 1: TRUE s1 333 500 0.666
+## 2: TRUE s2 391 500 0.782
+
+ep <- pro[C == FALSE] ## error percentage
+##        C  S   N  NN value
+## 1: FALSE s1 167 500 0.334
+## 2: FALSE s2 109 500 0.218
+```
+
+Plot the RT distributions
+```
+bw <- .01 ## 10 ms binwidth
+p0 <- ggplot(d, aes(RT)) +
+    geom_histogram(binwidth = .01, fill = "white",
+                   colour = "black") +
+    facet_grid(.~C)
 
 ```
 
