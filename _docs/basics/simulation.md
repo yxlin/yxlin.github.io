@@ -4,32 +4,47 @@ category: Modelling Basics
 order: 2
 ---
 
-This tutorial has two sections.  First section demonstrates the method of
-simulating the data for a imaginary participant. _simulate_ creates a
-(R) data frame based on the parameter vector and the model with _nsim_
-observations for each row in model. _ps_ is the true parameter vector.
+This lesson has two sections.  First demonstrates a method to
+simulate one-participant data. The function, _simulate_, in the
+_ggdmc_ package creates a data frame based on the parameter vector
+and the model (both are defined by a user) with _nsim_ observations
+for each row in model. _ps_ is the true parameter vector.
 
-Second section shows how to conduct a process model. Specifically, the
-second section conducts a simulation experiment to describe an example
-(the _British tea_ example, p 37, Maxwell & Delaney, 2004). See
-Maxwell and Delaney (2004) for an analytic way to calculate the same
-probabilities. Here I use a direct simulation to get approximately
-the same probabilities.
+Second section shows a method to conduct a process model. Specifically,
+the section conducts a simulation experiment to describe the 
+_British tea_ example on p 37 in Maxwell & Delaney (2004). See
+Maxwell and Delaney (2004) for an analytic method to calculate the
+same probabilities. Here I directly model the _Britich tea_ example,
+approximating the same probabilities. The analytic method is just to
+use a binominal distribution and the idea of combinations and
+permutations.
 
 ## One-participant simulation
+
+This line define one S (stimulus) factor with two levels. So this model
+defines one two experimental conditions.
+> factors   = list(S = c("s1", "s2")),
+
+Below are the R codes for defining a model and for simulating data from
+the model.
 
 ```
 model <- BuildModel(
    p.map     = list(A = "1", B = "R", t0 = "1", mean_v = "M", sd_v = "M", st0 = "1"),
    match.map = list(M = list(s1 = "r1", s2 = "r2")),
-   factors   = list(S = c("s1", "s2")),
+   factors   = list(S = c("s1", "s2")),  ## one factor with two levels, so only
    constants = c(sd_v.false = 1, st0 = 0),
    responses = c("r1", "r2"),
    type      = "norm")
    
-p.vector  <- c(A = .75, B.r1 = .25, B.r2 = .15, t0 = .2, mean_v.true = 2.5,
+p.vector <- c(A = .75, B.r1 = .25, B.r2 = .15, t0 = .2, mean_v.true = 2.5,
                mean_v.false = 1.5, sd_v.true = 0.5)
-
+```
+			   
+This just is to simulate only one observation per condition to check the
+function.
+			   
+```
 set.seed(123)  ## Set seed to get the same simulation
 dat <- simulate(model, nsim = 1, ps = p.vector)
 
@@ -40,11 +55,11 @@ dat <- simulate(model, nsim = 1, ps = p.vector)
 ```
 
 
-Simulate 100 responses for each condition. In this model, I
-generated 200 responses in total.
+The following simulates 100 observations per condition. So in total,
+there are 200 observations.
 
 ```
-ntrial <- 1e2
+ntrial <- 1e2  ## number of trials per condition
 dat <- simulate(model, nsim = ntrial, ps = p.vector)
 data.table::data.table(dat)
 ##       S  R        RT
@@ -61,22 +76,20 @@ data.table::data.table(dat)
 ## 200: s2 r2 0.3883532
 ```
 
+Note that model and data are in fact two separate objects. To fit data
+with certain models, we need to bind them together with _BuildDMI__.
+This is useful to facilitate model comparison. That is, a data set can
+bind with many different models, so we can compare them to see which
+model may fit the data better so perhaps provide a better account.
+I used a term, data-model instance (dmi), coined by Matthew Gretton. 
 
-Model and data are two separate objects. To fit data with a certain model,
-I bind them together with _BindDataModel_.  This is to facilitate model
-comparison. That is, a data set can bind with many different models, so
-we can compare them to see which model may fit the data better or provide
-a better account. I used a term, data-model instance (dmi),
-coined by Matthew Gretton. 
-
-```
-dmi <- BindDataModel(dat, model)
-```
-
+> dmi <- BuildDMI(dat, model)
 
 We can use DMC's base plot function to check the accuracy and RT distributions
 for each stimulus level. Correct responses are in black and error responses are
 in red.
+
+
 
 ```
 par(mfrow = c(1, 2), mar = c(4, 5.3, 0.82, 1))
