@@ -128,36 +128,50 @@ p0 <- ggplot(d, aes(RT)) +
 
 ## British tea example
 
-Quoted from Maxwell and Delaney (p. 37, 2004)
+This section shows how we may test an hypothetical question directly via
+a simulation. Quoted from Maxwell and Delaney (p. 37, 2004)
 
 >"A lady declares that by tasting a cup of tea made with milk, she can
 > discriminate whether the milk or the tea infusion was first added to the cup.
 > We will consider the problem of designing an experiment by means of which this
 > assertion can be tested. (Fisher, 1935/1971, p. 11)"
 
+This is essential a binominal decision making. That is, the decision maker
+("the lady") in question will be presented one cup of tea after another and
+then her task is to decide if the cup is made by milk or tea is added first.
+
 This following function, _British.tea_ implements a process model to
 describe the above "British tea example". That is, it conducts a simulation
-experiment of presenting 8 (i.e., n) cups of tea to a participant. The task is
-to decide one cup after another if a cup of tea is made by adding tea or milk
-first. One additional information (i.e., assumption) is that the participant is
+experiment of presenting 8 (i.e., _n_) cups of tea to a participant. The
+_n_ equals 8 is decided arbitrarily here.
+
+One additional information (i.e., assumption) is that the participant is
 told half of the cups are milk first and tea and vice versa. So when simulating
 the chance only scenario, we need also to take this into consideration. That is,
 after making a decision for a cup (either MT or TM), the (chance) probability
 state should adjust accordingly.
 
 ```
+##' British tea example
+##'
+##' The function runs a simulation study to test the British tea example
+##'
+##' @param the number of observation (cups of tea)
+##' @param correct correct sequence: First four cups are tea and milk
+##  (TM = 1), the next four cups are milk and then tea (MT = 0).
+##' @param verbose print more information
+##'
+##' @export
 British.tea <- function(n = 8, correct = c(1,1,1,1, 0,0,0,0),
                         verbose = TRUE) {
-    ## obs, default number of observation is 8 (cups of tea)
-    ## correct, define a default correct sequence: First four cups are tea and 
-    ## milk. The next four cups are milk and then tea.
+
     MT <- n/2 ## 0 indicates milk and then tea (MT)
     TM <- n/2 ## 1 indicates tea and then milk (TM)
 
     ## Create three containers
-    ## 1. a "n x 2" matrix to store the evolution of chance probabilities
-    ## 2. n-element numeric vector
-    ## 3. a n logical vector; default value is FALSE
+    ## 1. x0 is a "n x 2" matrix to store the evolution of chance probabilities
+    ## 2. res is a n-element numeric vector
+    ## 3. acc is a n logical vector; default value is FALSE
     x0 <- matrix(numeric(n*2), ncol = 2)
     res <- numeric(n)
     acc <- rep(FALSE, n)
@@ -166,14 +180,12 @@ British.tea <- function(n = 8, correct = c(1,1,1,1, 0,0,0,0),
     for (i in 1:n) {
         if (verbose) cat("Cup", i, "in total", sum(MT, TM), " cup(s)\n")
         
-        probMT <- MT / (MT + TM)   ## chance probability of MT 
-        probTM <- TM / (MT + TM)   ## chance probability of TM
-        probs  <- c(probMT, probTM)
-        
+		## store the chance probabilities of MT and TM in probs
+        probs <- c(MT / (MT + TM), TM / (MT + TM))
         if (verbose) cat("Chances probabilities of (MT, TM): ", probs, "\n")
         
         x0[i, ] <- probs
-        decision <- sample(c(0, 1), 1, replace = TRUE, prob = probs);
+        decision <- sample(c(0, 1), 1, prob = probs);
          if (decision == 0) {
              if (verbose) cat("This cup is made by adding milk first\n")
              MT <- MT - 1
@@ -191,20 +203,121 @@ British.tea <- function(n = 8, correct = c(1,1,1,1, 0,0,0,0),
     if (verbose) cat("Done\n")
     return(list(x0, res, correct, acc))
 }
+```
 
-################################################50
-## Conduct one experiment and print information
-################################################50
+The simulation starts from the for loop, 
+> for (i in 1:n) {...}, which
+
+represents presenting a cup of tea after another until the last nth cup.
+Before the participant make a decision regarding each cup of tea, the chance
+probabilities of the two possible outcomes are stored in _x0_ variable.
+> probs <- c(probMT, probTM)
+> x0[i, ] <- probs
+
+And then the _sample_ function acts as a chance mechanism to simulate the
+participant's (chance) decision making process.
+> decision <- sample(c(0, 1), 1, replace = TRUE, prob = probs);
+
+The function randomly choose two numbers, _c(0, 1)_, with the probabilities,
+_probs_ to for the first and second number.
+
+```
+    ## Begin the experiment, presenting one cup after another
+    for (i in 1:n) {
+        if (verbose) cat("Cup", i, "in total", sum(MT, TM), " cup(s)\n")
+        
+        probMT <- MT / (MT + TM)   ## chance probability of MT 0
+        probTM <- TM / (MT + TM)   ## chance probability of TM 1
+        probs  <- c(probMT, probTM)
+        
+        if (verbose) cat("Chances probabilities of (MT, TM): ", probs, "\n")
+        
+        x0[i, ] <- probs
+        decision <- sample(c(0, 1), 1, prob = probs);
+		
+         if (decision == 0) {
+             if (verbose) cat("This cup is made by adding milk first\n")
+             MT <- MT - 1
+             res[i] <- decision
+             if (decision == correct[i]) acc[i] <- TRUE
+         } else if (decision == 1) {
+             if (verbose) cat("This cup is made by adding tea first\n")
+             TM <- TM - 1
+             res[i] <- decision
+             if (decision == correct[i]) acc[i] <- TRUE
+         } else cat("Unexpected situation\n")
+         
+         if (verbose) cat("Current state", i, ": ", c(MT, TM), "\n\n")
+}
+		 
+```
+
+
+
+Conduct one experiment and print information
+```
 ncup <- 8
 cor <- c(rep(1, 4), rep(0, 4)); 
 res <- British.tea(ncup, cor, TRUE)
+```
 
-################################################50
-## Replicate the experiments separately for,
-## 64, 512, 4096, 32768 and 262144 times
-################################################50
-n <- 8^(3:7); n
+Cup 1 in total 8  cup(s).
 
+Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding tea first
+Current state 1 :  4 3 
+
+Cup 2 in total 7  cup(s).
+
+Chances probabilities of (MT, TM):  0.5714286 0.4285714 
+This cup is made by adding milk first
+Current state 2 :  3 3 
+
+Cup 3 in total 6  cup(s).
+
+Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding tea first
+Current state 3 :  3 2 
+
+Cup 4 in total 5  cup(s).
+
+Chances probabilities of (MT, TM):  0.6 0.4 
+This cup is made by adding milk first
+Current state 4 :  2 2 
+
+Cup 5 in total 4  cup(s).
+
+Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding milk first
+Current state 5 :  1 2 
+
+Cup 6 in total 3  cup(s).
+
+Chances probabilities of (MT, TM):  0.3333333 0.6666667 
+This cup is made by adding tea first
+Current state 6 :  1 1 
+
+Cup 7 in total 2  cup(s).
+
+Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding tea first
+Current state 7 :  1 0 
+
+Cup 8 in total 1  cup(s).
+
+Chances probabilities of (MT, TM):  1 0 
+This cup is made by adding milk first
+Current state 8 :  0 0 
+
+Done
+
+
+Now I replicate the experiments separately for 512, 4096, 32768,
+262144, and 2097152 times and store each result in a list, called
+_exp_.
+
+```
+n <- 8^(3:7); 
 exp <- vector("list", length(n))
 
 ## Use parallel package to conduct experiments
@@ -242,6 +355,7 @@ for(i in 1:length(n)) {
 
 round(res3, 4) ## [1] 0.2578 0.2324 0.2306 0.2288 0.2286
 round(res4, 4) ## [1] 0.0137 0.0137 0.0140 0.0141 0.0143
+require(ggplot2); require(data.table)
 ## Plot the result
 ## (How to add differernt horizontal lines on each facet)
 DT <- data.table(x= rep(n, 2), y = c(res3, res4), gp = rep(c("6", "8"), each = 5),
