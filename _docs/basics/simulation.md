@@ -29,6 +29,7 @@ Below are the R codes for defining a model and for simulating data from
 the model.
 
 ```
+require(ggdmc)
 model <- BuildModel(
    p.map     = list(A = "1", B = "R", t0 = "1", mean_v = "M", sd_v = "M", st0 = "1"),
    match.map = list(M = list(s1 = "r1", s2 = "r2")),
@@ -58,11 +59,25 @@ dat <- simulate(model, nsim = 1, ps = p.vector)
 The following simulates 500 observations per condition. So in total,
 there are 1000 observations.
 
-```
-ntrial <- 5e2  ## number of trials per condition
-dat <- simulate(model, nsim = ntrial, ps = p.vector)
-dplyr::tbl_df(dat)
+> ntrial <- 5e2  ## number of trials per condition
+> dat <- simulate(model, nsim = ntrial, ps = p.vector)
+> dplyr::tbl_df(dat)
 
+```
+##  A tibble: 1,000 x 3
+##    S     R        RT
+##    <fct> <fct> <dbl>
+##  1 s1    r2    0.533
+##  2 s1    r2    0.494
+##  3 s1    r1    0.497
+##  4 s1    r2    0.310
+##  5 s1    r1    0.462
+##  6 s1    r2    0.345
+##  7 s1    r2    0.430
+##  8 s1    r1    0.384
+##  9 s1    r2    0.310
+## 10 s1    r1    0.302
+# # ... with 990 more rows
 ```
 
 Note that model and data are in fact two separate objects. To fit data
@@ -80,9 +95,8 @@ each level of the stimulus factor.
 
 First I convert the dmi data frame to a data table and then create a
 new accuracy (logical) column, _C_.
+> require(data.table)
 > d <- data.table(dmi)
-
-
 
 ```
 d$C <- ifelse(d$S == "s1" & d$R == "r1", TRUE,
@@ -115,12 +129,14 @@ ep <- pro[C == FALSE] ## error percentage
 
 Plot the RT distributions
 ```
+require(ggplot2)
 bw <- .01 ## 10 ms binwidth
 p0 <- ggplot(d, aes(RT)) +
-    geom_histogram(binwidth = .01, fill = "white",
-                   colour = "black") +
-    facet_grid(.~C)
-
+        geom_histogram(binwidth = .01, fill = "white",
+        colour = "black") +
+		facet_grid(.~C) +
+		theme_bw(base_size = 18)
+print(p0)
 ```
 
 ![distributions]({{"/images/simulation/density.png" | relative_url}})
