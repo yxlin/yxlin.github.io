@@ -44,26 +44,20 @@ p.vector <- c(A = .75, B.r1 = .25, B.r2 = .15, t0 = .2, mean_v.true = 2.5,
 			   
 This just is to simulate only one observation per condition to check the
 function.
-			   
 ```
 set.seed(123)  ## Set seed to get the same simulation
 dat <- simulate(model, nsim = 1, ps = p.vector)
-
 ##    S  R        RT
 ## 1 s1 r1 0.3327392
 ## 2 s2 r1 0.3797985
-
 ```
-
 
 The following simulates 500 observations per condition. So in total,
 there are 1000 observations.
-
-> ntrial <- 5e2  ## number of trials per condition
-> dat <- simulate(model, nsim = ntrial, ps = p.vector)
-> dplyr::tbl_df(dat)
-
 ```
+ntrial <- 5e2  ## number of trials per condition
+dat <- simulate(model, nsim = ntrial, ps = p.vector)
+dplyr::tbl_df(dat)
 ##  A tibble: 1,000 x 3
 ##    S     R        RT
 ##    <fct> <fct> <dbl>
@@ -81,12 +75,11 @@ there are 1000 observations.
 ```
 
 Note that model and data are in fact two separate objects. To fit data
-with certain models, we need to bind them together with _BuildDMI__.
+with certain models, we need to bind them together with _BuildDMI_.
 This is useful to facilitate model comparison. That is, a data set can
 bind with many different models, so we can compare them to see which
 model may fit the data better so perhaps provide a better account.
 I used a term, data-model instance (dmi), coined by Matthew Gretton. 
-
 > dmi <- BuildDMI(dat, model)
 
 We can the codes introduced in the "Descriptive Statistics" to check
@@ -95,10 +88,9 @@ each level of the stimulus factor.
 
 First I convert the dmi data frame to a data table and then create a
 new accuracy (logical) column, _C_.
-> require(data.table)
-> d <- data.table(dmi)
-
 ```
+require(data.table)
+d <- data.table(dmi)
 d$C <- ifelse(d$S == "s1" & d$R == "r1", TRUE,
        ifelse(d$S == "s2" & d$R == "r2", TRUE,
        ifelse(d$S == "s1" & d$R == "r2", FALSE,
@@ -132,10 +124,9 @@ Plot the RT distributions
 require(ggplot2)
 bw <- .01 ## 10 ms binwidth
 p0 <- ggplot(d, aes(RT)) +
-        geom_histogram(binwidth = .01, fill = "white",
-        colour = "black") +
-		facet_grid(.~C) +
-		theme_bw(base_size = 18)
+      geom_histogram(binwidth = .01, fill = "white", colour = "black") +
+      facet_grid(.~C) +
+      theme_bw(base_size = 18)
 print(p0)
 ```
 
@@ -227,8 +218,10 @@ The simulation starts from the for loop,
 represents presenting a cup of tea after another until the last nth cup.
 Before the participant make a decision regarding each cup of tea, the chance
 probabilities of the two possible outcomes are stored in _x0_ variable.
-> probs <- c(probMT, probTM)
-> x0[i, ] <- probs
+```
+probs <- c(probMT, probTM)
+x0[i, ] <- probs
+```
 
 And then the _sample_ function acts as a chance mechanism to simulate the
 participant's (chance) decision making process.
