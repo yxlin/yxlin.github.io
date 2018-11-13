@@ -16,11 +16,29 @@ Often the closer our prediction matches the resultant data, the more rewards we
 might receive.  Hence when there are some mismatches between the predictions
 and the data, we would likely modify our theories/beliefs. They then become
 _posterior belief_. This intuitive idea of human decision-making is
-described by the well-known Bayes' theorem (Bayes, Price, & Canton, 1763) :
+described by the well-known Bayes' theorem (Bayes, Price, & Canton, 1763):
 
 $$
 \begin{align*}
 & P(\theta | y) = \frac{P(y | \theta) P(\theta)}{P(y)}
+\end{align*}
+$$
+
+
+$$
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
 \end{align*}
 $$
 
