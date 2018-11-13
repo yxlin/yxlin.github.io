@@ -124,7 +124,7 @@ Plot the RT distributions
 require(ggplot2)
 bw <- .01 ## 10 ms binwidth
 p0 <- ggplot(d, aes(RT)) +
-      geom_histogram(binwidth = .01, fill = "white", colour = "black") +
+      geom_histogram(binwidth = bw, fill = "white", colour = "black") +
       facet_grid(.~C) +
       theme_bw(base_size = 18)
 print(p0)
