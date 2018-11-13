@@ -55,20 +55,22 @@ model <- BuildModel(
 p.vector <- c(a = 1, v = 1.2, z = .38, sz = .25, sv = .2, t0 = .15)
 ntrial <- 1e2
 dat <- simulate(model, nsim = ntrial, ps = p.vector)
-dmi <- BindDataModel(dat, model)
-data.table(dmi)
-#       S  R        RT
-#   1: s1 r1 0.2473921
-#   2: s1 r1 0.2781127
-#   3: s1 r1 0.2512331
-#   4: s1 r1 0.2556350
-#   5: s1 r1 0.1779083
-# ---
-# 196: s2 r1 0.2955069
-# 197: s2 r1 0.3175132
-# 198: s2 r1 0.1908835
-# 199: s2 r2 0.4205383
-# 200: s2 r1 0.2491955
+dmi <- BuildDMI(dat, model)
+## A tibble: 200 x 3
+##    S     R        RT
+##    <fct> <fct> <dbl>
+##  1 s1    r1    0.249
+##  2 s1    r1    0.246
+##  3 s1    r2    0.262
+##  4 s1    r1    0.519
+##  5 s1    r1    0.205
+##  6 s1    r1    0.177
+##  7 s1    r1    0.174
+##  8 s1    r1    0.378
+##  9 s1    r1    0.197
+## 10 s1    r1    0.224
+##  ... with 190 more rows
+
 ```
 
 Because I simulated the data, I know the true parameter vector, _p.vector_, which
@@ -95,33 +97,50 @@ plot(p.prior)
 ![prior]({{"/images/fixed-effect-model/prior.png" | relative_url}})
 
 
-_StartNewsamples_ use p.prior to randomly draw start points. _pm_ means
-the probability of using migration operator.  Here I set it as 5% chance.
-_debug_ = TRUE switches on the old-style migration operator. I set thinning
-length as 16, meaning every 16th step to store a sample.
+_StartNewsamples_ use p.prior to randomly draw start points. The
+initialized samples are fed to run function to start sampling. I use
+the repeat function to rerun the sampling until the convenient
+convergence diagnosis index, _rhat_ smaller than 1.1.
 
 ```
-sam <- run(StartNewsamples(5e2, dmi, p.prior, thin = 16), pm = .05, debug = TRUE)
-
-plot(sam)
-plot(sam, start = 101)
-
+path <- c("data/lesson3/ggdmc_3_7_DDM.rda")
+sam0 <- run(StartNewsamples(5e2, dmi, p.prior))
+sam  <- sam0
+thin <- 1
+repeat {
+  sam <- run(RestartSamples(5e2, sam, thin = thin))
+  save(sam0, sam, file = path[1])
+  rhats <- gelman(sam, verbose = TRUE)
+  if (all(rhats$mpsrf < 1.1)) break
+  thin <- thin * 2
+}
+cat("Done ", path[1], "\n")
 ```
 
 _plot_ by default draws posterior log-likelihood, with the option, _start_,
 indicating that drawing from 101st sample, instead of from the first one.
+I plot the two posterior log-likelihood samples to show the transit of
+convergence.
+
+```
+p0 <- plot(sam0)
+p1 <- plot(sam0, start = 101)
+
+require(gridExtra)
+png("pll.png", 800, 600)
+grid.arrange(p0, p1, ncol = 1)
+dev.off()
+```
 
 ![pll]({{"/images/fixed-effect-model/pll.png" | relative_url}})
 
-The left panel showed the chains quickly converged to posterior log-likelihoods
-around 25, and the right panel showed all chains converged about 300
-iterations. I drew another 500 samples as proper posterior samples. This
-time, I switched off the migration operator.
+The upper panel showed the chains quickly converged to posterior log-likelihoods
+near 100th iteration and the right panel showed all chains converged after 100th
+iterations. I drew final samples (sam) as proper posterior samples. I make
+sure it is converged by using the _repeat_ method. 
 
 ```
-sam <- run(RestartSamples(500, sam), pm = 0, debug = TRUE)
 plot(sam, pll = FALSE, den= TRUE)
-
 ```
 
 ![den]({{"/images/fixed-effect-model/den.png" | relative_url}})
@@ -163,6 +182,14 @@ round(est, 2)
 # 97.5% Estimate 1.20 2.51 0.58 0.16 2.01 0.42
 # Median-True    0.05 1.06 0.04 0.00 0.16 0.01
 ```
+
+Finally, to quantify the fit of a Bayesian model to the data, we can use
+DIC or BPIC. These information criteria are useful for model selection. 
+
+> DIC(sam)  ## [1] -111.711
+> BPIC(sam) ## [1] -106.9842
+
+
 [^1]: This is often dubbed, drift-diffusion model, but in Ratcliff and McKoon's work, they called it diffusion decision model. 
 
 
