@@ -185,7 +185,7 @@ round(est, 2)
 
 Finally, to quantify the fit of a Bayesian model to the data, we can use
 DIC or BPIC. These information criteria are useful for model selection. 
-
+(need > ggdmc 2.5.5)
 ```
 DIC(sam)  ## [1] -111.711
 BPIC(sam) ## [1] -106.9842
