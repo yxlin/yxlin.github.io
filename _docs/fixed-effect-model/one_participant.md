@@ -186,9 +186,10 @@ round(est, 2)
 Finally, to quantify the fit of a Bayesian model to the data, we can use
 DIC or BPIC. These information criteria are useful for model selection. 
 
-> DIC(sam)  ## [1] -111.711
-> BPIC(sam) ## [1] -106.9842
-
+```
+DIC(sam)  ## [1] -111.711
+BPIC(sam) ## [1] -106.9842
+```
 
 [^1]: This is often dubbed, drift-diffusion model, but in Ratcliff and McKoon's work, they called it diffusion decision model. 
 
