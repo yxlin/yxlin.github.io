@@ -4,19 +4,20 @@ category: BUGS Examples Volumn 1
 order: 1
 ---
 
-Disclaimer: This tutorial uses an experimental (beta) version of _ggdmc_, which has 
-added the functionality of fitting regression models.  The software 
+Disclaimer: This tutorial uses an experimental (beta) version of _ggdmc_, which 
+has added the functionality of fitting regression models.  The software 
 can be found in its GitHub.
 
-The aim of tutorial is to docuemnt one method to fit a hierarchical 
-normal model, using the Rats example in the BUGS examples volumn I. This expands
-the scope of ggdmc, not only to fit cognitive models but also to fit standard
-regression models. 
+The aim of tutorial is to docuemnt one method to fit an hierarchical 
+normal model, using the [Rats data](http://www.openbugs.net/Examples/Rats.html).
+Rats data were studied in Gelfand (1990) and used in the BUGS examples volumn I.
+This expands the scope of ggdmc, not only to fit cognitive models but also to fit
+standard regression models. 
 
 ## Set-up Model
 The DDM composes of two complementary defective distribtions; thereby,
 two response types. Unlike the DDM, a regression model has only one response type;
-thereffby one (complete) distribution. Therefore, the _match.map_ and _responses_
+that is one (complete) distribution. Therefore, the _match.map_ and _responses_
 arguments are set as _NULL_ and _"r1"_ (meaning only one response type). 
 
 The argument _regressors_ enters the independent / predictive
@@ -47,29 +48,33 @@ model <- BuildModel(
 ```
 
 ## Recovery Study
-Next, I took values from the Rats example as the true parameters at
-the population level and used them to simulate an ideal data set, 
+I take values from the Rats example as the true parameters at
+the population level and use them to simulate an ideal data set, 
 which has 1000 rats and each of them contributes 100 response.
 _tnorm2_ is truncated normal distribution, using mean and precision
 parametrization. When both the upper and lower are set NA, the tnorm
 become normal distribution.
 
 ```
-  npar <- length(GetPNames(model))
-  pop.mean <- c(a = 242.7, b = 6.189, tau = .03)
-  pop.scale <- c(a = .005, b = 3.879, tau = .04)
-  ntrial <- 100
-  pop.prior  <-BuildPrior(
-    dists = rep("tnorm2", npar),
-    p1    = pop.mean,
-    p2    = pop.scale,
-    lower = c(NA, 0, 0),
-    upper = rep(NA, npar))
-  dat <- simulate(model, nsub = 1000, nsim = ntrial, prior = pop.prior)
-  dmi <- BuildDMI(dat, model)
-  ps <- attr(dat, "parameters") ## Extract true parameters for each individual
+npar <- length(GetPNames(model))
+pop.mean <- c(a = 242.7, b = 6.189, tau = .03)
+pop.scale <- c(a = .005, b = 3.879, tau = .04)
+ntrial <- 100
+pop.prior  <-BuildPrior(
+   dists = rep("tnorm2", npar),
+   p1    = pop.mean,
+   p2    = pop.scale,
+   lower = c(NA, 0, 0),
+   upper = rep(NA, npar))
+dat <- simulate(model, nsub = 1000, nsim = ntrial, prior = pop.prior)
+dmi <- BuildDMI(dat, model)
+ps <- attr(dat, "parameters") ## Extract true parameters for each individual
+```
 
-  plot(pop.prior, ps = pop.mean)
+This plots the distributions that generate the simulation data and shows the
+location parameters of these distributions as dashed lines.
+```
+plot(pop.prior, ps = pop.mean)
 
 ```
 
@@ -78,42 +83,47 @@ become normal distribution.
 
 ### Set up Priors
 To randomly draw initial values for the data- and hyper-level parameters,
-I set up three sets of distributions and bind them as a list, named _start_. 
-
+I set up three sets of distributions and bind them as a list, named _start_.
+These are used to generate start values only.
 ```
-  pstart <- BuildPrior(
+pstart <- BuildPrior(
     dists = c("tnorm", "tnorm", "tnorm"),
     p1    = c(a = 242,  b = 6.19, tau = .027),
     p2    = c(a = 14, b = .49, tau = 10),
     lower = c(NA, NA, 0),
     upper = rep(NA, npar))
-  lstart <- BuildPrior(
+lstart <- BuildPrior(
     dists = c("tnorm", "tnorm", "tnorm"),
     p1    = c(a = 200,  b = 5, tau = .01),
     p2    = c(a = 50, b = 1, tau = .01),
     lower = c(NA, NA, 0),
     upper = rep(NA, npar))
-  sstart <- BuildPrior(
+sstart <- BuildPrior(
     dists = c("tnorm", "tnorm", "tnorm"),
     p1    = c(a = 10,  b = .5, tau = .01),
     p2    = c(a = 5, b = .1, tau = .01),
     lower = c(NA, NA, 0),
     upper = rep(NA, npar))
-  start <- list(pstart, lstart, sstart)
+start <- list(pstart, lstart, sstart)
+```
 
-  p.prior  <- BuildPrior(
+Next, I set up the structure of the hierarchical model.  The strcuturing is
+conceptually important, so later I sketch a diagram to show where the 
+following prior distributions are in the model.
+```
+p.prior  <- BuildPrior(
     dists = rep("tnorm2", npar),
-    p1    = c(a = NA, b = NA, tau = NA), 
-    p2    = rep(NA, 3),
+    p1    = c(a = NA, b = NA, tau = NA),  ## the value are drawn from hyper-level
+    p2    = rep(NA, 3),                   ## (mu and sigma) prior, so all set NA
     lower = c(NA, 0, 0),
     upper = rep(NA, npar))
-  mu.prior  <- BuildPrior(
+mu.prior  <- BuildPrior(
     dists = rep("tnorm2", npar),
     p1    = c(a = 200, b = 6, tau = 3)
 	p2    = c(a = 1e-4, b = 1e-3, tau = 1e-2)
     lower = c(NA, 0, 0),
     upper = rep(NA, npar))
-  sigma.prior <- BuildPrior(
+sigma.prior <- BuildPrior(
     dists = rep("gamma", npar),
     p1    = c(a = .01, b = .01, tau = .01),
     p2    = c(a = 1000,  b = 1000, tau = 1000),
@@ -122,8 +132,8 @@ I set up three sets of distributions and bind them as a list, named _start_.
   prior <- list(p.prior, mu.prior, sigma.prior)
 
 ```
-
 ![pop_prior]({{"/images/BUGS/model.png" | relative_url}})
+
 
 ## Sampling
 The function, _StartNewhiersamples_ use the _start_ priors
@@ -131,39 +141,28 @@ only for drawing initial values. The _prior_ distributions wil
 be used in the model fit.
 
 ```
-fit0 <- run(StartNewhiersamples(5e2, dmi, start, prior))
+fit <- run(StartNewhiersamples(5e2, dmi, start, prior))
 fit  <- run(RestartHypersamples(5e2, fit, thin = 32))
-
 ```
 
 ## Model Diagnosis
-As usually, I check the potential scale reduction factors (Brook & Gelman,1998). All
-are less than 1.05, suggesting all chains are well mixed.
+As usually, I check the potential scale reduction factors (Brook & Gelman,1998),
+effective sample sizes, and trace plots.
 
 ```
 rhat <- hgelman(fit, verbose = TRUE)
-
-```
-
-Then, I calculated effective samples at the hyper parameters, for one participant at
-the parameter of the data level, and similarly for all participants. This is to 
-check if enough posterior samples are drawn. 
-
-```
 hes <- effectiveSize(hsam, hyper = TRUE)
 es1 <- effectiveSize(hsam[[1]])
 
 ##    a.h1     b.h1   tau.h1     a.h2     b.h2   tau.h2 
 ## 427.9587 767.7925 483.1228 613.3212 730.1198 462.4242 
-
 ##        a        b      tau 
 ## 569.3685 609.0303 572.1573 
 
-  p0 <- plot(fit, hyper = TRUE)
-  p1 <- plot(fit, hyper = TRUE, pll = FALSE, den = TRUE)
+p0 <- plot(fit, hyper = TRUE)
+p1 <- plot(fit, hyper = TRUE, pll = FALSE, den = TRUE)
   
 ```
-
 ![traceplot]({{"/images/BUGS/traceplot1.png" | relative_url}})
 ![density-hyper]({{"/images/BUGS/densityplot1.png" | relative_url}})
 
@@ -176,7 +175,7 @@ est2 <- summary(fit, hyper = TRUE, recover = TRUE, start = 101,
                 ps = pop.scale, type = 2, verbose = TRUE, digits = 3)
 est3 <- summary(fit, recover = TRUE, ps = ps, verbose = TRUE)
 				  
-##                     a      b   tau
+##                     a      b    tau
 ## True           242.700  6.189 0.030
 ## 2.5% Estimate  241.456  6.143 0.008
 ## 50% Estimate   242.275  6.173 0.460
@@ -201,7 +200,9 @@ est3 <- summary(fit, recover = TRUE, ps = ps, verbose = TRUE)
 
 ```
 
-## Load Rats Data
+## Model Fit to Rats Data
+After verifying that the model structure is OK, I then fit the
+[rats data](http://www.openbugs.net/Examples/Rats.html).
 
 ```
 tmp <- dget("data/Rats_data.R")
@@ -258,9 +259,51 @@ round(apply(data.frame(es), 1, min))
 ## Mean 4464 4360 4321 
 ## SD    139  242  348 
 ## MAX  4717 5020 5137 
-## MIN  4100 3732 3455 
+nn## MIN  4100 3732 3455 
   
 ```
   
 ![traceplot_rat]({{"/images/BUGS/traceplot_rats.png" | relative_url}})
 ![density_rat]({{"/images/BUGS/densityplot_rats.png" | relative_url}})
+
+
+## Fitting Missin Data
+Rats example also considered fitting missing data. This can be done by
+setting the missing data to NA and bind the data set with NA to the
+model. The results are fairly compatible with the model fit using BUGS.
+
+```
+d[6:10,5] <- NA
+d[11:20,4:5] <- NA
+d[21:25,3:5] <- NA
+d[26:30,2:5] <- NA
+
+d$s <- factor(1:tmp$N)
+long <- melt(d, id.vars = c("s"), variable.name = "xfac",
+               value.name = "RT")
+
+long$X <- as.double(as.character(long$xfac)) - tmp$xbar
+long$S <- factor("x1")
+long$R <- factor("r1")
+d <- long[, c("s", "S", "R", "X", "RT")]
+dmi <- BuildDMI(d[!is.na(d$RT),], model)
+
+  #            2.5%     25%    50%    75%     97.5%
+  # a.h1     241.01  244.35  246.07  247.73  251.09
+  # alpha.c  240.30  243.90  245.80  247.70  251.30  BUGS
+  # b.h1      6.362   6.526   6.605   6.688   6.844
+  # beta.c    6.286   6.477   6.572   6.669   6.870  BUGS
+  # a.h2      0.003   0.004   0.005   0.006   0.009
+  # alpha.tau 0.003   0.004   0.005   0.006   0.009 BUGS
+  # b.h2      1.640   2.757   3.595   4.479   7.241
+  # beta.tau  1.505   2.676   3.620   5.044  13.601 BUGS
+
+
+```
+
+
+## Reference
+Gelfand, A. E., Hills, S. E., Racine-Poon, A., & Smith, A. F. (1990). Illustration
+of Bayesian inference in normal data models using Gibbs sampling. Journal of
+the American Statistical Association, 85(412), 972-985.
+
