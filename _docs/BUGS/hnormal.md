@@ -267,7 +267,7 @@ nn## MIN  4100 3732 3455
 ![density_rat]({{"/images/BUGS/densityplot_rats.png" | relative_url}})
 
 
-## Fitting Missin Data
+## Handling Missing Data
 Rats example also considered fitting missing data. This can be done by
 setting the missing data to NA and bind the data set with NA to the
 model. The results are fairly compatible with the model fit using BUGS.
@@ -304,6 +304,6 @@ dmi <- BuildDMI(d[!is.na(d$RT),], model)
 
 ## Reference
 Gelfand, A. E., Hills, S. E., Racine-Poon, A., & Smith, A. F. (1990). Illustration
-of Bayesian inference in normal data models using Gibbs sampling. Journal of
-the American Statistical Association, 85(412), 972-985.
+of Bayesian inference in normal data models using Gibbs sampling. _Journal of
+the American Statistical Association_, 85(412), 972-985.
 
