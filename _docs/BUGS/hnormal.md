@@ -1,5 +1,5 @@
 ---
-title: Hierarchical Noraml Model
+title: Hierarchical Normal Model
 category: BUGS Examples Volumn 1
 order: 1
 ---
