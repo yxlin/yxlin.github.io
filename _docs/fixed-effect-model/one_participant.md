@@ -4,11 +4,12 @@ category: Fixed Effects Model
 order: 1
 ---
 
-Fixed effects models refer to a scenario that each participant
+Fixed effects models refer to a scenario that each participant / subject
 has her own parameter generating mechanism. This is relative to
-the other scenario that all participants are under one common mechanism
-of parameter generation, namely random effects / hierarchical / multi-level
-models.
+another scenario that all participants are under one common mechanism
+of parameter generation.  The latter scenario sometimes is dubbed
+random effects, hierarchical or multi-level models, although each term has
+slightly different meanings. 
 
 In this tutorial, I illustrate the method of conducting Bayesian MCMC sampling
 in the fixed-effects scenario. Given a data set containing (1) response times
@@ -56,7 +57,7 @@ p.vector <- c(a = 1, v = 1.2, z = .38, sz = .25, sv = .2, t0 = .15)
 ntrial <- 1e2
 dat <- simulate(model, nsim = ntrial, ps = p.vector)
 dmi <- BuildDMI(dat, model)
-## A tibble: 200 x 3
+## A tibble: 200 x 3     ## use dplyr::tbl_df(dat) to print this
 ##    S     R        RT
 ##    <fct> <fct> <dbl>
 ##  1 s1    r1    0.249
@@ -73,15 +74,16 @@ dmi <- BuildDMI(dat, model)
 
 ```
 
-Because I simulated the data, I know the true parameter vector, _p.vector_, which
-will be used later to verify whether the sampling process appropriately estimates 
-the parameters. In Bayesian statistics, we also need prior distributions, so
-let's build a set of prior distributions for each DDM parameters.
+Because the data were simulated from a set of presume true values, _p.vector_,
+I can use them later to verify whether the sampling process appropriately
+estimates the parameters. In Bayesian statistics, we also need prior
+distributions, so let's build a set of prior distributions for each
+DDM parameters.
 
 A beta distribution with shape1 = 1 and shape2 = 1, equals to a uniform
 distribution (_beta(1, 1)_). This is for the start point, _z_, its variability
 _sz_ and _t0_ parameters. All three are bounded by 0 and 1. Others use
-truncated normal distributions bounding by _lower_ and _upper_ options.
+truncated normal distributions bounding by _lower_ and _upper_ arguments.
 _plot_ draws the prior distribution, providing a visual check method.
 
 ```
@@ -91,7 +93,7 @@ p.prior  <- BuildPrior(
   p2    = c(a = 1, v = 2, z = 1, sz = 1, sv = 1, t0 = 1),
   lower = c(0, -5, NA, NA, 0, NA),
   upper = c(5,  5, NA, NA, 5, NA))
-plot(p.prior)
+plot(p.prior, ps = p.vector)
 ```
 
 ![prior]({{"/images/fixed-effect-model/prior.png" | relative_url}})
@@ -103,15 +105,15 @@ the repeat function to rerun the sampling until the convenient
 convergence diagnosis index, _rhat_ smaller than 1.1.
 
 ```
-path <- c("data/lesson3/ggdmc_3_7_DDM.rda")
-sam0 <- run(StartNewsamples(5e2, dmi, p.prior))
-sam  <- sam0
+path <- c("data/ggdmc_3_7_DDM.rda")
+fit0 <- run(StartNewsamples(5e2, dmi, p.prior))
+fit <- fit0
 thin <- 1
 repeat {
-  sam <- run(RestartSamples(5e2, sam, thin = thin))
-  save(sam0, sam, file = path[1])
-  rhats <- gelman(sam, verbose = TRUE)
-  if (all(rhats$mpsrf < 1.1)) break
+  fit <- run(RestartSamples(5e2, fit, thin = thin))
+  save(fit, file = path[1])
+  rhat <- gelman(fit, verbose = TRUE)
+  if (all(rhat$mpsrf < 1.1)) break
   thin <- thin * 2
 }
 cat("Done ", path[1], "\n")
@@ -123,12 +125,11 @@ I plot the two posterior log-likelihood samples to show the transit of
 convergence.
 
 ```
-p0 <- plot(sam0)
-p1 <- plot(sam0, start = 101)
+p0 <- plot(fit0)
+p1 <- plot(fit0, start = 101)
 
-require(gridExtra)
 png("pll.png", 800, 600)
-grid.arrange(p0, p1, ncol = 1)
+gridExtra::grid.arrange(p0, p1, ncol = 1)
 dev.off()
 ```
 
@@ -140,56 +141,73 @@ iterations. I drew final samples (sam) as proper posterior samples. I make
 sure it is converged by using the _repeat_ method. 
 
 ```
-plot(sam, pll = FALSE, den= TRUE)
+plot(fit, pll = FALSE, den= TRUE)
 ```
 
 ![den]({{"/images/fixed-effect-model/den.png" | relative_url}})
-
-We can also check reject rates to see the efficiency of the
-sampler.
-
-```
-Chain   1: rejection rates:  0.76 
-Chain   2: rejection rates:  0.77 
-Chain   3: rejection rates:  0.76 
-Chain   4: rejection rates:  0.76 
-Chain   5: rejection rates:  0.77 
-Chain   6: rejection rates:  0.77 
-Chain   7: rejection rates:  0.76 
-Chain   8: rejection rates:  0.76 
-Chain   9: rejection rates:  0.76 
-Chain  10: rejection rates:  0.77 
-Chain  11: rejection rates:  0.76 
-Chain  12: rejection rates:  0.77 
-Chain  13: rejection rates:  0.77 
-Chain  14: rejection rates:  0.77 
-Chain  15: rejection rates:  0.76 
-Chain  16: rejection rates:  0.76 
-Chain  17: rejection rates:  0.76 
-Chain  18: rejection rates:  0.76
-```
 
 In a simulation / parameter-recovery study, we can check whether
 the sampling process is OK, using _summary_
 
 ```
-est <- summary(sam, recover = TRUE, ps = p.vector)
-round(est, 2)
-#                   a   sv   sz   t0    v    z
-# True           1.00 0.20 0.25 0.15 1.20 0.38
-# 2.5% Estimate  0.95 0.20 0.02 0.14 0.90 0.35
-# 50% Estimate   1.05 1.26 0.29 0.15 1.36 0.39
-# 97.5% Estimate 1.20 2.51 0.58 0.16 2.01 0.42
-# Median-True    0.05 1.06 0.04 0.00 0.16 0.01
+est <- summary(fit, recover = TRUE, ps = p.vector, verbose = TRUE)
+##                   a   sv   sz   t0    v    z
+## True           1.00 0.20 0.25 0.15 1.20 0.38
+## 2.5% Estimate  0.95 0.20 0.02 0.14 0.90 0.35
+## 50% Estimate   1.05 1.26 0.29 0.15 1.36 0.39
+## 97.5% Estimate 1.20 2.51 0.58 0.16 2.01 0.42
+## Median-True    0.05 1.06 0.04 0.00 0.16 0.01
 ```
 
-Finally, to quantify the fit of a Bayesian model to the data, we can use
-DIC or BPIC. These information criteria are useful for model selection. 
+Finally, it would be a good idea to check if the model fit the data
+well.  There are many methods to to quantify the goodness of fit.
+Here, I illustrate two methods. First, I use DIC and BPIC. These
+information criteria are useful for model selection. 
 (need > ggdmc 2.5.5)
 ```
-DIC(sam)  ## [1] -111.711
-BPIC(sam) ## [1] -106.9842
+DIC(fit)  
+BPIC(fit)
 ```
+
+Secondly, I simulate post-predictive data, based on the parameter estimates.
+_xlim_ trims off outlier values in the simulation data.
+
+```
+pp <- predict_one(fit, xlim = c(0, 5))
+dat$C <- ifelse(dat$S == "s1"  & dat$R == "r1",  TRUE,
+         ifelse(dat$S == "s2" & dat$R == "r2", TRUE,
+         ifelse(dat$S == "s1"  & dat$R == "r2", FALSE,
+         ifelse(dat$S == "s2" & dat$R == "r1",  FALSE, NA))))
+pp$C <- ifelse(pp$S == "s1"  & pp$R == "r1",  TRUE,
+        ifelse(pp$S == "s2" & pp$R == "r2", TRUE,
+        ifelse(pp$S == "s1"  & pp$R == "r2", FALSE,
+        ifelse(pp$S == "s2" & pp$R == "r1",  FALSE, NA))))
+
+dat$reps <- NA
+dat$type <- "Data"
+pp$reps <- factor(pp$reps)
+pp$type <- "Simulation"
+
+DT <- rbind(dat, pp)
+p1 <- ggplot(DT, aes(RT, color = reps, size = type)) +
+  geom_freqpoly(binwidth = .05) +
+  scale_size_manual(values = c(1, .3)) +
+  scale_color_grey(na.value = "black") +
+  theme(legend.position = "none") +
+  facet_grid(S ~ C)
+
+
+```
+![post-predictive]({{"/images/fixed-effect-model/post-predictive.png" | relative_url}})
+
+The grey lines are model predictions. By default, predict_one randomly select 100
+parameter estimates and simulate data based on them.  Therefore, there are 100 grey lines,
+which conveniently shows the variability of prediction. The solid dark line is the
+data, in the case, appropriately fall within the range covering by the grey lines.
+Note that the error responses (FALSE) are not predicted as well as the correct responses.
+This is fairly common, because the number of per-condition trials is only 100.
+
+
 
 [^1]: This is often dubbed, drift-diffusion model, but in Ratcliff and McKoon's work, they called it diffusion decision model. 
 
