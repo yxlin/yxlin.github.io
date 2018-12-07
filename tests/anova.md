@@ -1,0 +1,123 @@
+---
+title: ANOVA Models
+category: Modelling Basics
+order: 3
+---
+
+This lesson has six sections, discussing six different ANOVA models
+in the framework of the general linear model. Each section of ANOVA
+model has four subsections, presenting the subjects of model, multiple
+comparison, effect size and power analysis.
+
+## One-Way Between-Subjects ANOVA Models
+
+The following example is a one-factor between-subject ANOVA. This factor
+has only one level. That is, the six data points (y) are all from one
+(presumably) identical group of, for example, participants. 
+
+```
+y <- c(96, 102, 104, 104, 108, 110) 
+n <- length(y)
+psych::describe(y)
+##    vars n mean  sd median trimmed  mad min max range  skew kurtosis se
+##       y 6  104 4.9    104     104 4.45  96 110    14 -0.34    -1.36  2
+sum(y)  ## 624
+
+```
+
+### Models
+This data set can be accounted for by the linear model,
+> y<sub>i</sub> = &mu; + &epsilon;<sub>i</sub>,
+
+where i stands fro 1 to 6, so  y<sub>i</sub> are 96, 102, 104, ..., 110. Suppose
+that we fairly randomly recruit 6 participant to take part in 
+resulting from a
+population parameter, &mu; plus with a variability parameter, &epsilon;.
+
+```
+####################
+## Full model 
+## 1. Parameter term
+mean(y)
+
+## 2. Error scores
+y - mean(y)
+sum(y - mean(y))
+
+## 3. Squared errors
+(y - mean(y))^2
+EF <- sum((y - mean(y))^2)
+
+####################
+## Restricted model 
+## 1. Parameter term
+y0 <- 98
+
+## 2. Error scores
+y - y0
+sum(y - y0)
+
+## 3. Squared errors
+(y - y0)^2
+ER <- sum((y - y0)^2)
+
+dfR <- 6
+dfF <- n - 1
+numerator <- (ER - EF) / (dfR - dfF)
+denominator <- EF / dfF
+F <- numerator / denominator; F
+t <- (mean(y) - y0) / (sd(y) / sqrt(n)); t
+
+
+t.test(y, mu = 98)
+## 	One Sample t-test
+## 
+## data:  y
+## t = 3, df = 5, p-value = 0.0301
+## alternative hypothesis: true mean is not equal to 98
+## 95 percent confidence interval:
+##   98.85884 109.14116
+## sample estimates:
+## mean of x 
+##       104 
+y2 <- c(y , rep(98, n)); y2
+gp <- factor(rep(c(1,2), each = n)); gp
+m1 <- aov(y2 ~ gp)
+summary(m1)
+##             Df Sum Sq Mean Sq F value Pr(>F)  
+## gp           1    108     108       9 0.0133 *
+## Residuals   10    120      12                 
+## ---
+## Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+The general linear model ...
+
+
+
+### Contrasts
+
+### Effect-size
+
+## Two-Way Between-Subjects ANOVA Models
+
+## Factorial Between-Subjects ANOVA Models
+
+## One-Way Within-Subjects ANOVA Models
+
+## Two-Way Within-Subjects ANOVA Models
+
+## Factorial Within-Subjects ANOVA Models
+
+## Likelihood function
+A probability density function p(y|theta) can be thought of fixing value of
+theta and calculate different probability (density / mass) values of y.
+
+Another perspective is to think of the value of y as fixed by observing a
+set of data and calculate different probability values for different thetas.
+Different values of theta yield different probabilities for a fixed set of y.
+When thought of in this way, it is a likelihood function of theta.
+
+Likelihood function is not a probability density function, because it
+does not integrate to 1. This is because it 
