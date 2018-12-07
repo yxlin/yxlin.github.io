@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Multiple Participants | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Multiple Participants" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In this tutorial, I illustrated fitting multiple participants, assuming the mechanism of data generation is fixed-effect models. That is, each of the participants are accounted for by their separate mechanisms. I also assume the LBA model is the mechanism generating the choice RT data." />
+<meta property="og:description" content="In this tutorial, I illustrated fitting multiple participants, assuming the mechanism of data generation is fixed-effect models. That is, each of the participants are accounted for by their separate mechanisms. I also assume the LBA model is the mechanism generating the choice RT data." />
+<link rel="canonical" href="http://localhost:4000/fixed-effect-model/many_participants/" />
+<meta property="og:url" content="http://localhost:4000/fixed-effect-model/many_participants/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-07T02:16:21+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/fixed-effect-model/many_participants/","headline":"Multiple Participants","dateModified":"2018-12-07T02:16:21+00:00","datePublished":"2018-12-07T02:16:21+00:00","description":"In this tutorial, I illustrated fitting multiple participants, assuming the mechanism of data generation is fixed-effect models. That is, each of the participants are accounted for by their separate mechanisms. I also assume the LBA model is the mechanism generating the choice RT data.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical normal model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item current"><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Fixed Effects Model</h2>
+				<h3>Multiple Participants</h3>
+			</div>
+			<article class="content">
+				<p>In this tutorial, I illustrated fitting multiple participants, assuming
+the mechanism of data generation is fixed-effect models. That is, each
+of the participants are accounted for by their separate mechanisms. I also
+assume the LBA model is the mechanism generating the choice RT data.</p>
+
+<p>I made up a two-factor factorial design. The first two-level factor is
+the stimulus (S). Suppose the stimuli have two types: one is low quality
+face photos, so people find it hard to recognize and the other
+is normal quality face photo.  The second factor is the frequency (F),
+supposing one type is the celebrity photos, so people perhaps see more often, 
+and the other is the photos of randomly selected strangers.</p>
+
+<p>In the model setting, I presume a rate model, which has its drift rates
+affected by the two factors, S and F.  The latent factor, <em>M</em>, is just a
+LBA way to model independent accumulators. Another factor, <em>R</em>, not
+explicitly in the factorial design, is an indicator factor, indicating
+the response type affecting the threshold parameter (i.e., accumulators
+traveling distance).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+          <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">A</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">B</span> <span class="p">=</span> <span class="s2">"R"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span>
+            <span class="n">mean_v</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"S"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">),</span> <span class="n">sd_v</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+          <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">s1</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">s2</span> <span class="p">=</span> <span class="m">2</span><span class="p">)),</span>
+          <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">),</span> <span class="n">F</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"f1"</span><span class="p">,</span> <span class="s2">"f2"</span><span class="p">)),</span>
+          <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">sd_v</span><span class="p">.</span><span class="nb">false</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="m">0</span><span class="p">),</span>
+          <span class="n">responses</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"r1"</span><span class="p">,</span> <span class="s2">"r2"</span><span class="p">),</span>
+          <span class="n">type</span>      <span class="p">=</span> <span class="s2">"norm"</span><span class="p">)</span>
+<span class="p">##</span>  <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s2">"A"</span>                  <span class="s2">"B.r1"</span>               <span class="s2">"B.r2"</span>              
+<span class="p">##</span>  <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s2">"t0"</span>                 <span class="s2">"mean_v.s1.f1.true"</span>  <span class="s2">"mean_v.s2.f1.true"</span> 
+<span class="p">##</span>  <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s2">"mean_v.s1.f2.true"</span>  <span class="s2">"mean_v.s2.f2.true"</span>  <span class="s2">"mean_v.s1.f1.false"</span>
+<span class="p">##</span> <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s2">"mean_v.s2.f1.false"</span> <span class="s2">"mean_v.s1.f2.false"</span> <span class="s2">"mean_v.s2.f2.false"</span>
+<span class="p">##</span> <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s2">"sd_v.true"</span>         
+<span class="n">npar</span> <span class="p">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">GetPNames</span><span class="p">(</span><span class="k">model</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>To simulate many participants, I set up a population distribution, which
+is a bit of in conflict with the assumption of fixed-effects model. That is,
+this way to generate data is to presume that a random-effects model at
+work. For the purpose of illustration, I forgo this issue for now.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pop.mean &lt;- c(A = .4, B.r1 = .85, B.r2 = .8, t0 = .1,
+              mean_v.s1.f1.true = 2.5,    mean_v.s2.f1.true = 3.5,
+              mean_v.s1.f2.true = 4.5,    mean_v.s2.f2.true = 5.5,
+              mean_v.s1.f1.false = 1.00,  mean_v.s2.f1.false = 1.10,
+              mean_v.s1.f2.false = 1.05,  mean_v.s2.f2.false = 1.20,
+              sd_v.true = .25)
+pop.scale &lt;- c(A = .1, B.r1 = .1, B.r2 = .1, t0 = .05,
+              mean_v.s1.f1.true = .2,   mean_v.s2.f1.true = .2,
+              mean_v.s1.f2.true = .2,   mean_v.s2.f2.true = .2,
+              mean_v.s1.f1.false = .2,  mean_v.s2.f1.false = .2,
+              mean_v.s1.f2.false = .2,  mean_v.s2.f2.false = .2,
+              sd_v.true = .1)
+
+pop.prior &lt;- BuildPrior(
+  dists = rep("tnorm", npar),
+  p1    = pop.mean,
+  p2    = pop.scale,
+  lower = c(rep(0, 4), rep(NA, 8), 0),
+  upper = c(rep(NA, npar)))
+
+</code></pre></div></div>
+
+<p>You may want to visually check how the prior distributions look like.
+<em>ggdmc</em> has a <em>plot</em> function to do just that. Note you need to load <em>ggdmc</em>
+package (i.e., <em>require(ggdmc)</em>) to make <em>plot</em> function polymorphic .</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot(pop.prior)
+
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/popprior.png" alt="popprior" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Simulate some data
+dat &lt;- simulate(model, nsim = 250, nsub = 20, p.prior = pop.prior)
+dmi &lt;- BindDataModel(dat, model)
+dplyr::tbl_df(dat)
+## A tibble: 20,000 x 5
+##    s     S     F     R        RT
+##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt;
+##  1 1     s1    f1    r1    0.561
+##  2 1     s1    f1    r1    0.438
+##  3 1     s1    f1    r1    0.568
+##  4 1     s1    f1    r2    0.431
+##  5 1     s1    f1    r1    0.433
+##  6 1     s1    f1    r1    0.577
+##  7 1     s1    f1    r1    0.548
+##  8 1     s1    f1    r1    0.569
+##  9 1     s1    f1    r1    0.532
+## 10 1     s1    f1    r1    0.513
+## ... with 19,990 more rows
+
+
+</code></pre></div></div>
+
+<p>The true parameter vectors, which were randomly chosen from <em>pop.prior</em>, can
+be retrieved by looking up the <strong>parameters</strong> attribute, attached onto the
+<em>dat</em> object.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(matrixStats)
+ps &lt;- attr(dat, "parameters")
+mu &lt;- round(colMeans2(ps), 2)
+sigma &lt;- round(colSds(ps), 2)
+truevalues &lt;- rbind(mu, sigma)
+colnames(truevalues) &lt;- GetPNames(model)
+##       A B.r1 B.r2   t0 mean_v.s1.f1.true mean_v.s2.f1.true mean_v.s1.f2.true
+## mu 0.41 0.82 0.77 0.10              2.49              3.56              4.50
+## si 0.11 0.10 0.09 0.05              0.21              0.19              0.22
+##    mean_v.s2.f2.true mean_v.s1.f1.false mean_v.s2.f1.false mean_v.s1.f2.false
+## mu              5.49               1.03               1.15               1.08
+## si              0.22               0.15               0.23               0.15
+##    mean_v.s2.f2.false sd_v.true
+## mu               1.11      0.24
+## si               0.16      0.10
+</code></pre></div></div>
+
+<p>Now I am ready to fit the twenty participants. Ideally, I wish to
+fit them with twenty CPU cores, so that would be quicker to finish
+the job. But here I have only a twelve-core machine, so I will fit ten
+participants independently for two runs.</p>
+
+<p>Note that I set the <em>ncore</em> option as 10, indicating that I will launch
+ten separate R processes (at the R level).  In a later tutorial, 
+the solution of multiple core process (i.e., OpenMP at the C++ level) is
+different from the R solution of multiple core, because of the different
+data structure between the hierarchical and single-level models.</p>
+
+<p>Fitting 10 participants will take a while, so I saved the
+data at two stages.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Sampling -------------
+p.prior &lt;- BuildPrior(
+  dists = rep("tnorm", npar),
+  p1    = pop.mean,
+  p2    = pop.scale*20,
+  lower = c(rep(0, 4), rep(NA, 8), 0),
+  upper = c(rep(NA, npar)))
+plot(p.prior)  ## visual check the prior distributions
+
+thin &lt;- 32
+sam &lt;- run(StartManynewsamples(5e2, dmi, p.prior, thin),
+           ncore = 10, pm = .20)
+save(sam, thin, model, npar, pop.prior, data, dmi, ps, truevalues,
+     p.prior, file = "data/ggdmc_4_5_LBA_analytic.rda")
+sam &lt;- run(RestartManysamples(5e2, sam, thin),
+           ncore = 10, pm = .20)
+save(sam, thin, model, npar, pop.prior, data, dmi, ps, truevalues,
+     p.prior, file = "data/ggdmc_4_5_LBA_analytic.rda")
+</code></pre></div></div>
+
+<p>DE-MCMC is inefficient, comparing to distributed genetic algorithm, in
+handling a complex model with many parameters (&gt; 10). The model here is
+at the level of 13 parameter.  I expected that I will encounter
+some difficult parameter spaces, so I used a simple way to circumvent
+this challenge to search the hard parameter spaces. That is, I used
+R’s <em>repeat</em> function to iterate the model fitting. The below code
+checks multivariate potential scale reduction factor (<em>mpsrf</em>,
+Brooks &amp; Gelman, 1998), and finished the fit only when <em>mpsrt</em> is
+less than 1.1.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>repeat {
+   sam &lt;- run(RestartManysamples(5e2, sam, thin),
+           ncore = 10, pm = .20)
+   save(sam, thin, model, npar, pop.prior, data, dmi, ps, truevalues,
+       p.prior, file = "data/ggdmc_4_5_LBA_analytic.rda")
+   rhats &lt;- gelman(sam) 
+   if (all(unlist(lapply(rhats, function(x) x[[2]])) &lt; 1.1)) break
+}
+
+</code></pre></div></div>
+
+<p>As always, I need to check if the model fit converged.  I used <em>plot</em> to
+visually check if posterior log-likelihood converged.</p>
+
+<blockquote>
+  <p>plot(sam)</p>
+</blockquote>
+
+<p><img src="/images/fixed-effect-model/many-subjects.png" alt="traceplots" /></p>
+
+<p><em>gelman</em> function will print the potential scale reduction
+factor (psrf). If psrf is less than 1.1 or a mores conservative
+criterion, 1.05, it suggests that chains are well-mixed. This is a bit
+of redundant, because my automatic routine had made certain that the fit
+will return psrf’s less than 1.1.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gelman(sam)
+# Diagnosing theta for many participants separately
+#   15   20   13   18    6   17   12   19    5   11    8    3   16   14    1    2    9
+# 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.02 1.02
+#    4    7   10
+# 1.02 1.03 1.03
+# Mean
+# [1] 1.01
+</code></pre></div></div>
+
+<p>By setting the option, <em>pll</em>, which stands for posterior log-likelihood,
+to FALSE and the option, <em>den</em>, which stands for density plot, to TRUE , you
+can check the trace plots for each model parameters. Because there are
+twenty participants, it will be difficult to see figures clearly.  I
+plotted them separately in a pdf file to check it. Here showed the posterior
+density plots for one of the participants. Note that because there are
+a lot of data, this would be, perhaps, 100s MB pdf file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pdf("figs/subjects-density.pdf")
+lapply(sam, ggdmc:::plot.model, pll = FALSE, den = TRUE )
+dev.off()
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/subject1-density.png" alt="densityplots" /></p>
+
+<p>One specific feature in <em>ggdmc</em> is that it uses pMCMC, so occasionally,
+we want to check a subset of chains. The function will randomly pick three chains
+to plot</p>
+
+<blockquote>
+  <p>plot(sam, subchain = TRUE)</p>
+</blockquote>
+
+<p><img src="/images/fixed-effect-model/subchain1.png" alt="subchains1" /></p>
+
+<p>You can indicate how many subset of chains to plot, too.</p>
+
+<blockquote>
+  <p>plot(sam, subchain = TRUE, nsubchain = 4))</p>
+</blockquote>
+
+<p><img src="/images/fixed-effect-model/subchain2.png" alt="subchains2" /></p>
+
+<p>You can also indicate which chains, instead of randomly selecting a subset of chains.</p>
+
+<blockquote>
+  <p>plot(sam, subchain = TRUE, nsubchain = 4, chains = c(1:3))</p>
+</blockquote>
+
+<p><img src="/images/fixed-effect-model/subchain3.png" alt="subchains3" /></p>
+
+<p>These are a lot of checks! Finally and fortunately, because this is a parameter recovery study,
+I can look up the true parameters to see if I do estimate them well. <em>summary</em> function will
+do the trick by entering TRUE for the <em>recovery</em> option and entering the true parameter matrix,
+which I had stored it to a <em>ps</em> object before, to <em>ps</em> option.</p>
+
+<blockquote>
+  <p>est &lt;- summary(sam, recovery = TRUE, ps = ps)</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Summary each participant separately
+#          A  B.r1  B.r2    t0 mean_v.s1.f1.true mean_v.s2.f1.true mean_v.s1.f2.true
+# Mean  0.50  1.02  0.96  0.10              3.05              4.34              5.50
+# True  0.41  0.82  0.77  0.10              2.49              3.56              4.50
+# Diff -0.09 -0.20 -0.19  0.00             -0.56             -0.78             -1.00
+
+# Sd    0.15  0.20  0.17  0.05              0.49              0.44              0.76
+# True  0.11  0.10  0.09  0.05              0.21              0.19              0.22
+# Diff -0.04 -0.10 -0.08 -0.01             -0.28             -0.25             -0.54
+#      mean_v.s2.f2.true mean_v.s1.f1.false mean_v.s2.f1.false mean_v.s1.f2.false
+# Mean              6.69               1.59               1.58               0.70
+# True              5.49               1.03               1.15               1.08
+# Diff             -1.20              -0.56              -0.43               0.38
+
+# Sd                0.82               0.34               1.21               1.58
+# True              0.22               0.15               0.23               0.15
+# Diff             -0.59              -0.19              -0.98              -1.43
+#      mean_v.s2.f2.false sd_v.true
+# Mean              -0.38      0.30
+# True               1.11      0.24
+# Diff               1.48     -0.06
+
+# Sd                 1.23      0.11
+# True               0.16      0.10
+# Diff              -1.07     -0.01
+</code></pre></div></div>
+
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

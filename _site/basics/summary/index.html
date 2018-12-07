@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Summary Statistics | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Summary Statistics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In analyzing response time data with two choices, researchers would usually examine average response times (RTs) and response proportions. Depending on the model a researcher wishes to presume, the response proportions can simply be correct and error rates, or, if using SDT model, hits, correct rejections, false alarms and misses. Here I used Pleskac, Cesario, and Johnson’s (2017) data in the first-person shooter task (FPST; Correll et al., 2002) to illustrate one method to calculate average RTs and response proportions across participants." />
+<meta property="og:description" content="In analyzing response time data with two choices, researchers would usually examine average response times (RTs) and response proportions. Depending on the model a researcher wishes to presume, the response proportions can simply be correct and error rates, or, if using SDT model, hits, correct rejections, false alarms and misses. Here I used Pleskac, Cesario, and Johnson’s (2017) data in the first-person shooter task (FPST; Correll et al., 2002) to illustrate one method to calculate average RTs and response proportions across participants." />
+<link rel="canonical" href="http://localhost:4000/basics/summary/" />
+<meta property="og:url" content="http://localhost:4000/basics/summary/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-07T02:16:21+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/basics/summary/","headline":"Summary Statistics","dateModified":"2018-12-07T02:16:21+00:00","datePublished":"2018-12-07T02:16:21+00:00","description":"In analyzing response time data with two choices, researchers would usually examine average response times (RTs) and response proportions. Depending on the model a researcher wishes to presume, the response proportions can simply be correct and error rates, or, if using SDT model, hits, correct rejections, false alarms and misses. Here I used Pleskac, Cesario, and Johnson’s (2017) data in the first-person shooter task (FPST; Correll et al., 2002) to illustrate one method to calculate average RTs and response proportions across participants.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical normal model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item current"><a href="/basics/summary/">Summary Statistics</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Modelling Basics</h2>
+				<h3>Summary Statistics</h3>
+			</div>
+			<article class="content">
+				<p>In analyzing response time data with two choices, researchers would usually
+examine average response times (RTs) and response proportions.  Depending on
+the model a researcher wishes to presume, the response proportions can simply 
+be correct and error rates, or, if using SDT model, hits, correct rejections,
+false alarms and misses.  Here I used Pleskac, Cesario, and Johnson’s (2017)
+data in the first-person shooter task (FPST; Correll et al., 2002) to
+illustrate one method to calculate average RTs and response proportions
+across participants.</p>
+
+<p>Firstly, I use <em>fread</em> function to load the data file, which is in csv
+format. The data set provides clear and good column names.
+That is, the column names have informed the coding method. I simply
+just followed column names to code the factor levels and later checked
+against the data in the paper. Of course, I had also checked against
+the figures of behaviour analyses in the paper to make sure I did
+correctly identify the dependent and independent variables, which are
+listed in the following.</p>
+
+<ul>
+  <li>S: stimulus factor, gun vs. non-gun objects.</li>
+  <li>BC: blurry or clear object</li>
+  <li>CT: context, a safe or dangerous neighborhood</li>
+  <li>RACE: race, a black or white target</li>
+  <li>R: response factor, shoot or not to shoot</li>
+  <li>RT: response times</li>
+  <li>s: subject / participant nominal labels</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(data.table);
+study3 &lt;- fread("data/race/Study3/original/Study3TrialData.csv")
+study3$S    &lt;- factor(ifelse(study3$Object0NG1G == 0, "non", "gun"))
+study3$BC   &lt;- factor(ifelse(study3$Blurry0Clear1Blur == 0, "clear", "blur"))
+study3$CT   &lt;- factor(ifelse(study3$Context1Safe2Danger == 0, "safe", "danger"))
+study3$RACE &lt;- factor(ifelse(study3$Race012B == 0, "white", "black"))
+study3$R    &lt;- factor(ifelse(study3$Resp0NS1Sh == 0, "not", "shoot"))
+study3$RT   &lt;- study3$RT / 1e3
+study3$s    &lt;- factor(study3$Subject)
+</code></pre></div></div>
+
+<p><em>factor</em> is a R function converting variables, numeric or character, to
+categorical (i.e., nominal) variable.  After reorganizing the columns,
+I removed the replicated columns by assigning them as <em>NULL</em>. This is
+a data.table specific syntax.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>study3[, c("Subject", "NewSubject", "conditionRaceDangerBlurbject",
+"conditionRaceDangerBlur",  "Object0NG1G", "Blurry0Clear1Blur",
+"Context1Safe2Danger", "Race012B", "Resp0NS1Sh", "DiffusionRT") := NULL]
+</code></pre></div></div>
+
+<p>There are NaN response times in this data set. One method is to replace
+them with random RTs drawn from uniform distribution, with the range of
+valid RTs. This was achieved by using the <strong>data.table</strong> internal
+function <em>.I</em>.  I firstly found the (row) index of these NaN RTs, and
+then replaced them. Of course, we can simply just remove them.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## save organized data to a temporary object, so I can roll back.
+dtmp &lt;- data.table(study3)
+minmax &lt;- range(study3$RT, na.rm = TRUE); minmax
+idx &lt;- dtmp[, .I[is.nan(RT)]]; idx
+dtmp[idx, RT := runif(1, minmax[1], minmax[2])]
+d &lt;- dtmp
+
+## scoring a correctness column
+d$C &lt;- ifelse(d$S == "gun" &amp; d$R == "shoot", TRUE,
+       ifelse(d$S == "non" &amp; d$R == "not",   TRUE,
+       ifelse(d$S == "gun" &amp; d$R == "not",   FALSE,
+       ifelse(d$S == "non" &amp; d$R == "shoot", FALSE, NA))))
+</code></pre></div></div>
+
+<p>Now the data table looks like:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dplyr::tbl_df(d)
+## # A tibble: 12,033 x 8
+##       RT S     BC    CT    RACE  R     s     C
+##    &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;lgl&gt;
+##  1 0.753 gun   blur  safe  black shoot 11    TRUE
+##  2 0.851 non   blur  safe  white not   11    TRUE
+##  3 0.742 gun   clear safe  black shoot 11    TRUE
+##  4 0.636 non   clear safe  white not   11    TRUE
+##  5 0.644 gun   blur  safe  black not   11    FALSE
+##  6 0.625 non   clear safe  black shoot 11    FALSE
+##  7 0.889 non   clear safe  white not   11    TRUE
+##  8 0.597 gun   blur  safe  black shoot 11    TRUE
+##  9 0.724 gun   clear safe  white shoot 11    TRUE
+## 10 0.656 non   blur  safe  white not   11    TRUE
+## # ... with 12,023 more rows
+</code></pre></div></div>
+
+<h3 id="censoring-rt-data">Censoring RT data</h3>
+<p>Censoring outliers is a difficult task (Ratcliff, 1993).
+Here I illustrated one way to do it via Heathcote’s <em>rc</em>, a
+collection of very useful R functions
+and my <em>summarise</em>, also a collection of useful R functions.
+First, I used R’s <em>source</em> function to load this large
+collection of R functions.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source("~/rc/data.analysis.R")
+source("~/rc/utils.R")
+source("~/functions/summarise.R")
+
+## Scoring ------------
+se3 &lt;- score.rc(data.frame(d), S = "s", R = "R", RT = "RT", SC = "C",
+                F = c("BC", "CT", "RACE", "S"))
+## Spreading 11851 of 12033 RTs that are ties given preceision 0.001 .
+##    497 have ties out of 679 unique values
+##
+## Added the following manifest design
+##      S  RACE     CT    BC     R rcell
+## 1  gun black danger  blur   not     1
+## 2  gun black danger  blur shoot     1
+## 3  gun black danger clear   not     2
+## ...
+## 30 non white   safe  blur shoot    15
+## 31 non white   safe clear   not    16
+## 32 non white   safe clear shoot    16
+
+</code></pre></div></div>
+<p><em>score.rc</em> function takes first argument data.frame, which is the data as seen
+previously.  Because I stored it as data.table, I needed to convert it back
+to data.frame. Just a note. Although data.table may accommodate many functions
+operating in data.frame, there are some operations in <em>rc</em> functions, which
+cannot work in data.table.</p>
+
+<p>Note the second argument, uppercase <em>S</em>, which takes the <em>subject</em> column, instead
+of the column of stimulus factor. The <em>R</em> and <em>RT</em> arguments take response column
+and the response time column. <em>SC</em> takes the column of score correctness, which
+is purely my guess. I cannot be sure why it is called <em>SC</em>. The last useful
+argument is <em>F</em>, which takes user-defined factors, including the stimulus factor.</p>
+
+<p><em>score.rc</em> detects the identical (ties) RTs and spread them into finer scale.
+For example, in this data set, there are 31 trials with 60y ms.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>table(d$RT)
+##             0.01            0.015            0.019            0.025 
+##                1                1                1                1 
+##            0.027             0.03            0.035            0.036 
+##                1                1                1                1 
+##    	       ...
+##            0.386            0.387            0.388            0.389 
+##                7                3                1                3 
+##             0.39            0.391            0.392            0.393 
+##                1                4                3                3 
+##            0.394            0.395            0.396            0.397 
+##                2                6                7                3 
+##     		   ...
+##            0.606            0.607            0.608            0.609 
+##               50               31               40               39 
+##             0.61            0.611            0.612            0.613 
+##               42               49               31               41 
+##            0.614            0.615            0.616            0.617 
+##               49               55               42               39 
+##            ...
+
+</code></pre></div></div>
+
+<p>If I printed them all out, the data set after scoring spreads these
+RT to a</p>
+
+<blockquote>
+  <p>se3[se3$RT &gt;= .607 &amp; se3$RT &lt; .608,]</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      cell rcell   s    BC     CT  RACE   S     C     R        RT
+539     31    16  19 clear   safe white non  TRUE   not 0.6070000
+838     31    16  24 clear   safe white non  TRUE   not 0.6075488
+1909    26    13  39  blur danger white non FALSE shoot 0.6070313
+2108     6     3  44  blur   safe black gun  TRUE shoot 0.6072812
+2321     4     2  50 clear danger black gun  TRUE shoot 0.6079634
+2354    19    10  50 clear danger black non  TRUE   not 0.6071250
+2939    15     8  62 clear   safe white gun FALSE   not 0.6072188
+3083    32    16  62 clear   safe white non FALSE shoot 0.6077683
+3319    12     6  72 clear danger white gun  TRUE shoot 0.6075244
+3762    19    10  82 clear danger black non  TRUE   not 0.6079146
+4802    23    12 120 clear   safe black non  TRUE   not 0.6076951
+5211    17     9 129  blur danger black non  TRUE   not 0.6075976
+5391    19    10 129 clear danger black non  TRUE   not 0.6074063
+6095     1     1 184  blur danger black gun FALSE   not 0.6073125
+7057    10     5 201  blur danger white gun  TRUE shoot 0.6077195
+7201    17     9 201  blur danger black non  TRUE   not 0.6078659
+7288     6     3 214  blur   safe black gun  TRUE shoot 0.6073438
+7345    25    13 214  blur danger white non  TRUE   not 0.6071875
+7747    23    12 218 clear   safe black non  TRUE   not 0.6077439
+8259     8     4 231 clear   safe black gun  TRUE shoot 0.6076707
+8305    19    10 231 clear danger black non  TRUE   not 0.6079390
+8671    12     6 235 clear danger white gun  TRUE shoot 0.6071563
+8923    19    10 247 clear danger black non  TRUE   not 0.6073750
+9002    31    16 247 clear   safe white non  TRUE   not 0.6074375
+9045    31    16 247 clear   safe white non  TRUE   not 0.6070625
+9509    31    16 286 clear   safe white non  TRUE   not 0.6076220
+9551    31    16 286 clear   safe white non  TRUE   not 0.6078415
+9692     6     3 286  blur   safe black gun  TRUE shoot 0.6075732
+9903    27    14 288 clear danger white non  TRUE   not 0.6079878
+10432   25    13 307  blur danger white non  TRUE   not 0.6077927
+10534   10     5 308  blur danger white gun  TRUE shoot 0.6078902
+10666   21    11 308  blur   safe black non  TRUE   not 0.6074688
+10979   16     8 325 clear   safe white gun  TRUE shoot 0.6078171
+11201    9     5 326  blur danger white gun FALSE   not 0.6070937
+11642   19    10 344 clear danger black non  TRUE   not 0.6072500
+11866   25    13 348  blur danger white non  TRUE   not 0.6076463
+
+</code></pre></div></div>
+
+<p>The original data set is to the millisecond scale.</p>
+<blockquote>
+  <p>d[RT == .607]</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       RT   S    BC     CT  RACE     R   s     C
+ 1: 0.607 gun  blur danger black   not  11 FALSE
+ 2: 0.607 non  blur danger black   not  19  TRUE
+ 3: 0.607 non clear   safe white   not  19  TRUE
+ 4: 0.607 gun  blur   safe black shoot  24  TRUE
+ 5: 0.607 non clear danger white   not  28  TRUE
+ 6: 0.607 non clear   safe white   not  37  TRUE
+ 7: 0.607 non  blur danger white shoot  39 FALSE
+ 8: 0.607 non  blur danger black   not  44  TRUE
+ 9: 0.607 gun  blur   safe black shoot  44  TRUE
+10: 0.607 non clear danger black   not  50  TRUE
+11: 0.607 gun clear danger white shoot  50  TRUE
+12: 0.607 gun clear   safe white   not  62 FALSE
+13: 0.607 non clear danger black   not 129  TRUE
+14: 0.607 gun  blur danger black   not 184 FALSE
+15: 0.607 non clear   safe white   not 184  TRUE
+16: 0.607 non  blur danger black   not 184  TRUE
+17: 0.607 gun  blur   safe black shoot 214  TRUE
+18: 0.607 non  blur danger white   not 214  TRUE
+19: 0.607 non clear   safe white   not 218  TRUE
+20: 0.607 gun clear danger white shoot 235  TRUE
+21: 0.607 non clear danger black   not 247  TRUE
+22: 0.607 non clear   safe white   not 247  TRUE
+23: 0.607 non clear   safe white   not 247  TRUE
+24: 0.607 gun clear danger white shoot 288  TRUE
+25: 0.607 non  blur   safe black   not 308  TRUE
+26: 0.607 non clear   safe white   not 325  TRUE
+27: 0.607 gun  blur   safe white shoot 326  TRUE
+28: 0.607 gun  blur danger black shoot 326  TRUE
+29: 0.607 gun  blur danger white   not 326 FALSE
+30: 0.607 non  blur danger black   not 344  TRUE
+31: 0.607 non clear danger black   not 344  TRUE
+       RT   S    BC     CT  RACE     R   s     C
+</code></pre></div></div>
+
+<p>The scored data set, <em>se3</em>, will also attach two new columns, <em>cell</em> and <em>rcell</em>,
+indicating the experimental design.  In this example, it has 32 cell, so
+<em>cell</em> is from 1 to 32 and <em>rcell</em> is from 1 to 16, because this is a two-choice
+experiment, response, <em>shoot</em> and <em>not to shoot</em> in cell 1 and cell 2, belong to
+the same experimental design, but with different response types.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## 1  gun black danger  blur   not     1
+## 2  gun black danger  blur shoot     1
+## 3  gun black danger clear   not     2
+## 4  gun black danger clear shoot     2
+</code></pre></div></div>
+
+<p>A usual practice is to take 3 times the standard deviation, respectively in each
+participants. This can be achieved via <em>tapply</em> function. If the data set is large,
+one can use data.table to achieve the same aim, which I will demonstrate in a
+later tutorial.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sd3 &lt;- tapply(se3$RT, se3$s, mean) + tapply(se3$RT, se3$s, sd) * 3;
+</code></pre></div></div>
+
+<p>A second useful function in <em>rc</em> collection is the <em>make.rc</em>, which does the censoring
+work. It takes a first argument of the scored data set, from <em>score.rc</em> and a
+second argument, <em>correct.name</em>, indicating the character string for the correctness
+column, and the last two arguments, for the lower and upper bounds of the censoring.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>me3 &lt;- make.rc(se3, correct.name = "C", minrt = .2, maxrt = sd3)
+</code></pre></div></div>
+
+<h2 id="how-to-average-across-trials">How to average across trials</h2>
+
+<ul>
+  <li>mv: measurement / dependent variable</li>
+  <li>gvs: grouping variables</li>
+  <li>wvs: within variables</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>acc0 &lt;- summarySE(d, mv = "error", gvs = c("s", "BC", "CT", "RACE", "S"))
+mrt0 &lt;- summarySE(d[C == TRUE], mv = "RT",    gvs = c("s", "BC", "CT", "RACE", "S"))
+## Within se average across subjects for pc and nt
+figA &lt;- summarySEwithin(acc0, wvs = c("BC","CT", "RACE", "S"), mv = "error")
+figB &lt;- summarySEwithin(mrt0, wvs = c("BC","CT", "RACE", "S"), mv = "RT")
+names(figA) &lt;- c("BC", "CT", "RACE", "S", "N", "y", "sd", "se", "ci")
+names(figB) &lt;- c("BC", "CT", "RACE", "S", "N", "y", "sd", "se", "ci")
+</code></pre></div></div>
+
+<h2 id="reference">Reference</h2>
+<p>Ratcliff, R. (1993). Methods for dealing with reaction time outliers. Psychological bulletin, 114(3), 510.</p>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Linear Ballistic Accumulation Model | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Linear Ballistic Accumulation Model" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This lesson demonstrates how to control the “golem” (McElreath, 2016), the canonical linear ballistic accumulation (LBA) model (Brown &amp; Heathcote, 2008). Please refer to the above LBA paper for more details. Here I focus only on how to use this model in the Bayesian MCMC context." />
+<meta property="og:description" content="This lesson demonstrates how to control the “golem” (McElreath, 2016), the canonical linear ballistic accumulation (LBA) model (Brown &amp; Heathcote, 2008). Please refer to the above LBA paper for more details. Here I focus only on how to use this model in the Bayesian MCMC context." />
+<link rel="canonical" href="http://localhost:4000/cognitive-model/lba/" />
+<meta property="og:url" content="http://localhost:4000/cognitive-model/lba/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-07T02:16:21+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/cognitive-model/lba/","headline":"Linear Ballistic Accumulation Model","dateModified":"2018-12-07T02:16:21+00:00","datePublished":"2018-12-07T02:16:21+00:00","description":"This lesson demonstrates how to control the “golem” (McElreath, 2016), the canonical linear ballistic accumulation (LBA) model (Brown &amp; Heathcote, 2008). Please refer to the above LBA paper for more details. Here I focus only on how to use this model in the Bayesian MCMC context.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical normal model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item current"><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Cognitive Model</h2>
+				<h3>Linear Ballistic Accumulation Model</h3>
+			</div>
+			<article class="content">
+				<p>This lesson demonstrates how to control the “golem” (McElreath, 2016), the
+canonical linear ballistic accumulation (LBA) model (Brown &amp; Heathcote, 2008).
+Please refer to the above LBA paper for more details. Here I focus only on 
+how to use this model in the Bayesian MCMC context.</p>
+
+<p>The LBA model posits a latent matching (M) factor and a response factor (R)
+on top of regular experimental factors. For most people who are not familiar
+with the LBA model, the two factors are unfortunately
+confusing.</p>
+
+<p>Also for the modelling technicalities, the LBA model must fix one of the
+parameters in the mean_v or sd_v in at least one design cell. This is to
+serve as scaling purpose, similar to the moment-to-moment variability
+in the decision diffusion model. For example, the following code fixes
+sd_v = 1.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">require</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+<span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">A</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">B</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">mean_v</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">sd_v</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span>
+                   <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+  <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">s1</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">s2</span> <span class="p">=</span> <span class="m">2</span><span class="p">)),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">)),</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">st0</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">sd_v</span> <span class="p">=</span> <span class="m">1</span><span class="p">),</span>
+  <span class="n">responses</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"r1"</span><span class="p">,</span> <span class="s2">"r2"</span><span class="p">),</span>
+  <span class="n">type</span>      <span class="p">=</span> <span class="s2">"norm"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In the above model, I define only one experimental factor, S, for stimulus, which
+has two levels, s1 and s2. The accuracy, reflected by the M factor, is mapped
+by <em>s1 = 1</em> and <em>s2 = 2</em>, meaning that a correct response for s1 (or s2) stimulus
+is response r1 (or r2) and an error response for s1 (or s2) stimulus is
+r2 (or r1). Below I use <em>simulate</em> to generate an example data set.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p.vector &lt;- c(A = .75, B = 1.25, t0 = .15, mean_v.true = 2.5, mean_v.false = 1.5)
+dat &lt;- simulate(model, nsim = 30, ps = p.vector)
+dmi &lt;- BuildDMI(dat, model)  ## DMI stands for data model instance.
+
+dplyr::tbl_df(dmi)
+# A tibble: 60 x 3
+##    S     R        RT
+##    &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt;
+##  1 s1    r1    0.608
+##  2 s1    r1    0.972
+##  3 s1    r2    0.817
+##  4 s1    r1    0.718
+##  5 s1    r1    0.618
+##  6 s1    r1    1.17 
+##  7 s1    r1    0.730
+##  8 s1    r2    0.727
+##  9 s1    r1    0.711
+## 10 s1    r1    0.688
+</code></pre></div></div>
+
+<p>I use an imaginary experiment with a design of one binary stimulus
+factor (S), such as left vs. right motion random dots.</p>
+
+<blockquote>
+  <p>match.map = list(M = list(left = “LEFT”, right = “RIGHT”)),
+responses = c(“LEFT”, “RIGHT”),</p>
+</blockquote>
+
+<p>In another tutorial, I will fit the model to an empirical data
+set (<a href="https:/osf.io/uhejm/">Cox &amp; Criss, 2017</a>) to demonstrate fitting
+HLBA model.</p>
+
+<p>The above <em>match.map</em> code shows the usage of strings, instead of numbers.
+The “left” and “LFET” could mean the random dots moving left and a left
+response. From an experimenter’s perspective, this imaginary experiment
+only has one stimulus (S) factor, which has two levels,
+random dots moving towards right and moving towards left as defined below.</p>
+
+<blockquote>
+  <p>factors = list(S = c(“left”, “right”)),</p>
+</blockquote>
+
+<p>Below is the complete model definition.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">A</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">B</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">mean_v</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span>
+                                 <span class="n">sd_v</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">st0</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">sd_v</span><span class="p">.</span><span class="nb">false</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">mean_v</span><span class="p">.</span><span class="nb">false</span> <span class="p">=</span> <span class="m">0</span><span class="p">),</span>
+  <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">left</span> <span class="p">=</span> <span class="s2">"LEFT"</span><span class="p">,</span> <span class="n">right</span> <span class="p">=</span> <span class="s2">"RIGHT"</span><span class="p">)),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"left"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">)),</span>
+  <span class="n">responses</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"LEFT"</span><span class="p">,</span> <span class="s2">"RIGHT"</span><span class="p">),</span>
+  <span class="n">type</span>      <span class="p">=</span> <span class="s2">"norm"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The first option in the <em>BuildModel</em> function, <em>p.map</em> indicates the
+experimental design. In this example, I assumed the S factor does not affect
+any LBA latent variables operations. Therefore, I entered <em>p.map</em> as:</p>
+
+<blockquote>
+  <p>p.map = list(A = “1”, B = “1”, t0 = “1”, mean_v = “M”,
+             sd_v = “M”, st0 = “1”),</p>
+</blockquote>
+
+<p>The notations of the parameters in the LBA model refer to:</p>
+
+<ol>
+  <li><strong>A</strong>, the variability of the starting point,</li>
+  <li><strong>B</strong>, the travelling distance of accumulators,</li>
+  <li><strong>b</strong>, (not shown in the <em>p.map</em>) the decision threshold,</li>
+  <li><strong>t0</strong>, the non-decision time</li>
+  <li><strong>mean_v</strong>, the means of the drift rates,</li>
+  <li><strong>sd_v</strong>, the standard deviations of the drift rates,</li>
+  <li><strong>st0</strong>, the variability of the non-decision time component.</li>
+</ol>
+
+<p>The <strong>A = “1”</strong>, for instance, indicates that the variability of the
+starting point is fit by the intercept, <em>1</em>. The <em>M</em>
+factor, because it is defined by the LBA model as a latent factor, 
+you still see it in the p.map. It indicates there are two drift rate
+means in <strong>mean_v</strong>, one for each accumulator: the accumulator for the
+correct / matched responses and the accumulator for the error /
+mismatched responses. Similarly, this is also applied to  the standard
+deviation of the drift rates, <strong>sd_v</strong>.</p>
+
+<p>The only effect in the model defined in the <em>p.map</em> is that the
+drift rate for a correct response is larger than that for an
+error response. This is an assumption based on, in general,
+psychological literature.  This is artificially set at</p>
+
+<blockquote>
+  <p>constants = c(st0 = 0, sd_v.false = 1, mean_v.false = 0),</p>
+</blockquote>
+
+<p>which enforces <strong>mean_v.false = 0</strong>. This is to presume
+(also frequent observed phenomenon) that manifested
+accuracy rate should usually be greater than chance (50%).</p>
+
+<p><strong>mean_v.false</strong> stands for the mean of the drift rate
+of the error (false) accumulator. Because it is always zero,
+the correct drift rate, <strong>mean_v.true</strong>, if drawn from a
+truncated normal distribution bounded by 0 and Inf, will
+always be larger than the error drift rate.</p>
+
+<h3 id="demo-1">Demo 1</h3>
+<ol>
+  <li>Fast and error prone performance
+This demonstration shows how I control the LBA golem to
+simulate fast and error prone RT distributions. I defined a
+true parameter vector, defining <strong>sd_v.true</strong> = (0.66),
+which is smaller than <strong>sd_v.false</strong> = 1.  This seems
+often seen in empirical data.</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pvec1 &lt;- c(A = 1, B = 0, t0 = .2, mean_v.true = 1, sd_v.true = 0.66)
+dat1  &lt;- simulate(model, ps = pvec1, nsim = 1e4)
+dmi1  &lt;- BuildDMI(dat1, model)
+</code></pre></div></div>
+
+<p>In the following, I used functions in <em>dplyr</em> to
+print out the mean response times and accuracy for each
+stimulus types. The results showed:</p>
+
+<ol>
+  <li>Error and correct responses have similar average RTs.</li>
+  <li>Stimulus type 1 and stimulus type 2 have similar rates
+of correctness.</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(dplyr)
+
+## dplyr
+library(dplyr)
+dat1$C &lt;- dat1$S == tolower(dat1$R)
+d &lt;- dplyr::tbl_df(dat1)
+
+## Print average RTs and accuracy rates for each condition
+group_by(d, S, C) %&gt;% summarize(m = mean(RT))
+## A tibble: 4 x 3
+## Groups:   S [?]
+##   S     C         m
+##   &lt;fct&gt; &lt;lgl&gt; &lt;dbl&gt;
+## 1 left  FALSE 0.624
+## 2 left  TRUE  0.645
+## 3 right FALSE 0.639
+## 4 right TRUE  0.634
+
+group_by(d, S, C) %&gt;% summarize(m = length(RT) / 1e4)
+## A tibble: 4 x 3
+## Groups:   S [?]
+##   S     C         m
+##   &lt;fct&gt; &lt;lgl&gt; &lt;dbl&gt;
+## 1 left  FALSE 0.391
+## 2 left  TRUE  0.609
+## 3 right FALSE 0.392
+## 4 right TRUE  0.608
+
+## data.table
+library(data.table)
+DT &lt;- data.table(dat1)
+
+## Print average RTs and accuracy for each condition
+DT[, .(MRT = round(mean(RT), 3)), .(S, C)]
+##        S     C   MRT
+## 1:  left  TRUE 0.645
+## 2:  left FALSE 0.624
+## 3: right  TRUE 0.634
+## 4: right FALSE 0.639
+
+prop &lt;- DT[, .N, .(S, C)]
+prop[, NN := sum(N), .(S)]
+prop[, acc := round(N/NN, 2)]
+## Print accuracy rates for each condition
+prop
+
+##        S     C    N    NN  acc
+## 1:  left  TRUE 6092 10000 0.61
+## 2:  left FALSE 3908 10000 0.39
+## 3: right  TRUE 6079 10000 0.61
+## 4: right FALSE 3921 10000 0.39
+</code></pre></div></div>
+
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

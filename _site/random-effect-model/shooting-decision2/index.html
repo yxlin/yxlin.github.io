@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Shooting Decision Model - Empirical Data | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Shooting Decision Model - Empirical Data" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I continued the shooting decision model by fitting the empirical data in study 1 in Pleskac, Cesario and Johnson (2017). First I started from the pre-processing of the data. The aim of the pre-process is to replicate their behaviour analysis, so I can be sure that my data pre-processing is in line with theirs." />
+<meta property="og:description" content="I continued the shooting decision model by fitting the empirical data in study 1 in Pleskac, Cesario and Johnson (2017). First I started from the pre-processing of the data. The aim of the pre-process is to replicate their behaviour analysis, so I can be sure that my data pre-processing is in line with theirs." />
+<link rel="canonical" href="http://localhost:4000/random-effect-model/shooting-decision2/" />
+<meta property="og:url" content="http://localhost:4000/random-effect-model/shooting-decision2/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-07T02:16:21+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/random-effect-model/shooting-decision2/","headline":"Shooting Decision Model - Empirical Data","dateModified":"2018-12-07T02:16:21+00:00","datePublished":"2018-12-07T02:16:21+00:00","description":"I continued the shooting decision model by fitting the empirical data in study 1 in Pleskac, Cesario and Johnson (2017). First I started from the pre-processing of the data. The aim of the pre-process is to replicate their behaviour analysis, so I can be sure that my data pre-processing is in line with theirs.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical normal model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item current"><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Hierarchical Model</h2>
+				<h3>Shooting Decision Model - Empirical Data</h3>
+			</div>
+			<article class="content">
+				<p>I continued the shooting decision model by fitting the empirical data in study 1 in Pleskac,
+Cesario and Johnson (2017). First I started from the pre-processing of the data. The aim
+of the pre-process is to replicate their behaviour analysis, so I can be sure that
+my data pre-processing is in line with theirs.</p>
+
+<p>First, I used a combination of <em>sapply</em> and <em>table</em> functions to check all coding
+numbers in the categorical variables / columns.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(ggdmc)
+dat &lt;- fread("data/race/Study1TrialData.csv")
+dplyr::tbl_df(dat)
+##  A tibble: 5,600 x 11
+##    subject race0W1B object0NG1G conditionRaceObj conditionRace    rt resp0DS1S
+##      &lt;int&gt;    &lt;int&gt;       &lt;int&gt;            &lt;int&gt;         &lt;int&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1       1        1           1                4             2   464         1
+##  2       1        1           0                2             2   658         0
+##  3       1        1           1                4             2   776         1
+##  4       1        0           1                3             1   646         1
+##  5       1        0           0                1             1   624         0
+##  6       1        0           1                3             1   518         1
+##  7       1        1           0                2             2   678         0
+##  8       1        0           1                3             1   511         1
+##  9       1        0           0                1             1   602         1
+## 10       1        1           1                4             2   808         1
+##  ... with 5,590 more rows, and 4 more variables: diffusionRT &lt;dbl&gt;, ybin &lt;int&gt;,
+##    lowerLim &lt;dbl&gt;, upperLim &lt;dbl&gt;
+
+sapply(dat[, c("subject", "race0W1B", "object0NG1G", "conditionRaceObj",
+               "conditionRace", "resp0DS1S")], table)
+## $subject
+## 
+##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22 
+## 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 
+##  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44 
+## 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 
+##  45  46  47  48  49  50  51  52  53  54  55  56 
+## 100 100 100 100 100 100 100 100 100 100 100 100 
+## 
+## $race0W1B
+## 
+##    0    1 
+## 2800 2800 
+## 
+## $object0NG1G
+## 
+##    0    1 
+## 2800 2800 
+## 
+## $conditionRaceObj
+## 
+##    1    2    3    4 
+## 1400 1400 1400 1400 
+## 
+## $conditionRace
+## 
+##    1    2 
+## 2800 2800 
+## 
+## $resp0DS1S
+## 
+##    0    1 
+## 2636 2796
+</code></pre></div></div>
+
+<p>Second, I relabeled their numerical coding to character strings, using <em>ifelse</em> and <em>factor</em>
+functions.  In the “object0NG1G” for example, <em>ifelse</em> function finds “0” and converts it
+to “non”, meaning non-gun condition. Otherwise, it converts any numbers it found to “gun”,
+meaning gun condition. Because I have used <em>table</em> to check all available numbers, leaving
+all other number to else is OK.  <em>factor</em> function converts the integer column (which will
+be interpreted as continuous variable) to categorical (i.e., nominal) variables.</p>
+
+<p>Next, I used the <em>data.table</em> way to remove the redundant columns, because I have
+reformatted them to follow our convention / standard (e.g., using single uppercase letters
+referring to experimental factors).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dat$S    &lt;- factor(ifelse(dat$object0NG1G == 0, "non", "gun"))
+dat$RACE &lt;- factor(ifelse(dat$race0W1B == 0, "white", "black"))
+dat$R    &lt;- factor(ifelse(dat$resp0DS1S == 0, "not", "shoot"))
+dat$RT   &lt;- dat$rt / 1e3
+dat$s    &lt;- factor(dat$subject)
+dat[, c("subject", "race0W1B", "object0NG1G", "conditionRaceObj",
+  "conditionRace", "rt", "resp0DS1S", "diffusionRT", "ybin", "lowerLim", "upperLim") := NULL]
+</code></pre></div></div>
+
+<p>Real data sets often contain some abnormal responses, such as outliers,
+very slow, very quick, and wrong key responses. I used <em>is.nan</em> function to check whether
+the RT columns have this type of responses. <em>is.nan</em> returns a logical vector, indicating
+that if an element it found is “Not a number”, it will return FALSE, otherwise TRUE.
+I then added all elements in the vector to see how many TRUEs (1) are there. Logical TRUE
+in R is interpreted as 1, relative to logical FALSE, which is interpreted as 0.</p>
+
+<p>I found there are 168 such responses, which I removed them by a simple <em>data.table</em>
+syntax and stored the result as <em>d</em>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>is.nan(dat$RT)
+## FALSE FALSE FALSE FALSE FALSE FALSE ...
+sum(is.nan(dat$RT))
+## [1] 168
+d &lt;- dat[!is.nan(dat$RT)]
+</code></pre></div></div>
+
+<p>To help the calculation of the proportions of correct and error responses, I created
+two logical columns, C and error, to store whether a trial records a correct or error
+response.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d$C &lt;- ifelse(d$S == "gun"  &amp; d$R == "shoot",  TRUE,
+       ifelse(d$S == "non" &amp; d$R == "not", TRUE,
+       ifelse(d$S == "gun"  &amp; d$R == "not", FALSE,
+       ifelse(d$S == "non" &amp; d$R == "shoot",  FALSE, NA))))
+d$error &lt;- ifelse(d$S == "gun"  &amp; d$R == "shoot",  FALSE,
+           ifelse(d$S == "non" &amp; d$R == "not", FALSE,
+           ifelse(d$S == "gun"  &amp; d$R == "not", TRUE,
+           ifelse(d$S == "non" &amp; d$R == "shoot",  TRUE, NA))))
+
+</code></pre></div></div>
+
+<p>Next I examine how many trials in each experimental condition. This can be achieved by
+a simple data.table syntax.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d[, .N, .(s, S,  RACE)]
+#        s    S  RACE  N
+#   1:   1  gun black 25
+#   2:   1  non black 25
+#   3:   1  gun white 25
+#   4:   1  non white 25
+#   5:   2  non black 25
+# ---
+# 220:  55  non white 25
+# 221:  56  gun black 25
+# 222:  56  gun white 25
+# 223:  56  non black 25
+# 224:  56  non white 25
+</code></pre></div></div>
+
+<p>Applying <em>table</em> function on the N column in the above resulting data table, I
+can check exactly the per-condition trial numbers.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>table(d[, .N, .(s, S, RACE)]$N)
+## 19  21  22  23  24  25
+##  1   3  11  33  51 125
+</code></pre></div></div>
+
+<p>There are six trial numbers: 19, 21, 22, 23, 24, 25, with mostly subject-conditions
+combination (125) have 25 trials.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nrow(d[, .N, .(s)])
+unique(d$s)
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Fig. 3
+source("~/rc/data.analysis.R")
+source("~/rc/utils.R")
+source("~/functions/summarise.R")
+d
+acc0 &lt;- summarySE(d, mv = "error", gvs = c("s", "RACE", "S"))
+mrt0 &lt;- summarySE(d[C == TRUE], mv = "RT",    gvs = c("s", "RACE", "S"))
+## Within se average across subjects for pc and nt
+figA &lt;- summarySEwithin(acc0, wvs = c("RACE", "S"), mv = "error")
+figB &lt;- summarySEwithin(mrt0, wvs = c("RACE", "S"), mv = "RT")
+names(figA) &lt;- c("RACE", "S", "N", "y", "sd", "se", "ci")
+names(figB) &lt;- c("RACE", "S", "N", "y", "sd", "se", "ci")
+head(figA)
+dplyr::tbl_df(figA)
+levels(figA$RACE)
+figA$RACE &lt;- factor(figA$RACE, levels = c("white", "black"), labels = c("White", "Black"))
+figA$S &lt;- factor(figA$S, levels = c("non", "gun"), labels = c("Non-Gun", "Gun"))
+# figA$gp   &lt;- factor(paste(figA$CT, figA$S),
+#   levels = c("safe non", "safe gun", "danger non", "danger gun"),
+#   labels = c("Neutral Non-Gun", "Neutral Gun", "Dangerous Non-Gun", "Dangerous Gun"))
+
+figB$RACE &lt;- factor(figB$RACE, levels = c("white", "black"), labels = c("White", "Black"))
+figB$S &lt;- factor(figB$S, levels = c("non", "gun"), labels = c("Non-Gun", "Gun"))
+# figB$gp   &lt;- factor(paste(figB$CT, figB$S),
+#   levels = c("safe non", "safe gun", "danger non", "danger gun"),
+#   labels = c("Neutral Non-Gun", "Neutral Gun", "Dangerous Non-Gun", "Dangerous Gun"))
+
+# figA$parameter &lt;- "ER"
+# figB$parameter &lt;- "RT"
+# fig7 &lt;- rbind(figA, figB)
+# head(fig7)
+# Error bars represent standard error of the mean
+p1 &lt;- ggplot(figA, aes(x = S, y = y, fill = RACE)) +
+  geom_bar(position = position_dodge(), color = "black", stat="identity") +
+  geom_errorbar(aes(ymin = y - se, ymax = y + se), width=.1,
+    position=position_dodge(.9)) +
+  coord_cartesian(ylim = c(0, .20)) +
+  scale_fill_manual(values = c("#FFFFFF", "#CCCCCC")) +
+  ylab("Error Rate") +
+  coord_cartesian(ylim = c(0, .08)) +
+
+  # facet_grid(.~BC) +
+  theme_bw() +
+  theme(legend.position = c(.85, .75),
+    strip.background = element_blank(),
+    axis.title.y = element_text(size = 20),
+    strip.text.x = element_text(size = 18),
+    axis.title.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.text.y = element_text(size = 18),
+    axis.text.x = element_blank())
+
+p2 &lt;- ggplot(figB, aes(x = S, y = y, fill = RACE)) +
+  geom_bar(position = position_dodge(), color = "black", stat="identity") +
+  geom_errorbar(aes(ymin = y - se, ymax = y + se), width=.1,
+    position=position_dodge(.9)) +
+  scale_fill_manual(values = c("#FFFFFF", "#CCCCCC")) +
+  ylab("Correct Response Time (s)") +
+  coord_cartesian(ylim = c(.54, .65)) +
+  # facet_grid(.~BC) +
+  theme_bw() +
+  theme(legend.position = "none",
+    strip.text.x = element_blank(),
+    axis.title.y = element_text(size = 20),
+    axis.text.x = element_text(size = 18),
+    axis.text.y = element_text(size = 18),
+    axis.title.x = element_blank())
+
+
+png("figs/race/fig3.png", 800, 600)
+grid.arrange(p1, p2, ncol = 1)
+dev.off()
+
+save(dat, d, file = "data/race/study1.rda")
+
+
+load("data/race/study1.rda")
+
+load("data/race/shoot-decision-recovery.rda")
+
+study3_subset &lt;- study3[, c("s", "S", "RACE", "R", "RT")]
+dplyr::tbl_df(study3_subset)
+
+## A tibble: 12,033 x 5
+##     s     S     RACE   R     RT
+##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt;
+##  1 11    gun   black not   0.753
+##  2 11    non   white shoot 0.851
+##  3 11    gun   black not   0.742
+##  4 11    non   white shoot 0.636
+##  5 11    gun   black shoot 0.644
+##  6 11    non   black not   0.625
+##  7 11    non   white shoot 0.889
+##  8 11    gun   black not   0.597
+##  9 11    gun   white not   0.724
+## 10 11    non   white shoot 0.656
+## ... with 12,023 more rows
+</code></pre></div></div>
+
+<p>To match the abbreviations used in the model object, I changed the “non”, and
+“gun” to “N” and “G” as well as “black” and “white” to “A” and “E”.</p>
+
+<blockquote>
+  <p>study3_subset$S    &lt;- factor(ifelse(study3_subset$S == “non”, “N”, “G”))
+study3_subset$RACE &lt;- factor(ifelse(study3_subset$RACE == “black”, “A”, “E”))</p>
+</blockquote>
+
+<p>Then I converted the <em>data.table</em> to <em>data.frame</em>, which was then bound to the
+model object.</p>
+
+<blockquote>
+  <p>edat &lt;- data.frame(study3_subset);</p>
+</blockquote>
+
+<blockquote>
+  <p>edmi &lt;- BindDataModel(edat, model)</p>
+</blockquote>
+
+<p>Next is just to repeat what I had done in the recovery study.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>path &lt;- "data/race/Study3/DDM/stimulus-threshold.rda"
+ehsam &lt;- run(StartNewHypersamples(5e2, edmi, p.prior, pp.prior, 32),
+  pm = .3, hpm = .3) ## 18 mins
+ehsam &lt;- run(RestartHypersamples(5e2, hsam, thin = 32),
+  pm = .3, hpm = .3) 
+save(model, p.prior, pp.prior, pop.prior, nsubject, ntrial, dat, dmi, hsam,
+       npar, pop.mean, pop.scale, ps, study3, edat, edmi, ehsam, counter,
+       file = path)
+</code></pre></div></div>
+
+<p>I then set up an automatic fitting routine to fit the model until it
+converges.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>counter &lt;- 1
+repeat {
+  ehsam &lt;- run(RestartHypersamples(5e2, hsam, thin = 32),
+    pm = .3, hpm = .3)
+  save(model, p.prior, pp.prior, pop.prior, nsubject, ntrial, dat, dmi, hsam,
+    npar, pop.mean, pop.scale, ps, study3, edat, edmi, ehsam, counter,
+    file = path)
+  rhats &lt;- hgelman(ehsam)
+  counter &lt;- counter + 1
+  thin &lt;- thin * 2
+  if (all(rhats &lt; 1.1) || counter &gt; 1e2) break
+}
+</code></pre></div></div>
+
+<h2 id="model-diagnosis">Model Diagnosis</h2>
+
+<ul>
+  <li>Potential scale reduction factor (psrf)</li>
+  <li>Effective sample sizes</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhats &lt;- hgelman(ehsam)
+# Diagnosing theta for many participants separately
+# Diagnosing the hyper parameters, phi
+# hyper    1     2     3     4     5     6     7     8     9    10    11    12    13
+# 1.03  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
+#   14    15    16    17    18    19    20    21    22    23    24    25    26    27
+# 1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00
+#   28    29    30    31    32    33    34    35    36    37    38
+# 1.00  1.00  1.00  1.00  1.00  1.00  1.01  1.01  1.01  1.01  1.01
+
+effectiveSize(ehsam, hyper = TRUE)
+# a.E.h1 a.A.h1 v.G.h1 v.N.h1   z.h1  sz.h1  sv.h1  t0.h1 a.E.h2 a.A.h2 v.G.h2 v.N.h2
+# 2047   1985   1337   1819   1995    981   1444   2084   1724   1874   1314   1666
+# z.h2  sz.h2  sv.h2  t0.h2
+# 1936   1072   1267   1957
+effectiveSize(ehsam, verbose = TRUE)
+#       a.E  a.A  v.G  v.N    z   sz   sv   t0
+# MEAN 6295 5888 5464 6021 7029 5339 5895 6457
+# SD    940  937  964  922  987  767  948  612
+# MAX  7366 7202 6483 7403 7979 6783 7350 7372
+# MIN  2042 1873 1922 2037 1922 1930 2147 3914
+</code></pre></div></div>
+
+<ul>
+  <li>Trace plots for the log-posterior likelihood at the hyper level</li>
+  <li>Trace plots for hyper parameters</li>
+  <li>Posterior density plots for the hyper parameters</li>
+  <li>Trace plots for the log-posterior likelihood at the data level</li>
+  <li>Posterior density plots for the DDM parameters in the 38 participants</li>
+</ul>
+
+<p>The last figures were not presented here. They were printed separately
+in a pdf file for later checking.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p1 &lt;- plot(ehsam, hyper = TRUE)
+p2 &lt;- plot(ehsam, hyper = TRUE, pll = FALSE)
+p3 &lt;- plot(ehsam, hyper = TRUE, pll = FALSE, den = TRUE)
+p4 &lt;- plot(ehsam)
+p5 &lt;- plot(ehsam, pll = FALSE, den = TRUE) 
+</code></pre></div></div>
+
+<p><img src="/images/random-effect-model/shooting/hyper.png" alt="hyper" /></p>
+
+<p>Because this is not a parameter recovery study, the next step is to estimate
+the DDM parameters. In the race-threshold model, we, following Pleskac, Cesario
+and Johson’s (2017) hypothesis, expected to see a higher
+threshold (at the boundary separation parameter) for a black target than for
+a white target. One particular strength in the hierarchical modeling is that
+we can ask the question that <em>whether this specific hypothesis happens at
+the population level</em>, because the hierarchical modeling assumes the 38
+participants in this study are just a small subset of people the researchers
+(pseudo-)randomly drew from a large population, presumably the
+entire population in U.S.A.  This is in contrast to the fixed-effect model,
+which assumes each participant has her / his own DDM mechanism 
+of data generation. The following is how you may do these in <em>ggdmc</em> syntax.</p>
+
+<p>When entering <strong>hmean = TRUE</strong>, the <em>summary</em> function will calculate the
+average values for the hyper parameters. Similarly, the option,
+<strong>hci = TRUE</strong> triggers the calculation of credible interval at the hyper
+parameters.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hest1 &lt;- summary(hsam, hyper = TRUE, hmean = TRUE)
+hest2 &lt;- summary(hsam, hyper = TRUE, hci = TRUE)
+#    a.E.h1 a.A.h1 v.G.h1 v.N.h1 z.h1 sz.h1 sv.h1 t0.h1
+# h1   1.57   2.60   4.11   3.00 0.48  0.29  0.96  0.22
+# h2   0.53   0.86   0.52   0.68 0.11  0.18  0.52  0.05
+
+# Random-effect model with multiple participants
+#     L 2.5%   50%   97.5% S 2.5%   50%   97.5%
+# a.E   1.39  1.57    1.75   0.41  0.52    0.71
+# a.A   2.32  2.60    2.89   0.67  0.85    1.14
+# v.G   3.88  4.11    4.36   0.34  0.52    0.74
+# v.N   2.75  3.00    3.25   0.50  0.67    0.90
+# z     0.44  0.48    0.51   0.09  0.11    0.14
+# sz    0.09  0.31    0.39   0.10  0.17    0.32
+# sv    0.58  0.98    1.18   0.33  0.50    0.85
+# t0    0.20  0.22    0.23   0.04  0.05    0.07
+</code></pre></div></div>
+
+<p>The results support the hypothesis that black targets result in higher
+decision threshold than white targets (<strong>a.E.h1 = 1.57 [1.39 - 1.75]
+&lt; a.A.h1 = 2.60 [2.32 - 2.89]</strong>).  Note I can make this claim because
+the credible intervals for these two conditions are not overlapped. Also,
+as expected, the drift rate for gun objects is faster than that for the
+non-gun objects (<strong>v.G.h1 = 4.11 [3.88 - 4.36] &gt;
+v.N.h1 = 3.00 [2.75 - 3.25]</strong>).  The finding of boundary separation here
+differs from the result in Pleskac, Cesario, &amp; Johnson (2017, Fig. 9; also
+<em>Threshold separation section</em> on page 18). They did not find threshold
+difference, perhaps because they analyzed four factors, resulting in 
+small trial numbers in each condition. I showed R codes below to print
+this information.</p>
+
+<ul>
+  <li>s: subject</li>
+  <li>S: stimulus, gun vs. nongun</li>
+  <li>B: blur or clear object</li>
+  <li>CT: context, danger or neutral context</li>
+  <li>RACE: black vs. white targets
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>study3[, .N, .(s, S, B, CT, RACE)]
+##        s   S     B     CT  RACE  N
+##   1:  11 gun  blur   safe black 22
+##   2:  11 non  blur   safe white 23
+##   3:  11 gun clear   safe black 19
+##   4:  11 non clear   safe white 18
+##   5:  11 non clear   safe black 21
+##  ---                              
+## 604: 348 gun clear danger black 17
+## 605: 348 non clear danger white 28
+## 606: 348 gun  blur danger white 20
+## 607: 348 non clear danger black 16
+## 608: 348 gun  blur danger black 23
+&gt; range(study3[, .N, .(s, S, B, CT, RACE)]$N)
+## [1]  6 33
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>In case you may be interested, I listed the estimates for each participants below.
+Not every participant has a higher threshold for black targets than white targets.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ests &lt;- summary(hsam)
+round(ests, 2)
+## 
+##       a.E  a.A  v.G  v.N    z   sz   sv   t0
+## 1    1.30 3.38 4.60 2.84 0.40 0.18 1.02 0.17
+## 2    1.25 2.66 3.16 2.99 0.45 0.52 1.97 0.17
+## 3    2.44 3.82 3.61 2.88 0.50 0.42 0.83 0.16
+## 4    2.70 2.10 3.87 2.84 0.49 0.37 0.71 0.16
+## 5    1.92 2.05 4.13 3.16 0.46 0.23 1.34 0.20
+## 6    1.59 2.56 4.10 3.40 0.41 0.27 1.35 0.26
+## 7    1.13 2.91 4.04 3.11 0.42 0.45 0.87 0.21
+## 8    1.83 2.97 4.16 2.69 0.48 0.36 0.62 0.21
+## 9    1.49 1.32 4.37 2.19 0.38 0.31 1.21 0.22
+## 10   1.28 2.88 4.80 1.94 0.48 0.14 1.31 0.27
+## 11   0.99 1.26 4.54 3.27 0.59 0.25 1.05 0.19
+## 12   1.23 4.24 4.42 3.53 0.41 0.22 1.11 0.19
+## 13   1.50 2.17 3.69 3.13 0.51 0.41 1.03 0.17
+## 14   1.90 2.07 4.20 2.59 0.42 0.50 0.63 0.26
+## 15   1.57 3.35 4.33 2.47 0.61 0.21 1.04 0.32
+## 16   1.55 2.89 3.88 3.43 0.33 0.28 1.06 0.21
+## 17   1.22 2.58 4.81 2.95 0.45 0.30 0.41 0.28
+## 18   2.23 0.31 4.37 2.74 0.33 0.49 1.21 0.18
+## 19   1.55 2.77 4.13 3.00 0.40 0.51 0.44 0.22
+## 20   1.20 2.61 4.50 4.04 0.42 0.50 0.45 0.25
+## 21   0.74 2.68 4.41 2.39 0.47 0.25 0.81 0.19
+## 22   1.78 2.89 3.42 3.97 0.64 0.17 2.02 0.14
+## 23   2.25 2.60 3.99 4.02 0.55 0.24 0.96 0.18
+## 24   1.76 2.92 4.69 2.70 0.70 0.44 0.44 0.17
+## 25   0.91 3.45 3.98 2.52 0.72 0.15 0.88 0.32
+## 26   1.33 3.12 3.72 3.56 0.29 0.55 1.17 0.25
+## 27   1.42 2.96 3.72 3.18 0.55 0.20 1.34 0.28
+## 28   1.25 1.95 4.06 1.99 0.45 0.28 1.51 0.30
+## 29   1.21 2.39 4.22 3.69 0.55 0.42 0.73 0.19
+## 30   2.45 2.01 4.71 2.54 0.39 0.19 1.31 0.21
+## 31   1.27 1.71 4.34 3.81 0.45 0.24 0.85 0.17
+## 32   0.82 2.61 3.98 3.24 0.56 0.33 0.87 0.25
+## 33   1.80 2.42 3.51 3.92 0.44 0.21 1.44 0.17
+## 34   1.93 2.49 3.97 2.70 0.62 0.37 1.42 0.32
+## 35   1.42 1.39 3.93 1.60 0.42 0.34 1.44 0.21
+## 36   2.53 4.26 3.60 2.60 0.32 0.25 0.58 0.17
+## 37   1.08 2.86 4.18 3.35 0.52 0.44 0.70 0.22
+## 38   2.06 3.61 4.24 3.11 0.63 0.34 0.61 0.22
+## Mean 1.58 2.61 4.12 3.00 0.48 0.32 1.02 0.22
+</code></pre></div></div>
+
+<h2 id="reference">Reference</h2>
+<p>Pleskac, T.J., Cesario, J. &amp; Johnson, D.J. (2017). How race affects evidence accumulation during the decision to shoot.
+<em>Psychonomic Bulletin &amp; Review</em>, 1-30. https://doi.org/10.3758/s13423-017-1369-6</p>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

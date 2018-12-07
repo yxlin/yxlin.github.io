@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>One Participant | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="One Participant" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Fixed effects models refer to a scenario that each participant / subject has her own parameter generating mechanism. This is relative to another scenario that all participants are under one common mechanism of parameter generation. The latter scenario sometimes is dubbed random effects, hierarchical or multi-level models, although each term has slightly different meanings." />
+<meta property="og:description" content="Fixed effects models refer to a scenario that each participant / subject has her own parameter generating mechanism. This is relative to another scenario that all participants are under one common mechanism of parameter generation. The latter scenario sometimes is dubbed random effects, hierarchical or multi-level models, although each term has slightly different meanings." />
+<link rel="canonical" href="http://localhost:4000/fixed-effect-model/one_participant/" />
+<meta property="og:url" content="http://localhost:4000/fixed-effect-model/one_participant/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-07T02:16:21+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/fixed-effect-model/one_participant/","headline":"One Participant","dateModified":"2018-12-07T02:16:21+00:00","datePublished":"2018-12-07T02:16:21+00:00","description":"Fixed effects models refer to a scenario that each participant / subject has her own parameter generating mechanism. This is relative to another scenario that all participants are under one common mechanism of parameter generation. The latter scenario sometimes is dubbed random effects, hierarchical or multi-level models, although each term has slightly different meanings.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical normal model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item current"><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Fixed Effects Model</h2>
+				<h3>One Participant</h3>
+			</div>
+			<article class="content">
+				<p>Fixed effects models refer to a scenario that each participant / subject
+has her own parameter generating mechanism. This is relative to
+another scenario that all participants are under one common mechanism
+of parameter generation.  The latter scenario sometimes is dubbed
+random effects, hierarchical or multi-level models, although each term has
+slightly different meanings.</p>
+
+<p>In this tutorial, I illustrate the method of conducting Bayesian MCMC sampling
+in the fixed-effects scenario. Given a data set containing (1) response times
+and (2) response choices, our general aim is to estimate the parameters
+generating the response latency and choices. The sampling technique based on
+Bayesian MCMC helps to draw (posterior) samples from the probability
+distribution generating the data, even we do not know the exact
+mathematical form of this particular probability distribution.</p>
+
+<p>For example, we know the <a href="https://en.wikipedia.org/wiki/Gaussian_function">Gaussian (normal distribution) function</a>. If we also know the values of its parameters,
+mean and standard deviation, we can draw its samples by, for instance,
+using R’s <em>rnorm</em> function,</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mu &lt;- 0
+sigma &lt;- 1
+dat &lt;- rnorm(1e3, mu, sigma)
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/Gaussian.png" alt="Gaussian" /></p>
+
+<p>The usual situation is that we would collect data (<em>dat</em>) by inviting
+participants to visit our lab, having them perform some sort of
+cognitive tasks and in the meantime recording their RTs and choices. 
+In this more realistic situation, we need to estimate <em>mu</em>
+and <em>sigma</em>.  Of course, this presumes that if we are willing to
+assume that the Gaussian is the model accounting for participants’
+particular behaviours when they are doing the cognitive tasks.</p>
+
+<p>More often, we would use a popular RT model, diffusion decision model
+(DDM) (Ratcliff &amp; McKoon, 2008)<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. As usual, I firstly set up a model
+object. The <em>type</em> = <strong>“rd”</strong>, refers to Ratcliff’s diffusion model.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">z</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">d</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sz</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sv</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span>
+                   <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+  <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">s1</span> <span class="p">=</span> <span class="s2">"r1"</span><span class="p">,</span> <span class="n">s2</span> <span class="p">=</span> <span class="s2">"r2"</span><span class="p">)),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">)),</span>
+  <span class="n">responses</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"r1"</span><span class="p">,</span> <span class="s2">"r2"</span><span class="p">),</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">st0</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">d</span> <span class="p">=</span> <span class="m">0</span><span class="p">),</span>
+  <span class="n">type</span>      <span class="p">=</span> <span class="s2">"rd"</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">vector</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">v</span> <span class="p">=</span> <span class="m">1.2</span><span class="p">,</span> <span class="n">z</span> <span class="p">=</span> <span class="m">.38</span><span class="p">,</span> <span class="n">sz</span> <span class="p">=</span> <span class="m">.25</span><span class="p">,</span> <span class="n">sv</span> <span class="p">=</span> <span class="m">.2</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="m">.15</span><span class="p">)</span>
+<span class="n">ntrial</span> <span class="p">&lt;-</span> <span class="m">1e2</span>
+<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">simulate</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">nsim</span> <span class="p">=</span> <span class="n">ntrial</span><span class="p">,</span> <span class="n">ps</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">vector</span><span class="p">)</span>
+<span class="n">dmi</span> <span class="p">&lt;-</span> <span class="n">BuildDMI</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="k">model</span><span class="p">)</span>
+<span class="p">##</span> <span class="n">A</span> <span class="n">tibble</span><span class="p">:</span> <span class="m">200</span> <span class="n">x</span> <span class="m">3</span>     <span class="p">##</span> <span class="n">use</span> <span class="n">dplyr</span><span class="p">::</span><span class="n">tbl_df</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span> <span class="k">to</span> <span class="n">print</span> <span class="n">this</span>
+<span class="p">##</span>    <span class="n">S</span>     <span class="n">R</span>        <span class="n">RT</span>
+<span class="p">##</span>    <span class="p">&lt;</span><span class="n">fct</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="n">fct</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="n">dbl</span><span class="p">&gt;</span>
+<span class="p">##</span>  <span class="m">1</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.249</span>
+<span class="p">##</span>  <span class="m">2</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.246</span>
+<span class="p">##</span>  <span class="m">3</span> <span class="n">s1</span>    <span class="n">r2</span>    <span class="m">0.262</span>
+<span class="p">##</span>  <span class="m">4</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.519</span>
+<span class="p">##</span>  <span class="m">5</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.205</span>
+<span class="p">##</span>  <span class="m">6</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.177</span>
+<span class="p">##</span>  <span class="m">7</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.174</span>
+<span class="p">##</span>  <span class="m">8</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.378</span>
+<span class="p">##</span>  <span class="m">9</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.197</span>
+<span class="p">##</span> <span class="m">10</span> <span class="n">s1</span>    <span class="n">r1</span>    <span class="m">0.224</span>
+<span class="p">##</span>  <span class="p">...</span> <span class="k">with</span> <span class="m">190</span> <span class="n">more</span> <span class="n">rows</span>
+
+</code></pre></div></div>
+
+<p>Because the data were simulated from a set of presume true values, <em>p.vector</em>,
+I can use them later to verify whether the sampling process appropriately
+estimates the parameters. In Bayesian statistics, we also need prior
+distributions, so let’s build a set of prior distributions for each
+DDM parameters.</p>
+
+<p>A beta distribution with shape1 = 1 and shape2 = 1, equals to a uniform
+distribution (<em>beta(1, 1)</em>). This is for the start point, <em>z</em>, its variability
+<em>sz</em> and <em>t0</em> parameters. All three are bounded by 0 and 1. Others use
+truncated normal distributions bounding by <em>lower</em> and <em>upper</em> arguments.
+<em>plot</em> draws the prior distribution, providing a visual check method.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p.prior  &lt;- BuildPrior(
+  dists = c(rep("tnorm", 2), "beta", "beta", "tnorm", "beta"),
+  p1    = c(a = 1, v = 0, z = 1, sz = 1, sv = 1, t0 = 1),
+  p2    = c(a = 1, v = 2, z = 1, sz = 1, sv = 1, t0 = 1),
+  lower = c(0, -5, NA, NA, 0, NA),
+  upper = c(5,  5, NA, NA, 5, NA))
+plot(p.prior, ps = p.vector)
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/prior.png" alt="prior" /></p>
+
+<p><em>StartNewsamples</em> use p.prior to randomly draw start points. The
+initialized samples are fed to run function to start sampling. I use
+the repeat function to rerun the sampling until the convenient
+convergence diagnosis index, <em>rhat</em> smaller than 1.1.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>path &lt;- c("data/ggdmc_3_7_DDM.rda")
+fit0 &lt;- run(StartNewsamples(5e2, dmi, p.prior))
+fit &lt;- fit0
+thin &lt;- 1
+repeat {
+  fit &lt;- run(RestartSamples(5e2, fit, thin = thin))
+  save(fit, file = path[1])
+  rhat &lt;- gelman(fit, verbose = TRUE)
+  if (all(rhat$mpsrf &lt; 1.1)) break
+  thin &lt;- thin * 2
+}
+cat("Done ", path[1], "\n")
+</code></pre></div></div>
+
+<p><em>plot</em> by default draws posterior log-likelihood, with the option, <em>start</em>,
+indicating that drawing from 101st sample, instead of from the first one.
+I plot the two posterior log-likelihood samples to show the transit of
+convergence.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p0 &lt;- plot(fit0)
+p1 &lt;- plot(fit0, start = 101)
+
+png("pll.png", 800, 600)
+gridExtra::grid.arrange(p0, p1, ncol = 1)
+dev.off()
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/pll.png" alt="pll" /></p>
+
+<p>The upper panel showed the chains quickly converged to posterior log-likelihoods
+near 100th iteration and the right panel showed all chains converged after 100th
+iterations. I drew final samples (sam) as proper posterior samples. I make
+sure it is converged by using the <em>repeat</em> method.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot(fit, pll = FALSE, den= TRUE)
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/den.png" alt="den" /></p>
+
+<p>In a simulation / parameter-recovery study, we can check whether
+the sampling process is OK, using <em>summary</em></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>est &lt;- summary(fit, recover = TRUE, ps = p.vector, verbose = TRUE)
+##                   a   sv   sz   t0    v    z
+## True           1.00 0.20 0.25 0.15 1.20 0.38
+## 2.5% Estimate  0.95 0.20 0.02 0.14 0.90 0.35
+## 50% Estimate   1.05 1.26 0.29 0.15 1.36 0.39
+## 97.5% Estimate 1.20 2.51 0.58 0.16 2.01 0.42
+## Median-True    0.05 1.06 0.04 0.00 0.16 0.01
+</code></pre></div></div>
+
+<p>Finally, it would be a good idea to check if the model fit the data
+well.  There are many methods to to quantify the goodness of fit.
+Here, I illustrate two methods. First, I use DIC and BPIC. These
+information criteria are useful for model selection. 
+(need &gt; ggdmc 2.5.5)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DIC(fit)  
+BPIC(fit)
+</code></pre></div></div>
+
+<p>Secondly, I simulate post-predictive data, based on the parameter estimates.
+<em>xlim</em> trims off outlier values in the simulation data.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pp &lt;- predict_one(fit, xlim = c(0, 5))
+dat$C &lt;- ifelse(dat$S == "s1"  &amp; dat$R == "r1",  TRUE,
+         ifelse(dat$S == "s2" &amp; dat$R == "r2", TRUE,
+         ifelse(dat$S == "s1"  &amp; dat$R == "r2", FALSE,
+         ifelse(dat$S == "s2" &amp; dat$R == "r1",  FALSE, NA))))
+pp$C &lt;- ifelse(pp$S == "s1"  &amp; pp$R == "r1",  TRUE,
+        ifelse(pp$S == "s2" &amp; pp$R == "r2", TRUE,
+        ifelse(pp$S == "s1"  &amp; pp$R == "r2", FALSE,
+        ifelse(pp$S == "s2" &amp; pp$R == "r1",  FALSE, NA))))
+
+dat$reps &lt;- NA
+dat$type &lt;- "Data"
+pp$reps &lt;- factor(pp$reps)
+pp$type &lt;- "Simulation"
+
+DT &lt;- rbind(dat, pp)
+p1 &lt;- ggplot(DT, aes(RT, color = reps, size = type)) +
+  geom_freqpoly(binwidth = .05) +
+  scale_size_manual(values = c(1, .3)) +
+  scale_color_grey(na.value = "black") +
+  theme(legend.position = "none") +
+  facet_grid(S ~ C)
+
+
+</code></pre></div></div>
+<p><img src="/images/fixed-effect-model/post-predictive.png" alt="post-predictive" /></p>
+
+<p>The grey lines are model predictions. By default, predict_one randomly select 100
+parameter estimates and simulate data based on them.  Therefore, there are 100 grey lines,
+which conveniently shows the variability of prediction. The solid dark line is the
+data, in the case, appropriately fall within the range covering by the grey lines.
+Note that the error responses (FALSE) are not predicted as well as the correct responses.
+This is fairly common, because the number of per-condition trials is only 100.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>This is often dubbed, drift-diffusion model, but in Ratcliff and McKoon’s work, they called it diffusion decision model. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

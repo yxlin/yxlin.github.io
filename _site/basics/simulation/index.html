@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Simulation | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Simulation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This lesson has two sections. First demonstrates a method to simulate one-participant data. The function, simulate, in the ggdmc package creates a data frame based on the parameter vector and the model (both are defined by a user) with nsim observations for each row in model. ps is the true parameter vector." />
+<meta property="og:description" content="This lesson has two sections. First demonstrates a method to simulate one-participant data. The function, simulate, in the ggdmc package creates a data frame based on the parameter vector and the model (both are defined by a user) with nsim observations for each row in model. ps is the true parameter vector." />
+<link rel="canonical" href="http://localhost:4000/basics/simulation/" />
+<meta property="og:url" content="http://localhost:4000/basics/simulation/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-07T02:16:21+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/basics/simulation/","headline":"Simulation","dateModified":"2018-12-07T02:16:21+00:00","datePublished":"2018-12-07T02:16:21+00:00","description":"This lesson has two sections. First demonstrates a method to simulate one-participant data. The function, simulate, in the ggdmc package creates a data frame based on the parameter vector and the model (both are defined by a user) with nsim observations for each row in model. ps is the true parameter vector.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical normal model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item current"><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Modelling Basics</h2>
+				<h3>Simulation</h3>
+			</div>
+			<article class="content">
+				<p>This lesson has two sections.  First demonstrates a method to
+simulate one-participant data. The function, <em>simulate</em>, in the
+<em>ggdmc</em> package creates a data frame based on the parameter vector
+and the model (both are defined by a user) with <em>nsim</em> observations
+for each row in model. <em>ps</em> is the true parameter vector.</p>
+
+<p>Second section shows a method to conduct a process model. Specifically,
+the section conducts a simulation experiment to describe the 
+<em>British tea</em> example on p 37 in Maxwell &amp; Delaney (2004). See
+Maxwell and Delaney (2004) for an analytic method to calculate the
+same probabilities. Here I directly model the <em>Britich tea</em> example,
+approximating the same probabilities. The analytic method is just to
+use a binominal distribution and the idea of combinations and
+permutations.</p>
+
+<h2 id="one-participant-simulation">One-participant simulation</h2>
+
+<p>This line define one S (stimulus) factor with two levels. So this model
+defines one two experimental conditions.</p>
+<blockquote>
+  <p>factors   = list(S = c(“s1”, “s2”)),</p>
+</blockquote>
+
+<p>Below are the R codes for defining a model and for simulating data from
+the model.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">require</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+<span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+   <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">A</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">B</span> <span class="p">=</span> <span class="s2">"R"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">mean_v</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">sd_v</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+   <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">s1</span> <span class="p">=</span> <span class="s2">"r1"</span><span class="p">,</span> <span class="n">s2</span> <span class="p">=</span> <span class="s2">"r2"</span><span class="p">)),</span>
+   <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">)),</span>  <span class="p">##</span> <span class="n">one</span> <span class="n">factor</span> <span class="k">with</span> <span class="n">two</span> <span class="n">levels</span><span class="p">,</span> <span class="n">so</span> <span class="n">only</span>
+   <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">sd_v</span><span class="p">.</span><span class="nb">false</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="m">0</span><span class="p">),</span>
+   <span class="n">responses</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"r1"</span><span class="p">,</span> <span class="s2">"r2"</span><span class="p">),</span>
+   <span class="n">type</span>      <span class="p">=</span> <span class="s2">"norm"</span><span class="p">)</span>
+   
+<span class="n">p</span><span class="p">.</span><span class="n">vector</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">A</span> <span class="p">=</span> <span class="m">.75</span><span class="p">,</span> <span class="n">B</span><span class="p">.</span><span class="n">r1</span> <span class="p">=</span> <span class="m">.25</span><span class="p">,</span> <span class="n">B</span><span class="p">.</span><span class="n">r2</span> <span class="p">=</span> <span class="m">.15</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="m">.2</span><span class="p">,</span> <span class="n">mean_v</span><span class="p">.</span><span class="nb">true</span> <span class="p">=</span> <span class="m">2.5</span><span class="p">,</span>
+               <span class="n">mean_v</span><span class="p">.</span><span class="nb">false</span> <span class="p">=</span> <span class="m">1.5</span><span class="p">,</span> <span class="n">sd_v</span><span class="p">.</span><span class="nb">true</span> <span class="p">=</span> <span class="m">0.5</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This just is to simulate only one observation per condition to check the
+function.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set.seed(123)  ## Set seed to get the same simulation
+dat &lt;- simulate(model, nsim = 1, ps = p.vector)
+##    S  R        RT
+## 1 s1 r1 0.3327392
+## 2 s2 r1 0.3797985
+</code></pre></div></div>
+
+<p>The following simulates 500 observations per condition. So in total,
+there are 1000 observations.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ntrial &lt;- 5e2  ## number of trials per condition
+dat &lt;- simulate(model, nsim = ntrial, ps = p.vector)
+dplyr::tbl_df(dat)
+##  A tibble: 1,000 x 3
+##    S     R        RT
+##    &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt;
+##  1 s1    r2    0.533
+##  2 s1    r2    0.494
+##  3 s1    r1    0.497
+##  4 s1    r2    0.310
+##  5 s1    r1    0.462
+##  6 s1    r2    0.345
+##  7 s1    r2    0.430
+##  8 s1    r1    0.384
+##  9 s1    r2    0.310
+## 10 s1    r1    0.302
+# # ... with 990 more rows
+</code></pre></div></div>
+
+<p>Note that model and data are in fact two separate objects. To fit data
+with certain models, we need to bind them together with <em>BuildDMI</em>.
+This is useful to facilitate model comparison. That is, a data set can
+bind with many different models, so we can compare them to see which
+model may fit the data better so perhaps provide a better account.
+I used a term, data-model instance (dmi), coined by Matthew Gretton.</p>
+<blockquote>
+  <p>dmi &lt;- BuildDMI(dat, model)</p>
+</blockquote>
+
+<p>We can the codes introduced in the “Descriptive Statistics” to check
+the correct 10%, 50%, 90% quantile RTs and accuracy, separately, for
+each level of the stimulus factor.</p>
+
+<p>First I convert the dmi data frame to a data table and then create a
+new accuracy (logical) column, <em>C</em>.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(data.table)
+d &lt;- data.table(dmi)
+d$C &lt;- ifelse(d$S == "s1" &amp; d$R == "r1", TRUE,
+       ifelse(d$S == "s2" &amp; d$R == "r2", TRUE,
+       ifelse(d$S == "s1" &amp; d$R == "r2", FALSE,
+       ifelse(d$S == "s2" &amp; d$R == "r1", FALSE, NA))))
+
+d[, .(q1 = round(quantile(RT, .1), 2),
+      q5 = round(quantile(RT, .5), 2),
+      q9 = round(quantile(RT, .9), 2)), .(C, S)]
+##        C  S   q1   q5   q9
+## 1:  TRUE s1 0.32 0.42 0.56
+## 2:  TRUE s2 0.28 0.39 0.52
+## 3: FALSE s1 0.27 0.37 0.50
+## 4: FALSE s2 0.32 0.39 0.54
+
+pro &lt;- d[, .N, .(C, S)]
+pro[, NN := sum(N), .(S)]
+pro[, value := N/NN]
+cp &lt;- pro[C == TRUE] ## correct percentage
+##       C  S   N  NN value
+## 1: TRUE s1 333 500 0.666
+## 2: TRUE s2 391 500 0.782
+
+ep &lt;- pro[C == FALSE] ## error percentage
+##        C  S   N  NN value
+## 1: FALSE s1 167 500 0.334
+## 2: FALSE s2 109 500 0.218
+</code></pre></div></div>
+
+<p>Plot the RT distributions</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(ggplot2)
+bw &lt;- .01 ## 10 ms binwidth
+p0 &lt;- ggplot(d, aes(RT)) +
+      geom_histogram(binwidth = bw, fill = "white", colour = "black") +
+      facet_grid(.~C) +
+      theme_bw(base_size = 18)
+print(p0)
+</code></pre></div></div>
+
+<p><img src="/images/simulation/density.png" alt="distributions" /></p>
+
+<h2 id="british-tea-example">British tea example</h2>
+
+<p>This section shows how we may test an hypothetical question directly via
+a simulation. Quoted from Maxwell and Delaney (p. 37, 2004)</p>
+
+<blockquote>
+  <p>“A lady declares that by tasting a cup of tea made with milk, she can
+discriminate whether the milk or the tea infusion was first added to the cup.
+We will consider the problem of designing an experiment by means of which this
+assertion can be tested. (Fisher, 1935/1971, p. 11)”</p>
+</blockquote>
+
+<p>This is essential a binominal decision making. That is, the decision maker
+(“the lady”) in question will be presented one cup of tea after another and
+then her task is to decide if the cup is made by milk or tea is added first.</p>
+
+<p>This following function, <em>British.tea</em> implements a process model to
+describe the above “British tea example”. That is, it conducts a simulation
+experiment of presenting 8 (i.e., <em>n</em>) cups of tea to a participant. The
+<em>n</em> equals 8 is decided arbitrarily here.</p>
+
+<p>One additional information (i.e., assumption) is that the participant is
+told half of the cups are milk first and tea and vice versa. So when simulating
+the chance only scenario, we need also to take this into consideration. That is,
+after making a decision for a cup (either MT or TM), the (chance) probability
+state should adjust accordingly.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##' British tea example
+##'
+##' The function runs a simulation study to test the British tea example
+##'
+##' @param the number of observation (cups of tea)
+##' @param correct correct sequence: First four cups are tea and milk
+##  (TM = 1), the next four cups are milk and then tea (MT = 0).
+##' @param verbose print more information
+##'
+##' @export
+British.tea &lt;- function(n = 8, correct = c(1,1,1,1, 0,0,0,0),
+                        verbose = TRUE) {
+
+    MT &lt;- n/2 ## 0 indicates milk and then tea (MT)
+    TM &lt;- n/2 ## 1 indicates tea and then milk (TM)
+
+    ## Create three containers
+    ## 1. x0 is a "n x 2" matrix to store the evolution of chance probabilities
+    ## 2. res is a n-element numeric vector
+    ## 3. acc is a n logical vector; default value is FALSE
+    x0 &lt;- matrix(numeric(n*2), ncol = 2)
+    res &lt;- numeric(n)
+    acc &lt;- rep(FALSE, n)
+
+    ## Begin the experiment, presenting one cup after another
+    for (i in 1:n) {
+        if (verbose) cat("Cup", i, "in total", sum(MT, TM), " cup(s)\n")
+        
+		## store the chance probabilities of MT and TM in probs
+        probs &lt;- c(MT / (MT + TM), TM / (MT + TM))
+        if (verbose) cat("Chances probabilities of (MT, TM): ", probs, "\n")
+        
+        x0[i, ] &lt;- probs
+        decision &lt;- sample(c(0, 1), 1, prob = probs);
+         if (decision == 0) {
+             if (verbose) cat("This cup is made by adding milk first\n")
+             MT &lt;- MT - 1
+             res[i] &lt;- decision
+             if (decision == correct[i]) acc[i] &lt;- TRUE
+         } else if (decision == 1) {
+             if (verbose) cat("This cup is made by adding tea first\n")
+             TM &lt;- TM - 1
+             res[i] &lt;- decision
+             if (decision == correct[i]) acc[i] &lt;- TRUE
+         } else cat("Unexpected situation\n")
+         
+         if (verbose) cat("Current state", i, ": ", c(MT, TM), "\n\n")
+    }
+    if (verbose) cat("Done\n")
+    return(list(x0, res, correct, acc))
+}
+</code></pre></div></div>
+
+<p>The simulation starts from the for loop,</p>
+<blockquote>
+  <p>for (i in 1:n) {…}, which</p>
+</blockquote>
+
+<p>represents presenting a cup of tea after another until the last nth cup.
+Before the participant make a decision regarding each cup of tea, the chance
+probabilities of the two possible outcomes are stored in <em>x0</em> variable.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>probs &lt;- c(probMT, probTM)
+x0[i, ] &lt;- probs
+</code></pre></div></div>
+
+<p>And then the <em>sample</em> function acts as a chance mechanism to simulate the
+participant’s (chance) decision making process.</p>
+<blockquote>
+  <p>decision &lt;- sample(c(0, 1), 1, replace = TRUE, prob = probs);</p>
+</blockquote>
+
+<p>The function randomly choose two numbers, <em>c(0, 1)</em>, with the probabilities,
+<em>probs</em> to for the first and second number.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ## Begin the experiment, presenting one cup after another
+    for (i in 1:n) {
+        if (verbose) cat("Cup", i, "in total", sum(MT, TM), " cup(s)\n")
+        
+        probMT &lt;- MT / (MT + TM)   ## chance probability of MT 0
+        probTM &lt;- TM / (MT + TM)   ## chance probability of TM 1
+        probs  &lt;- c(probMT, probTM)
+        
+        if (verbose) cat("Chances probabilities of (MT, TM): ", probs, "\n")
+        
+        x0[i, ] &lt;- probs
+        decision &lt;- sample(c(0, 1), 1, prob = probs);
+		
+         if (decision == 0) {
+             if (verbose) cat("This cup is made by adding milk first\n")
+             MT &lt;- MT - 1
+             res[i] &lt;- decision
+             if (decision == correct[i]) acc[i] &lt;- TRUE
+         } else if (decision == 1) {
+             if (verbose) cat("This cup is made by adding tea first\n")
+             TM &lt;- TM - 1
+             res[i] &lt;- decision
+             if (decision == correct[i]) acc[i] &lt;- TRUE
+         } else cat("Unexpected situation\n")
+         
+         if (verbose) cat("Current state", i, ": ", c(MT, TM), "\n\n")
+}
+		 
+</code></pre></div></div>
+
+<p>Conduct one experiment and print information</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ncup &lt;- 8
+cor &lt;- c(rep(1, 4), rep(0, 4)); 
+res &lt;- British.tea(ncup, cor, TRUE)
+</code></pre></div></div>
+
+<p>Cup 1 in total 8  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding tea first
+Current state 1 :  4 3</p>
+
+<p>Cup 2 in total 7  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.5714286 0.4285714 
+This cup is made by adding milk first
+Current state 2 :  3 3</p>
+
+<p>Cup 3 in total 6  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding tea first
+Current state 3 :  3 2</p>
+
+<p>Cup 4 in total 5  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.6 0.4 
+This cup is made by adding milk first
+Current state 4 :  2 2</p>
+
+<p>Cup 5 in total 4  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding milk first
+Current state 5 :  1 2</p>
+
+<p>Cup 6 in total 3  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.3333333 0.6666667 
+This cup is made by adding tea first
+Current state 6 :  1 1</p>
+
+<p>Cup 7 in total 2  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  0.5 0.5 
+This cup is made by adding tea first
+Current state 7 :  1 0</p>
+
+<p>Cup 8 in total 1  cup(s).</p>
+
+<p>Chances probabilities of (MT, TM):  1 0 
+This cup is made by adding milk first
+Current state 8 :  0 0</p>
+
+<p>Done</p>
+
+<p>Now I replicate the experiments separately for 512, 4096, 32768,
+262144, and 2097152 times and store each result in a list, called
+<em>exp</em>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>n &lt;- 8^(3:7); 
+exp &lt;- vector("list", length(n))
+
+## Use parallel package to conduct experiments
+## 100.636 s
+library(parallel)
+cl &lt;- makeCluster(detectCores())
+clusterExport(cl, c("British.tea", "ncup", "cor"))
+system.time(
+    for (i in 1:length(n)) {
+        exp[[i]] &lt;- parSapply(cl, 1:n[i], function(i, ...) {British.tea(ncup, cor, FALSE)} )
+    }
+)
+stopCluster(cl)
+## Without using parallel
+## for(i in 1:length(n)) {
+##     exp[[i]] &lt;- replicate(n[i], British.tea(ncup, cor, FALSE))
+## }
+
+res3 &lt;- numeric(length(n)); res3  ## to store the result when 6 corrects
+res4 &lt;- numeric(length(n)); res4  ## to store the result when 8 corrects
+
+## Collect results
+for(i in 1:length(n)) {
+    c3 &lt;- 0
+    c4 &lt;- 0
+    for(j in 1:n[i]) {
+         ## Calculate exactly 4 corrects
+         if(all(exp[[i]][,j][[4]])) c4 &lt;- c4 + 1
+         if(sum(exp[[i]][,j][[4]]) == 6) c3 &lt;- c3 + 1
+    }
+    res3[i] &lt;- c3 / n[i]
+    res4[i] &lt;- c4 / n[i]
+}
+
+
+round(res3, 4) ## [1] 0.2578 0.2324 0.2306 0.2288 0.2286
+round(res4, 4) ## [1] 0.0137 0.0137 0.0140 0.0141 0.0143
+require(ggplot2); require(data.table)
+## Plot the result
+## (How to add differernt horizontal lines on each facet)
+DT &lt;- data.table(x= rep(n, 2), y = c(res3, res4), gp = rep(c("6", "8"), each = 5),
+                 ref = rep(c(16/70, 1/70), each = 5))
+
+## Dashlines show theoretically probabilities
+p0 &lt;- ggplot(DT, aes(x, y)) +
+    geom_point(size = 3) +
+    geom_hline(aes(yintercept = ref), linetype = "dashed") +
+    ## scale_x_log10(name = "N") +
+    xlab("N") + ylab("Probability") +
+    facet_grid(gp~., scales = "free") +
+    theme_bw(base_size = 22) 
+
+print(p0)
+
+</code></pre></div></div>
+
+<p><img src="/images/simulation/tea.png" alt="tea" /></p>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>
