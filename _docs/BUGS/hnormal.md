@@ -83,7 +83,7 @@ the population level and use them to simulate an ideal data set,
 which has 1000 rats and each of them contributes 100 response.
 _tnorm2_ is truncated normal distribution, using mean and precision
 parametrization. When both the upper and lower are set NA, the tnorm
-become normal distribution.
+becomes normal distribution.
 
 ```
 npar <- length(GetPNames(model))
