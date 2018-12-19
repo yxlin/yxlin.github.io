@@ -97,6 +97,8 @@ sum(log(den))
 
 ```
 
+## Maximum likelihood estimation
+
 The following is the objective function.  Note _data_ must be
 a data model instance. This requirement is to use _ggdmc_
 internal to handle many trivialities, for instance, the defective
