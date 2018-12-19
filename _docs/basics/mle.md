@@ -18,8 +18,8 @@ of data preparation, or how to propose parameters according to a
 specific cognitive model.  For example, the non-decision time must not go
 below 0 second. If you do not (or cannot) add this constraint on
 the optimiser (e.g., the R function, _optim_), the resulting
-fit may not converged or the returned estimates (even converged)
-will not be reasonable (psychologically speaking).
+fit may not converge or the estimates (even converged)
+will be unreasonable, psychologically speaking.
 
 Below I use _ggdmc_ to conduct a simulation study to demonstrate the point.
 
