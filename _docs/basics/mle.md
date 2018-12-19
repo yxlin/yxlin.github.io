@@ -101,7 +101,7 @@ The following is the objective function.  Note _data_ must be
 a data model instance. This requirement is to use _ggdmc_
 internal to handle many trivialities, for instance, the defective
 distributions, experimental design, transforming parameter
-($$b = A + B$$).  If you use the bare density function (e.g., n1PDF),
+($$b = A + B$$), etc.  If you use the bare-bones density functions,
 you must handle these trivialities. Also I use negative log likelihood.
 
 ```
@@ -113,10 +113,10 @@ objective_fun <- function(par, data) {
 
 > init_par[3] <- runif(1, 0, min(dmi$RT))
 
-This line makes starting _t0_ not less than the minimal RT in
-the data. This is another psychological consideration. It may help.
-However, it does not guarantee the optimiser won't propose a _t0_
-less than minimal RT in the data.
+This line makes starting non-decision not less than the minimal RT
+in the data. This is another psychological consideration. It may help.
+However, it does not guarantee the optimiser won't propose a non-decision
+time less than minimal RT in the data.
 
 ```
 init_par <- runif(5)
@@ -126,22 +126,22 @@ res <- nlminb(objective_fun, start = init_par, data = dmi, lower = 0)
 round(res$par, 2)  ## remember to check res$convergence
 ```
 
-Below is a list of possible recovered values. The last line show
-the true parameter vector for comparison. The first column shows
-the numbers of trial per condition.  At the size of 1e5, the
-recovered values almost equal to the true values.
+Below is a list of possible estimates. The last line show
+the true parameter vector for the convenience of comparison. The
+first column shows the numbers of trial per condition.  At the
+size of 1e5, the recovered values almost equal to the true values.
 
 ```
-##         A       B      t0 mean_v1 mean_v2
-## 1e2  0.79    0.98    0.17   2.26     0.77
-## 1e2  0.86    1.74    0.04   2.80     1.82 
-## 1e2  0.91    0.67    0.28   2.04     1.02 
-## 1e2  0.72    1.36    0.14   2.74     1.60 
-## 1e3  0.71    1.15    0.16   2.32     1.40 
-## 1e3  0.61    1.63    0.08   2.70     1.76
-## 1e4  0.71    1.28    0.15   2.51     1.50 
-## 1e5  0.75    1.24    0.15   2.49     1.49 
-## true 0.75    1.25    0.15   2.50     1.50
+##         A       B      t0 mean_v.true mean_v.false
+## 1e2  0.79    0.98    0.17   2.26      0.77
+## 1e2  0.86    1.74    0.04   2.80      1.82 
+## 1e2  0.91    0.67    0.28   2.04      1.02 
+## 1e2  0.72    1.36    0.14   2.74      1.60 
+## 1e3  0.71    1.15    0.16   2.32      1.40 
+## 1e3  0.61    1.63    0.08   2.70      1.76
+## 1e4  0.71    1.28    0.15   2.51      1.50 
+## 1e5  0.75    1.24    0.15   2.49      1.49 
+## true 0.75    1.25    0.15   2.50      1.50
 
 ```
 
@@ -152,7 +152,7 @@ will help if we can impose this constraint. Both _optim_ and _nlminb_ offer
 an argument, _lower_, to constraint the parameter proposals.
 However, if you impose the _lower_ constraint, _optim_ allows
 only (?) the optimisation method, "L-BFGS-B", which does
-not handle infinite values. Unfortunately, in fitting the
+not handle well infinite. Unfortunately, in fitting the
 LBA model, it is likely a parameter proposal would result in
 an infinite log-likelihood.
 
@@ -160,7 +160,7 @@ an infinite log-likelihood.
 ## Bonus
 
 A better way to initialise a parameter proposal is to use prior
-distribution.  rprior in ggdmc allows you to do this.
+distributions. _rprior_ in _ggdmc_ allows you to do this.
 
 ```
 p.prior <- BuildPrior(
