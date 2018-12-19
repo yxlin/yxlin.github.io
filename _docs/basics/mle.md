@@ -70,10 +70,10 @@ But if you use the bare-bones LBA density functions, say
 "ggdmc:::n1PDFfixedt0" (meaning node 1 probability density
 function), "ggdmc:::fptcdf" or "ggdmc:::fptpdf", you need to handle
 the calculation of "defective distributions" accordingly. By the
-way, the top x axis in the above figure shows TRUE == correct responses,
-and FALSE == error responses. It is not unusual to observe
-more correct responses than error responses, so the simulation
-produce realistic data.
+way, the top x axis in the above figure labels _TRUE_, representing
+correct responses and _FALSE_, representing error responses. It is
+not unusual to observe more correct responses than error responses, so
+the simulation produces realistic data.
 
 
 ```
