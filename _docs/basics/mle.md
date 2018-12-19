@@ -155,14 +155,13 @@ an argument, _lower_, to constraint the parameter proposals.
 However, if you impose the _lower_ constraint, _optim_ allows
 only (?) the optimisation method, "L-BFGS-B", which does
 not handle well infinite. Unfortunately, in fitting the
-LBA model, it is likely a parameter proposal would result in
-an infinite log-likelihood.
+LBA model, it is likely some parameter proposals result in
+infinite log-likelihoods.
 
 
 ## Bonus
-
 A better way to initialise a parameter proposal is to use prior
-distributions. _rprior_ in _ggdmc_ allows you to do this.
+distributions. _rprior_ in _ggdmc_ allows you to easily do this.
 
 ```
 p.prior <- BuildPrior(
