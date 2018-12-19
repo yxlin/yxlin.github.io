@@ -55,24 +55,30 @@ dmi <- BuildDMI(dat, model)
 
 ## Description statistics
 As a good practice, we would mostly like to check basic descriptive
-statistics.  First let's see the RT distributions.
-
-Note there are two histograms (i.e., distributions). This is one of
-the specifics in the choice RT models. This is sometimes dubbed defective
-distributions, meaning multiple distributions composing a complete model
-(integrated to 1).
-
-The _likelihood_norm_ function in the _ggdmc_ has considered this,
-so you will not see how the internal C++ codes handle this triviality.
-But if you use the early LBA density function, say "ggdmc:::n1PDFfixedt0"
-(meaning node 1 probability density function), "ggdmc:::fptcdf" or
-"ggdmc:::fptpdf", you need to handle the calculation of
-"defective distributions" accordingly.
+statistics.  Let's see the RT distributions.
 
 ![mle_data]({{"/images/basics/mle_data.png" | relative_url}})
 
+Note there are two histograms (i.e., distributions). This is one of
+the specifics in the choice RT models. This is sometimes dubbed defective
+distributions, meaning multiple distributions jointly composing a
+complete model (integrated to 1).
+
+The _likelihood_norm_ function in the _ggdmc_ has considered this,
+so you will not see how the internal C++ codes handle this triviality.
+But if you use the bare-bones LBA density functions, say
+"ggdmc:::n1PDFfixedt0" (meaning node 1 probability density
+function), "ggdmc:::fptcdf" or "ggdmc:::fptpdf", you need to handle
+the calculation of "defective distributions" accordingly. By the
+way, the top x axis in the above figure shows TRUE == correct responses,
+and FALSE == error responses. It is not unusual to observe
+more correct responses than error responses, so the simulation
+produce realistic data.
+
 
 ```
+## This is to create a column in the data frame to indicate
+## correct and error responses.
 dmi$C <- ifelse(dmi$S == "s1" & dmi$R == "r1", TRUE,
          ifelse(dmi$S == "s2" & dmi$R == "r2", TRUE,
          ifelse(dmi$S == "s1" & dmi$R == "r2" ,FALSE,
