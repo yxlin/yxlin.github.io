@@ -35,8 +35,8 @@ challenging for complex models (note this is still a less unexplored topic).
 the detailed balance. It is not imperative to turn off the _migration_ operator. 
 But you need to use it intelligently, because (1)  it is essentially a 
 sampler, similar to random-walk Metropolis, which is very inefficient when
-it works alone and (2) it is designed as a tool to resolve immature convergence
-happening sometimes in the _crossover_ operator.  pMCMC is efficient when
+it works alone and (2) it is designed as a tool to resolve premature convergence
+happening sometimes when using the _crossover_ operator.  pMCMC is efficient when
 a combination of operators is intelligently applied together. **_ggdmc_**
 records rejection rates, allowing the user to monitor a sampler's performance. 
 
