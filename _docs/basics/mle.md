@@ -115,7 +115,7 @@ objective_fun <- function(par, data) {
 
 > init_par[3] <- runif(1, 0, min(dmi$RT))
 
-This line makes starting non-decision not less than the minimal RT
+This line makes starting non-decision time not less than the minimal RT
 in the data. This is another psychological consideration. It may help.
 However, it does not guarantee the optimiser won't propose a non-decision
 time less than minimal RT in the data.
