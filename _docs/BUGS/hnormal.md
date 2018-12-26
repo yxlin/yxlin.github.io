@@ -136,9 +136,11 @@ sstart <- BuildPrior(
 start <- list(pstart, lstart, sstart)
 ```
 
-Next, I set up the structure of the hierarchical model.  The strcuturing is
-conceptually important, so later I sketch a diagram to show where the 
-following prior distributions are in the model.
+Next, I set up the structure of the hierarchical model.  It is 
+important to understand the hierarchical structure, so I sketch a diagram to 
+show how the codes of setting up the prior distributions associate with
+the model structure.
+
 ```
 p.prior  <- BuildPrior(
     dists = rep("tnorm2", npar),
@@ -158,7 +160,7 @@ sigma.prior <- BuildPrior(
     p2    = c(a = 1000,  b = 1000, tau = 1000),
     lower = c(0, 0, 0),
     upper = rep(NA, npar))
-  prior <- list(p.prior, mu.prior, sigma.prior)
+prior <- list(p.prior, mu.prior, sigma.prior)
 
 ```
 ![pop_prior]({{"/images/BUGS/model.png" | relative_url}})
