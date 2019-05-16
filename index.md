@@ -24,21 +24,8 @@ the experimental design. This has been considered in the design of _DMC_
 convenient interface to allow the user to fit many, if not all, different
 experimental designs of, for instance, DDM and LBA model.
 
-3. Differing from _DMC_ (Heathcote, Lin, et al., 2018), with only the DE-MCMC 
-(Turner, Sederberg, Brown, & Steyvers, 2013) sampler, **_ggdmc_** provides a number 
-of different pMCMC samplers. It is up to the user to 
-decide which sampler works best for their models. DE-MCMC is good for models
-with moderate number of parameters, (~ 10), but may find it 
-challenging for complex models (note this is still a less unexplored topic).
-
-4. **_ggdmc_** uses a different variant of _migration_ operator, which safeguards
-the detailed balance. It is not imperative to turn off the _migration_ operator. 
-But you need to use it intelligently, because (1)  it is essentially a 
-sampler, similar to random-walk Metropolis, which is very inefficient when
-it works alone and (2) it is designed as a tool to resolve premature convergence
-happening sometimes when using the _crossover_ operator.  pMCMC is efficient when
-a combination of operators is intelligently applied together. **_ggdmc_**
-records rejection rates, allowing the user to monitor a sampler's performance. 
+3. **_ggdmc_** uses two different variants of _migration_ operator in addition to
+the crossover operator.
 
 ### Getting Started
 
@@ -61,7 +48,7 @@ or from GitHub
 or from source tarball. You can email me at, <yishinlin001@gmail.com>
 to request a free copy of the latest software)
 
-> install.packages("ggdmc_0.2.5.5.tar.gz", repos = NULL, type="source")
+> install.packages("ggdmc_0.2.6.0.tar.gz", repos = NULL, type="source")
 
 #### Load _ggdmc_ Package
 
@@ -69,12 +56,7 @@ to request a free copy of the latest software)
 
 #### FAQ
 
-#### Advertisement
 
-!!!Warning!!! This is an advertisement
-
-I am looking for a job! If you are interested in my Bayesian software here and / or
-my [CUDA C software](https://github.com/TasCL/ppda), please get in touch with me.
 
 
 

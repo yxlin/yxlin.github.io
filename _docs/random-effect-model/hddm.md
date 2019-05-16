@@ -135,7 +135,7 @@ A convention in _ggdmc_ is to bind location and scale prior distributions
 as one list object. This is just for the convenience of data handling
 in R, which is not so convenient in C++.
 ```
-pp.prior <- list(mu.prior, sigma.prior)
+priors <- list(pprior = p.prior, locaton = mu.prior, scale = sigma.prior)
 ```
 
 

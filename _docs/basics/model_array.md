@@ -4,18 +4,37 @@ category: Modelling Basics
 order: 1
 ---
 
-The fundamental concept in any sort of factorial designs is
-a model matrix underlying the assignment of experimental conditions to their
-corresponding cognitive parameters, which often are those cognitive 
-operations that cannot be directly observed, such as memory decay, rates of
-evidence accumulation, and response thresholds. Although in linear regression 
-models one might be interested in examining intercept and slope,
-psychologist often are really interested in the parameters underlying
-cognitive operations. Therefore, the first step in **_ggdmc_** (as well
-as DMC) is to set up a 3-D model array, which serves for this purpose.
+The method **_ggdmc_** adapts different factorial designs is to use
+Boolean model matrices, which associate experimental conditions 
+with latent variables / model (free) parameters. The model parameters
+are often designed to account for cognitive operations that cannot be directly
+observed. Three examples are the rate of the degradation of memory strength,
+the rate of (sensory) evidence accumulation, and the response threshold.
 
+Take regression models for example. One might be interested in examining
+intercepts and slopes, the two regression model parameters by themselves
+usually do not carry psychological meanings.  Of course, one can construct
+a framework to harness the (regression) model parameters. For example,
+in traditional visual search studies, mean response times (MRTs) are 
+often associated with the display sizes and the slopes of 
+the MRT-Display size function were conveniently interpreted as
+search efficiency (Treisman & Gelade, 1980). This was useful strategy as
+a staring point, but needs further refinement to get more insights (e.g.,
+to understand speed-accuracy trade-off issue, serial vs. parallel
+processing etc.).
+
+It is therefore and often needed to refine the basic regression model
+to further accommodate many intricate cognitive constructs. **_ggdmc_**
+hard-wires, the diffusion decision and the linear ballistic models
+and applies the method of Boolean matrices to serve the purpose
+of adapting factorial designs and that of accounting for latent
+variables of RT models.
+
+The first step in **_ggdmc_** is to set up a 3-D model array.
+
+## Build Models
 _BuildModel_ creates a model array, which composes of many model matrices.
-Each of them represents a response.  The content of a model matrix indicates the
+Each of them represents a response. The content of a model matrix indicates the
 correspondence of parameters and design cells. For example, if a data set has
 a two-level stimulus factor, affecting the drift rate (as in DDM), a
 model matrix will have two drift rate parameters, say, v.d1 and v.d2
@@ -23,12 +42,13 @@ model matrix will have two drift rate parameters, say, v.d1 and v.d2
 between an experimental factor and its parameter mapping by examining the
 following example.
 
-# Example 1
-In this example, I used Brown and Heathcote's LBA model (2008) to illustrate, fitting
-data from a single participant. The LBA's _B_ parameter depends only on response (R).
+### Example 1
+In this example, I used the LBA model (Brown and Heathcote, 2008) to illustrate,
+fitting data from a single participant. The LBA's _B_ parameter depends only on
+response (R).
 The mean and the standard deviation of the drift rates depends on M (matching) factor.
 The experimental design has one two-level stimulus factor (S).  The following model
-presume the S factor has no effect on any model parameter.  The accuracy is
+presumes the S factor has no effect on any model parameter.  The accuracy is
 determined by S and R.  The M factor is a specific latent factor just for the LBA
 model.
 

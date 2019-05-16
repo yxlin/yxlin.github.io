@@ -4,18 +4,19 @@ category: Bayesian Basics
 order: 1
 ---
 
-How do we reach decisions to act on something?  One way to answer this question is
-the action driven by a decision would bring positive feedback.
+How do we reach decisions to act on something? One way to answer this question is
+the action driven by a decision bringing positive feedback.
 The feedback is often accompanied by monetary or other forms of rewards;
-thereby motivates us to make such decisions in the future. In
-psychological research, the feedback is usually shown in the form of data,
-which are collected from human and/or animal subjects.  In other words, the
-theories (our _prior beliefs_) behind every decision that entails an
-action (_prediction_) resulting in _data_ affect us. How?
-Often the closer our prediction matches the resultant data, the more rewards we
-might receive.  Hence when there are some mismatches between the predictions
+it thereby motivates us to make such decisions in the future.
+
+In the terminology of psychological experiments, the feedback could conceive as
+been shown in the form of data, which are collected from human and/or animal subjects.
+In other words, the theories (our _prior beliefs_) behind every decision that entails an
+action (_prediction_) and we then collect data to check how close the prediction
+fit the data. How? Often the closer our prediction matches the resultant data, the more rewards
+we might receive.  Hence when there are some mismatches between the predictions
 and the data, we would likely modify our theories/beliefs. They then become
-_posterior belief_. This intuitive idea of human decision-making is
+_posterior belief_.  This intuitive idea of human decision-making is
 described by the well-known Bayes' theorem (Bayes, Price, & Canton, 1763):
 
 $$

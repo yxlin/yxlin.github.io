@@ -6,8 +6,8 @@ order: 2
 
 In this tutorial, I illustrated fitting multiple participants, assuming
 the mechanism of data generation is fixed-effect models. That is, each
-of the participants are accounted for by their separate mechanisms. I also
-assume the LBA model is the mechanism generating the choice RT data.
+participant is accounted for by independent mechanisms. I also
+assume the LBA model is the true RT model.
 
 I made up a two-factor factorial design. The first two-level factor is
 the stimulus (S). Suppose the stimuli have two types: one is low quality
@@ -16,7 +16,7 @@ is normal quality face photo.  The second factor is the frequency (F),
 supposing one type is the celebrity photos, so people perhaps see more often, 
 and the other is the photos of randomly selected strangers.
 
-In the model setting, I presume a rate model, which has its drift rates
+In the model set-up, I presume a rate model, which has its drift rates
 affected by the two factors, S and F.  The latent factor, _M_, is just a
 LBA way to model independent accumulators. Another factor, _R_, not
 explicitly in the factorial design, is an indicator factor, indicating
@@ -24,6 +24,7 @@ the response type affecting the threshold parameter (i.e., accumulators
 traveling distance).
 
 ```
+require(ggdmc)
 model <- BuildModel(
           p.map     = list(A = "1", B = "R", t0 = "1",
             mean_v = c("S", "F", "M"), sd_v = "M", st0 = "1"),
@@ -41,7 +42,7 @@ npar <- length(GetPNames(model))
 ```
 
 To simulate many participants, I set up a population distribution, which
-is a bit of in conflict with the assumption of fixed-effects model. That is,
+is not in line with the assumption of fixed-effects model. That is,
 this way to generate data is to presume that a random-effects model at
 work. For the purpose of illustration, I forgo this issue for now.
 
@@ -68,10 +69,10 @@ pop.prior <- BuildPrior(
 
 ```
 
-
-You may want to visually check how the prior distributions look like.
+We may want to check how the prior distributions look like.
 _ggdmc_ has a _plot_ function to do just that. Note you need to load _ggdmc_
-package (i.e., _require(ggdmc)_) to make _plot_ function polymorphic .
+package (i.e., _require(ggdmc)_) to make _plot_ function changes its default
+behaviour.
 
 ```
 plot(pop.prior)
@@ -83,30 +84,29 @@ plot(pop.prior)
 
 ```
 ## Simulate some data
-dat <- simulate(model, nsim = 250, nsub = 20, p.prior = pop.prior)
-dmi <- BindDataModel(dat, model)
+dat <- simulate(model, nsim = 30, nsub = 8, prior = pop.prior)
+dmi <- BuildDMI(dat, model)
 dplyr::tbl_df(dat)
-## A tibble: 20,000 x 5
+## # A tibble: 960 x 5
 ##    s     S     F     R        RT
 ##    <fct> <fct> <fct> <fct> <dbl>
-##  1 1     s1    f1    r1    0.561
-##  2 1     s1    f1    r1    0.438
-##  3 1     s1    f1    r1    0.568
-##  4 1     s1    f1    r2    0.431
-##  5 1     s1    f1    r1    0.433
-##  6 1     s1    f1    r1    0.577
-##  7 1     s1    f1    r1    0.548
-##  8 1     s1    f1    r1    0.569
-##  9 1     s1    f1    r1    0.532
-## 10 1     s1    f1    r1    0.513
-## ... with 19,990 more rows
-
-
+##  1 1     s1    f1    r1    0.438
+##  2 1     s1    f1    r1    0.517
+##  3 1     s1    f1    r1    0.407
+##  4 1     s1    f1    r1    0.454
+##  5 1     s1    f1    r1    0.449
+##  6 1     s1    f1    r1    0.463
+##  7 1     s1    f1    r1    0.552
+##  8 1     s1    f1    r1    0.411
+##  9 1     s1    f1    r1    0.387
+## 10 1     s1    f1    r1    0.486
+## # ... with 950 more rows
 ```
 
-The true parameter vectors, which were randomly chosen from _pop.prior_, can
-be retrieved by looking up the **parameters** attribute, attached onto the
-_dat_ object.
+The true averaged parameter vectors, which were randomly chosen based
+on _pop.prior_, can be retrieved by looking up the **parameters** attribute,
+attached onto the _dat_ object. However, note the real true values are _pop.mean_ and
+_pop.scale_, because the data are generated based on random-effects model.
 
 ```
 require(matrixStats)
@@ -115,89 +115,41 @@ mu <- round(colMeans2(ps), 2)
 sigma <- round(colSds(ps), 2)
 truevalues <- rbind(mu, sigma)
 colnames(truevalues) <- GetPNames(model)
-##       A B.r1 B.r2   t0 mean_v.s1.f1.true mean_v.s2.f1.true mean_v.s1.f2.true
-## mu 0.41 0.82 0.77 0.10              2.49              3.56              4.50
-## si 0.11 0.10 0.09 0.05              0.21              0.19              0.22
-##    mean_v.s2.f2.true mean_v.s1.f1.false mean_v.s2.f1.false mean_v.s1.f2.false
-## mu              5.49               1.03               1.15               1.08
-## si              0.22               0.15               0.23               0.15
-##    mean_v.s2.f2.false sd_v.true
-## mu               1.11      0.24
-## si               0.16      0.10
-```
 
-Now I am ready to fit the twenty participants. Ideally, I wish to
-fit them with twenty CPU cores, so that would be quicker to finish
-the job. But here I have only a twelve-core machine, so I will fit ten
-participants independently for two runs.
 
-Note that I set the _ncore_ option as 10, indicating that I will launch
-ten separate R processes (at the R level).  In a later tutorial, 
-the solution of multiple core process (i.e., OpenMP at the C++ level) is
-different from the R solution of multiple core, because of the different
-data structure between the hierarchical and single-level models.
-
-Fitting 10 participants will take a while, so I saved the
-data at two stages.
-
-```
-## Sampling -------------
+## Set up prior distributions
 p.prior <- BuildPrior(
   dists = rep("tnorm", npar),
   p1    = pop.mean,
   p2    = pop.scale*20,
   lower = c(rep(0, 4), rep(NA, 8), 0),
   upper = c(rep(NA, npar)))
-plot(p.prior)  ## visual check the prior distributions
 
-thin <- 32
-sam <- run(StartManynewsamples(5e2, dmi, p.prior, thin),
-           ncore = 10, pm = .20)
-save(sam, thin, model, npar, pop.prior, data, dmi, ps, truevalues,
-     p.prior, file = "data/ggdmc_4_5_LBA_analytic.rda")
-sam <- run(RestartManysamples(5e2, sam, thin),
-           ncore = 10, pm = .20)
-save(sam, thin, model, npar, pop.prior, data, dmi, ps, truevalues,
-     p.prior, file = "data/ggdmc_4_5_LBA_analytic.rda")
-```
-
-DE-MCMC is inefficient, comparing to distributed genetic algorithm, in
-handling a complex model with many parameters (> 10). The model here is
-at the level of 13 parameter.  I expected that I will encounter
-some difficult parameter spaces, so I used a simple way to circumvent
-this challenge to search the hard parameter spaces. That is, I used
-R's _repeat_ function to iterate the model fitting. The below code
-checks multivariate potential scale reduction factor (_mpsrf_,
-Brooks & Gelman, 1998), and finished the fit only when _mpsrt_ is
-less than 1.1.
-
-```
-repeat {
-   sam <- run(RestartManysamples(5e2, sam, thin),
-           ncore = 10, pm = .20)
-   save(sam, thin, model, npar, pop.prior, data, dmi, ps, truevalues,
-       p.prior, file = "data/ggdmc_4_5_LBA_analytic.rda")
-   rhats <- gelman(sam) 
-   if (all(unlist(lapply(rhats, function(x) x[[2]])) < 1.1)) break
-}
 
 ```
 
-As always, I need to check if the model fit converged.  I used _plot_ to
-visually check if posterior log-likelihood converged.
+Now we am ready to fit the eight participants. Ideally, this can be
+done simultaneously, if a eight-core machine is available.
+Here I used a four-core machine so launched 2 cores only (_ncore = 2_).
 
-> plot(sam)
+```
+## Sampling -------------
+fit0 <- StartNewsamples(dmi, p.prior, ncore = 2)
+fit  <- run(fit0, 5e2, ncore = 2)
+
+```
+
+Use plot to check whether posterior log-likelihood converged.
+
+> plot(fit)
 
 ![traceplots]({{"/images/fixed-effect-model/many-subjects.png" | relative_url}})
 
-_gelman_ function will print the potential scale reduction
-factor (psrf). If psrf is less than 1.1 or a mores conservative
-criterion, 1.05, it suggests that chains are well-mixed. This is a bit
-of redundant, because my automatic routine had made certain that the fit
-will return psrf's less than 1.1.
+_gelman_ function prints the potential scale reduction
+factor (psrf). A psrf value less than 1.1 suggests chains are well-mixed.
 
 ```
-gelman(sam)
+res <- gelman(fit, verbose = TRUE)
 # Diagnosing theta for many participants separately
 #   15   20   13   18    6   17   12   19    5   11    8    3   16   14    1    2    9
 # 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.02 1.02
@@ -207,18 +159,15 @@ gelman(sam)
 # [1] 1.01
 ```
 
-
-By setting the option, _pll_, which stands for posterior log-likelihood,
-to FALSE and the option, _den_, which stands for density plot, to TRUE , you
+By setting the option, _pll_ (posterior log-likelihood),
+to FALSE and the option, _den_ (density plot), to TRUE , we
 can check the trace plots for each model parameters. Because there are
-twenty participants, it will be difficult to see figures clearly.  I
-plotted them separately in a pdf file to check it. Here showed the posterior
-density plots for one of the participants. Note that because there are
-a lot of data, this would be, perhaps, 100s MB pdf file.
+several participants, the size of the figure is considerably large.
+It may be a better to plot separately in a pdf file and check it later.
 
 ```
 pdf("figs/subjects-density.pdf")
-lapply(sam, ggdmc:::plot.model, pll = FALSE, den = TRUE )
+lapply(fit, ggdmc:::plot.model, pll = FALSE, den = TRUE )
 dev.off()
 ```
 
@@ -241,7 +190,7 @@ You can indicate how many subset of chains to plot, too.
 
 You can also indicate which chains, instead of randomly selecting a subset of chains.
 
-> plot(sam, subchain = TRUE, nsubchain = 4, chains = c(1:3))
+> plot(sam, subchain = TRUE, nsubchain = 4, chains = c(1:4))
 
 ![subchains3]({{"/images/fixed-effect-model/subchain3.png" | relative_url}})
 
