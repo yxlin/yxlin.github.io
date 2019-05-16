@@ -100,8 +100,8 @@ pop.prior <- BuildPrior(
   lower = c(rep(0, 3), .1, rep(NA, 4), 0),
   upper = c(rep(NA, 3), 1, rep(NA, 5)))
 
-dat <- simulate(model, nsim = 250, nsub = 40, p.prior = pop.prior)
-dmi <- BindDataModel(dat, model)
+dat <- simulate(model, nsim = 30, nsub = 40, prior = pop.prior)
+dmi <- BuildDMI(dat, model)
 ps <- attr(dat, "parameters")
 ```
 
@@ -120,13 +120,18 @@ mu.prior <- BuildPrior(
   p2    = c(1,1,1,1,2,2,2,2,1),
   lower = c(0,0,0,.1,NA,NA,NA,NA,0),
   upper = c(NA,NA,NA,NA,NA,NA,NA,NA,NA))
+  
 sigma.prior <- BuildPrior(
   dists = rep("beta", npar),
   p1    = c(A=1, B.r1=1, B.r2=1, t0=1, mean_v.f1.true=1,
             mean_v.f2.true=1, mean_v.f1.false=1, mean_v.f2.false=1,
-           sd_v.true = 1),
+            sd_v.true = 1),
   p2    = rep(1, npar))
-pp.prior <- list(mu.prior, sigma.prior)
+
+###### Must names "pprior", "location", and "scale" to the prirors list  #######
+priors <- list(pprior=p.prior, location=mu.prior, scale=sigma.prior)
+###### Must names "pprior", "location", and "scale" to the prirors list  #######
+
 ```
 
 
@@ -135,13 +140,10 @@ Next, I started the sampling. When the _debug_ argument is set TRUE,
 the _run_ function uses the conventional DE-MCMC sampler, with the
 its original migration operator.
 
-DO NOT use debug.  It is slow.
 ```
-hsam <- run(StartNewHypersamples(nmc = 100, p.prior = p.prior,
-   data = data.model, thin = 2, pp.prior = pp.prior))
-   hsam <- run(RestartHypersamples(512, hsam, thin = 64), pm = 0, hpm = 0)
-save(hsam, dat, dmi, p.prior, pp.prior, thin, pop.mean, pop.scale,
-pop.prior, file = "data/hierarchical/ggdmc_4_6_HLBA1.rda")
+fit0 <- StartNewsamples(dmi, priors)
+fit  <- run(fit0, thin = 8)
+
 ```
 
 ## Model Diagnosis
@@ -151,7 +153,7 @@ potential scale reduction factors (Brook & Gelman,1998). All are less than 1.05,
 suggesting all chains are well mixed.
 
 ```
-rhat <- hgelman(hsam)
+rhat <- hgelman(fit, verbose = TRUE)
 ## hyper     1     2     3     4     5     6     7     8     9    10    11    12    13
 ##  1.02  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01
 ##    14    15    16    17    18    19    20    21    22    23    24    25    26    27

@@ -163,7 +163,7 @@ sigma.prior <- BuildPrior(
 prior <- list(p.prior, mu.prior, sigma.prior)
 
 ```
-![pop_prior]({{"/images/BUGS/model.png" | relative_url}})
+![model structure]({{"/images/BUGS/model.png" | relative_url}})
 
 
 ## Sampling

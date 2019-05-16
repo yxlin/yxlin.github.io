@@ -16,9 +16,9 @@
 <meta property="og:url" content="http://localhost:4000/random-effect-model/hlba/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-12-21T03:39:35+00:00" />
+<meta property="article:published_time" content="2019-03-14T06:58:28+00:00" />
 <script type="application/ld+json">
-{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/random-effect-model/hlba/","headline":"Hierarchical LBA Model","dateModified":"2018-12-21T03:39:35+00:00","datePublished":"2018-12-21T03:39:35+00:00","description":"In this tutorial, I used the DE-MCMC sampler (Turner et al., 2013) to fit a hierarchical LBA model. This particular design has a stimulus (S) and a frequency (F) factor.","@context":"http://schema.org"}</script>
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/random-effect-model/hlba/","headline":"Hierarchical LBA Model","dateModified":"2019-03-14T06:58:28+00:00","datePublished":"2019-03-14T06:58:28+00:00","description":"In this tutorial, I used the DE-MCMC sampler (Turner et al., 2013) to fit a hierarchical LBA model. This particular design has a stimulus (S) and a frequency (F) factor.","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -114,6 +114,8 @@
 									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
 								
 									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/diagnosis/">Checking Fitted Models</a></li>
 								
 							</ul>
 						</li>
@@ -322,8 +324,8 @@ pop.prior &lt;- BuildPrior(
   lower = c(rep(0, 3), .1, rep(NA, 4), 0),
   upper = c(rep(NA, 3), 1, rep(NA, 5)))
 
-dat &lt;- simulate(model, nsim = 250, nsub = 40, p.prior = pop.prior)
-dmi &lt;- BindDataModel(dat, model)
+dat &lt;- simulate(model, nsim = 30, nsub = 40, prior = pop.prior)
+dmi &lt;- BuildDMI(dat, model)
 ps &lt;- attr(dat, "parameters")
 </code></pre></div></div>
 
@@ -341,13 +343,18 @@ mu.prior &lt;- BuildPrior(
   p2    = c(1,1,1,1,2,2,2,2,1),
   lower = c(0,0,0,.1,NA,NA,NA,NA,0),
   upper = c(NA,NA,NA,NA,NA,NA,NA,NA,NA))
+  
 sigma.prior &lt;- BuildPrior(
   dists = rep("beta", npar),
   p1    = c(A=1, B.r1=1, B.r2=1, t0=1, mean_v.f1.true=1,
             mean_v.f2.true=1, mean_v.f1.false=1, mean_v.f2.false=1,
-           sd_v.true = 1),
+            sd_v.true = 1),
   p2    = rep(1, npar))
-pp.prior &lt;- list(mu.prior, sigma.prior)
+
+###### Must names "pprior", "location", and "scale" to the prirors list  #######
+priors &lt;- list(pprior=p.prior, location=mu.prior, scale=sigma.prior)
+###### Must names "pprior", "location", and "scale" to the prirors list  #######
+
 </code></pre></div></div>
 
 <h2 id="sampling">Sampling</h2>
@@ -355,12 +362,9 @@ pp.prior &lt;- list(mu.prior, sigma.prior)
 the <em>run</em> function uses the conventional DE-MCMC sampler, with the
 its original migration operator.</p>
 
-<p>DO NOT use debug.  It is slow.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hsam &lt;- run(StartNewHypersamples(nmc = 100, p.prior = p.prior,
-   data = data.model, thin = 2, pp.prior = pp.prior))
-   hsam &lt;- run(RestartHypersamples(512, hsam, thin = 64), pm = 0, hpm = 0)
-save(hsam, dat, dmi, p.prior, pp.prior, thin, pop.mean, pop.scale,
-pop.prior, file = "data/hierarchical/ggdmc_4_6_HLBA1.rda")
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fit0 &lt;- StartNewsamples(dmi, priors)
+fit  &lt;- run(fit0, thin = 8)
+
 </code></pre></div></div>
 
 <h2 id="model-diagnosis">Model Diagnosis</h2>
@@ -369,7 +373,7 @@ In this tutorial, I did the numerical checks firstly by calculating the
 potential scale reduction factors (Brook &amp; Gelman,1998). All are less than 1.05,
 suggesting all chains are well mixed.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhat &lt;- hgelman(hsam)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhat &lt;- hgelman(fit, verbose = TRUE)
 ## hyper     1     2     3     4     5     6     7     8     9    10    11    12    13
 ##  1.02  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01  1.01
 ##    14    15    16    17    18    19    20    21    22    23    24    25    26    27

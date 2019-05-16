@@ -113,6 +113,8 @@
 								
 									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
 								
+									<li class="nav-item "><a href="/bayes-basics/diagnosis/">Checking Fitted Models</a></li>
+								
 							</ul>
 						</li>
 					
@@ -248,22 +250,8 @@ convenient interface to allow the user to fit many, if not all, different
 experimental designs of, for instance, DDM and LBA model.</p>
   </li>
   <li>
-    <p>Differing from <em>DMC</em> (Heathcote, Lin, et al., 2018), with only the DE-MCMC 
-(Turner, Sederberg, Brown, &amp; Steyvers, 2013) sampler, <strong><em>ggdmc</em></strong> provides a number 
-of different pMCMC samplers. It is up to the user to 
-decide which sampler works best for their models. DE-MCMC is good for models
-with moderate number of parameters, (~ 10), but may find it 
-challenging for complex models (note this is still a less unexplored topic).</p>
-  </li>
-  <li>
-    <p><strong><em>ggdmc</em></strong> uses a different variant of <em>migration</em> operator, which safeguards
-the detailed balance. It is not imperative to turn off the <em>migration</em> operator. 
-But you need to use it intelligently, because (1)  it is essentially a 
-sampler, similar to random-walk Metropolis, which is very inefficient when
-it works alone and (2) it is designed as a tool to resolve premature convergence
-happening sometimes when using the <em>crossover</em> operator.  pMCMC is efficient when
-a combination of operators is intelligently applied together. <strong><em>ggdmc</em></strong>
-records rejection rates, allowing the user to monitor a sampler’s performance.</p>
+    <p><strong><em>ggdmc</em></strong> uses two different variants of <em>migration</em> operator in addition to
+the crossover operator.</p>
   </li>
 </ol>
 

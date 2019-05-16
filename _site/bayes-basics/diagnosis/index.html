@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Checking Fitted Models | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Checking Fitted Models" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This page (temporarily) documents four different plots for checking fitted models. The example simulates a data set from the regression normal model." />
+<meta property="og:description" content="This page (temporarily) documents four different plots for checking fitted models. The example simulates a data set from the regression normal model." />
+<link rel="canonical" href="http://localhost:4000/bayes-basics/diagnosis/" />
+<meta property="og:url" content="http://localhost:4000/bayes-basics/diagnosis/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-14T06:58:28+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/bayes-basics/diagnosis/","headline":"Checking Fitted Models","dateModified":"2019-03-14T06:58:28+00:00","datePublished":"2019-03-14T06:58:28+00:00","description":"This page (temporarily) documents four different plots for checking fitted models. The example simulates a data set from the regression normal model.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical Normal Model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+									<li class="nav-item current"><a href="/bayes-basics/diagnosis/">Checking Fitted Models</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Bayesian Basics</h2>
+				<h3>Checking Fitted Models</h3>
+			</div>
+			<article class="content">
+				<p>This page (temporarily) documents four different plots for checking fitted models. The
+example simulates a data set from the regression normal model.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">rm</span><span class="p">(</span><span class="k">list</span> <span class="p">=</span> <span class="n">ls</span><span class="p">())</span>
+  <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">b</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">tau</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+    <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">,</span>
+    <span class="n">regressors</span><span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span> <span class="m">15</span><span class="p">,</span> <span class="m">22</span><span class="p">,</span> <span class="m">29</span><span class="p">,</span> <span class="m">36</span><span class="p">),</span>
+    <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"x1"</span><span class="p">)),</span>
+    <span class="n">responses</span> <span class="p">=</span> <span class="s2">"r1"</span><span class="p">,</span>
+    <span class="n">constants</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">,</span>
+    <span class="n">type</span>      <span class="p">=</span> <span class="s2">"glm"</span><span class="p">)</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">vector</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="m">242.7</span><span class="p">,</span> <span class="n">b</span> <span class="p">=</span> <span class="m">6.185</span><span class="p">,</span> <span class="n">tau</span> <span class="p">=</span> <span class="m">.01</span><span class="p">)</span>
+  <span class="n">ntrial</span> <span class="p">&lt;-</span> <span class="m">1000</span>
+  <span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">simulate</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">nsim</span> <span class="p">=</span> <span class="n">ntrial</span><span class="p">,</span> <span class="n">ps</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">vector</span><span class="p">)</span>
+  <span class="n">dmi</span> <span class="p">&lt;-</span> <span class="n">BuildDMI</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="k">model</span><span class="p">)</span>
+
+  <span class="n">npar</span> <span class="p">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">GetPNames</span><span class="p">(</span><span class="k">model</span><span class="p">))</span>
+  <span class="n">start</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+    <span class="n">dists</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"tnorm2"</span><span class="p">,</span> <span class="s2">"tnorm2"</span><span class="p">,</span> <span class="s2">"gamma"</span><span class="p">),</span>
+    <span class="n">p1</span>    <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="m">240</span><span class="p">,</span> <span class="n">b</span> <span class="p">=</span> <span class="m">6</span><span class="p">,</span> <span class="n">tau</span> <span class="p">=</span> <span class="m">.01</span><span class="p">),</span>
+    <span class="n">p2</span>    <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="m">1e-6</span><span class="p">,</span> <span class="n">b</span> <span class="p">=</span> <span class="m">1e-6</span><span class="p">,</span> <span class="n">tau</span> <span class="p">=</span> <span class="m">.1</span><span class="p">),</span>
+    <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">NA</span><span class="p">,</span> <span class="n">NA</span><span class="p">),</span>
+    <span class="n">upper</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">npar</span><span class="p">))</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">prior</span>  <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+    <span class="n">dists</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"tnorm2"</span><span class="p">,</span> <span class="s2">"tnorm2"</span><span class="p">,</span> <span class="s2">"gamma"</span><span class="p">),</span>
+    <span class="n">p1</span>    <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="m">200</span><span class="p">,</span> <span class="n">b</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">tau</span> <span class="p">=</span> <span class="m">.1</span><span class="p">),</span>
+    <span class="n">p2</span>    <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="m">1e-6</span><span class="p">,</span> <span class="n">b</span> <span class="p">=</span> <span class="m">1e-6</span><span class="p">,</span> <span class="n">tau</span> <span class="p">=</span> <span class="m">.1</span><span class="p">),</span>
+    <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">NA</span><span class="p">,</span> <span class="n">NA</span><span class="p">),</span>
+    <span class="n">upper</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">npar</span><span class="p">))</span>
+  
+  <span class="p">##</span> <span class="n">Sampling</span> <span class="p">-----------</span>
+  <span class="n">fit0</span> <span class="p">&lt;-</span> <span class="n">Start_glm</span><span class="p">(</span><span class="m">5e2</span><span class="p">,</span> <span class="n">dmi</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">thin</span> <span class="p">=</span> <span class="m">8</span><span class="p">)</span>
+  <span class="n">fit</span> <span class="p">&lt;-</span> <span class="nf">run</span><span class="p">(</span><span class="n">fit0</span><span class="p">,</span> <span class="n">pm0</span> <span class="p">=</span> <span class="m">.05</span><span class="p">)</span>
+  <span class="n">fit</span> <span class="p">&lt;-</span> <span class="nf">run</span><span class="p">(</span><span class="n">RestartSamples</span><span class="p">(</span><span class="m">5e2</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">thin</span> <span class="p">=</span> <span class="m">8</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<h2 id="trace-and-density-plots">Trace and density plots</h2>
+<p>The first two are trace and density plots.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p0 &lt;- plot(fit)
+p1 &lt;- plot(fit, pll = FALSE, den = TRUE)
+</code></pre></div></div>
+
+<p><img src="/images/bayes/tracedensity.png" alt="trace and density" /></p>
+
+<h2 id="autocorrelation-plots">Autocorrelation plots</h2>
+<p>The third is the autocorrelation plot. This first figure plots all chains
+and the second randomly selects a subset of three chains to construct the figure.
+The latter function is useful when fitting a model with many parameters and
+the model fit uses a large number of chains. By default, the “autocor” calculates
+to 50 lags.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p2 &lt;- autocor(fit)
+p3 &lt;- autocor(fit, nsubchain = 3)
+</code></pre></div></div>
+<p><img src="/images/bayes/auto.png" alt="autocorrelation" /></p>
+
+<h2 id="correlation-matrix">Correlation matrix</h2>
+<p>The fourth is the plot of correlation matrix.  This plot is useful to check (post hoc)
+the association among model parameters. This needs to use the ggpairs function in
+GGally package.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pairs.model &lt;- function(x, start = 1, end = NA, ...) {
+
+  if (x$n.chains == 1) stop ("MCMC needs multiple chains to check convergence")
+  if (is.null(x$theta)) stop("Use hyper mcmc_list")
+  if (is.na(end)) end &lt;- x$nmc
+  if (end &lt;= start) stop("End must be greater than start")
+
+  d &lt;- ConvertChains(x, start, end, FALSE)
+  D_wide &lt;- data.table::dcast.data.table(d, Iteration + Chain ~ Parameter, value.var = "value")
+
+  bracket_names &lt;- names(D_wide)
+  par_cols &lt;- !(bracket_names %in% c("Iteration", "Chain"))
+  p0 &lt;- GGally::ggpairs(D_wide, columnLabels = bracket_names[par_cols],
+                        columns = which(par_cols), ...)
+  print(p0)
+  return(invisible(p0))
+}
+
+p5 &lt;- pairs.model(fit)
+p6 &lt;- pairs.model(fit, lower = list(continuous = "density"))
+</code></pre></div></div>
+
+<p><img src="/images/bayes/pairs2.png" alt="pairs2" /></p>
+
+<p>The additional option in p6 is to choose to plot density contour.</p>
+<blockquote>
+  <p>lower = list(continuous = “density”)</p>
+</blockquote>
+
+<p><img src="/images/bayes/pairs1.png" alt="pairs1" /></p>
+
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

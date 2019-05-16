@@ -10,15 +10,15 @@
 <meta name="generator" content="Jekyll v3.7.2" />
 <meta property="og:title" content="Model Array" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="The fundamental concept in any sort of factorial designs is a model matrix underlying the assignment of experimental conditions to their corresponding cognitive parameters, which often are those cognitive operations that cannot be directly observed, such as memory decay, rates of evidence accumulation, and response thresholds. Although in linear regression models one might be interested in examining intercept and slope, psychologist often are really interested in the parameters underlying cognitive operations. Therefore, the first step in ggdmc (as well as DMC) is to set up a 3-D model array, which serves for this purpose." />
-<meta property="og:description" content="The fundamental concept in any sort of factorial designs is a model matrix underlying the assignment of experimental conditions to their corresponding cognitive parameters, which often are those cognitive operations that cannot be directly observed, such as memory decay, rates of evidence accumulation, and response thresholds. Although in linear regression models one might be interested in examining intercept and slope, psychologist often are really interested in the parameters underlying cognitive operations. Therefore, the first step in ggdmc (as well as DMC) is to set up a 3-D model array, which serves for this purpose." />
+<meta name="description" content="The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold." />
+<meta property="og:description" content="The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold." />
 <link rel="canonical" href="http://localhost:4000/basics/model_array/" />
 <meta property="og:url" content="http://localhost:4000/basics/model_array/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-12-21T03:39:35+00:00" />
+<meta property="article:published_time" content="2019-03-14T06:58:28+00:00" />
 <script type="application/ld+json">
-{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/basics/model_array/","headline":"Model Array","dateModified":"2018-12-21T03:39:35+00:00","datePublished":"2018-12-21T03:39:35+00:00","description":"The fundamental concept in any sort of factorial designs is a model matrix underlying the assignment of experimental conditions to their corresponding cognitive parameters, which often are those cognitive operations that cannot be directly observed, such as memory decay, rates of evidence accumulation, and response thresholds. Although in linear regression models one might be interested in examining intercept and slope, psychologist often are really interested in the parameters underlying cognitive operations. Therefore, the first step in ggdmc (as well as DMC) is to set up a 3-D model array, which serves for this purpose.","@context":"http://schema.org"}</script>
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/basics/model_array/","headline":"Model Array","dateModified":"2019-03-14T06:58:28+00:00","datePublished":"2019-03-14T06:58:28+00:00","description":"The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold.","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -114,6 +114,8 @@
 									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
 								
 									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/diagnosis/">Checking Fitted Models</a></li>
 								
 							</ul>
 						</li>
@@ -223,18 +225,37 @@
 				<h3>Model Array</h3>
 			</div>
 			<article class="content">
-				<p>The fundamental concept in any sort of factorial designs is
-a model matrix underlying the assignment of experimental conditions to their
-corresponding cognitive parameters, which often are those cognitive 
-operations that cannot be directly observed, such as memory decay, rates of
-evidence accumulation, and response thresholds. Although in linear regression 
-models one might be interested in examining intercept and slope,
-psychologist often are really interested in the parameters underlying
-cognitive operations. Therefore, the first step in <strong><em>ggdmc</em></strong> (as well
-as DMC) is to set up a 3-D model array, which serves for this purpose.</p>
+				<p>The method <strong><em>ggdmc</em></strong> adapts different factorial designs is to use
+Boolean model matrices, which associate experimental conditions 
+with latent variables / model (free) parameters. The model parameters
+are often designed to account for cognitive operations that cannot be directly
+observed. Three examples are the rate of the degradation of memory strength,
+the rate of (sensory) evidence accumulation, and the response threshold.</p>
 
+<p>Take regression models for example. One might be interested in examining
+intercepts and slopes, the two regression model parameters by themselves
+usually do not carry psychological meanings.  Of course, one can construct
+a framework to harness the (regression) model parameters. For example,
+in traditional visual search studies, mean response times (MRTs) are 
+often associated with the display sizes and the slopes of 
+the MRT-Display size function were conveniently interpreted as
+search efficiency (Treisman &amp; Gelade, 1980). This was useful strategy as
+a staring point, but needs further refinement to get more insights (e.g.,
+to understand speed-accuracy trade-off issue, serial vs. parallel
+processing etc.).</p>
+
+<p>It is therefore and often needed to refine the basic regression model
+to further accommodate many intricate cognitive constructs. <strong><em>ggdmc</em></strong>
+hard-wires, the diffusion decision and the linear ballistic models
+and applies the method of Boolean matrices to serve the purpose
+of adapting factorial designs and that of accounting for latent
+variables of RT models.</p>
+
+<p>The first step in <strong><em>ggdmc</em></strong> is to set up a 3-D model array.</p>
+
+<h2 id="build-models">Build Models</h2>
 <p><em>BuildModel</em> creates a model array, which composes of many model matrices.
-Each of them represents a response.  The content of a model matrix indicates the
+Each of them represents a response. The content of a model matrix indicates the
 correspondence of parameters and design cells. For example, if a data set has
 a two-level stimulus factor, affecting the drift rate (as in DDM), a
 model matrix will have two drift rate parameters, say, v.d1 and v.d2
@@ -242,12 +263,13 @@ model matrix will have two drift rate parameters, say, v.d1 and v.d2
 between an experimental factor and its parameter mapping by examining the
 following example.</p>
 
-<h1 id="example-1">Example 1</h1>
-<p>In this example, I used Brown and Heathcote’s LBA model (2008) to illustrate, fitting
-data from a single participant. The LBA’s <em>B</em> parameter depends only on response (R).
+<h3 id="example-1">Example 1</h3>
+<p>In this example, I used the LBA model (Brown and Heathcote, 2008) to illustrate,
+fitting data from a single participant. The LBA’s <em>B</em> parameter depends only on
+response (R).
 The mean and the standard deviation of the drift rates depends on M (matching) factor.
 The experimental design has one two-level stimulus factor (S).  The following model
-presume the S factor has no effect on any model parameter.  The accuracy is
+presumes the S factor has no effect on any model parameter.  The accuracy is
 determined by S and R.  The M factor is a specific latent factor just for the LBA
 model.</p>
 
