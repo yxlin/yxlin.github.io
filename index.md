@@ -5,24 +5,21 @@ This is the tutorial site for the software, [ggdmc](https://github.com/yxlin/ggd
 
 The package, evolving from dynamic model of choice (_DMC_,
 Heathcote, Lin, et al., 2018), is a generic tool for conducting Bayesian Computations 
-on cognitive models, with a specific emphasis on the challenging hierarchical models
-and likelihood approximation methods.
+on cognitive models, with a specific emphasis on the challenging hierarchical
+choice response-time models.
 
 1. Instead of using Gibbs or HMC, **_ggdmc_** uses population-based MCMC (pMCMC) 
-samplers. A notable Gibbs example is the Gibbs-based Python software,
-HDDM (Wiecki, Sofer & Frank, 2013), which fit the Wiener diffusion model.
-This specific diffusion model presumes no variability at the starting point
-and drift rates.
+samplers. A notable Gibbs example for the diffusion model is the Gibbs-based
+Python software, HDDM (Wiecki, Sofer & Frank, 2013). This Python-based method
+does not have convenient interface to model the parameter variability. We expand
+this in our software.
 
-2. An HMC example aiming for conducting Bayesian RT models is Ahn, Haines, and
-Zhang's _hBayesDM_, which is an R package providing convenient wrapper functions
-for the well-known Stan software. That is, the user needs to write their own Stan
-codes or modify the DDM / LBA Stan codes, packaged together in _hBayesDM_ for
-the specific models / probability density functions, even just a change in
-the experimental design. This has been considered in the design of _DMC_
-(Heathcote et al., 2018), which _ggdmc_ also includes, is that we provide a
-convenient interface to allow the user to fit many, if not all, different
-experimental designs of, for instance, DDM and LBA model.
+2. An HMC example aiming for conducting hierarchical Bayesian models is Ahn, Haines,
+and Zhang's _hBayesDM_, which is an R package providing convenient wrapper functions
+for the well-known Stan software. It is a great package and has included interface to
+fit models for different cognitive task.  However, in _hBayesDM_, the user still needs
+to modify their own Stan codes for models when s/he uses different designs, not included
+in the package.  _DMC_ expands this function, (Heathcote et al., 2018), so does _ggdmc_.
 
 3. **_ggdmc_** uses two different variants of _migration_ operator in addition to
 the crossover operator.
