@@ -15,7 +15,7 @@ Some pre-analysis set up work.
 ## version 0.2.6.0
 ## install.packages("ggdmc")
 require(ggdmc)
-## The following three packages are to support plotting figures.
+## The following three packages are for plotting figures.
 library(ggplot2); library(gridExtra); library(ggthemes)
 
 ## A function for generating posterior predict samples
