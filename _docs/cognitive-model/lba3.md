@@ -4,8 +4,8 @@ category: Cognitive Model
 order: 7
 ---
 
-> The author has striven to minimize the number of errors, but no guarantee is made as to accuracy
-> of the contents of this note.
+> We have striven to minimize the number of errors. However, we canot 
+> guarantee the note is 100% accurate.
 
 This is a note for fitting 3-accumulator LBA model.
 
