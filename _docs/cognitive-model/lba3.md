@@ -227,14 +227,41 @@ We ran another 500 (default) iteration and took a sample every 4 iteration.
 
 ```
 ## ?run to see add and other options in run function
-## Watch out! This would take up about 20 mins in a not-so-good CPU.
-fit <- run(fit, thin=4)
+## Watch out! This would take a while (~ 1 hr or more depending on your CPU)
+fit <- run(fit, thin=8)
 
 ## The three follow-up checks show the chains are converged and we have drawn
 ## sufficient size of samples.
 plot(fit)
+
 es <- effectiveSize(fit)
+# A        B       t0 mean_v.W mean_v.N mean_v.P 
+# 212.5132 103.6891 121.6212 182.8602 153.9862 138.6604 
+
+
 gelman(fit)
+# Potential scale reduction factors:
+#   
+#   Point est. Upper C.I.
+# A              1.09       1.13
+# B              1.19       1.28
+# t0             1.15       1.23
+# mean_v.W       1.11       1.17
+# mean_v.N       1.14       1.20
+# mean_v.P       1.14       1.21
+# 
+# Multivariate psrf
+# 
+# 1.23
+
+est <- summary(fit, ps = p.vector, verbose = TRUE, recovery = TRUE)
+#                    A     B mean_v.N mean_v.P mean_v.W   t0
+# True            1.25  0.25     1.50     1.20     2.50 0.20
+# 2.5% Estimate   1.07  0.20     1.15     0.92     2.21 0.19
+# 50% Estimate    1.17  0.24     1.33     1.10     2.39 0.20
+# 97.5% Estimate  1.28  0.27     1.50     1.28     2.56 0.21
+# Median-True    -0.08 -0.01    -0.17    -0.10    -0.11 0.00
+
 
 ```
 
@@ -302,10 +329,9 @@ print(p1)
 ```
 
 
-
 ## Appendix
 If data were stored by a previous version or by DMC, their arraies and matrices
-are arranged differently as noted at https://github.com/yxlin/ggdmc. The 
+are arranged differently as noted [here](https://github.com/yxlin/ggdmc). The 
 following is one way to tranpose arraies and matrices.
 
 ```
