@@ -1,6 +1,6 @@
 ---
 title: Multiple Participants
-category: Fixed Effects Model
+category: Fixed-effects Model
 order: 2
 ---
 
