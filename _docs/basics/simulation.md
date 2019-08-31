@@ -212,12 +212,14 @@ British.tea <- function(n = 8, correct = c(1,1,1,1, 0,0,0,0),
 }
 ```
 
-The simulation starts from the for loop, 
-> for (i in 1:n) {...}, which
+The simulation starts from the for loop.
 
-represents presenting a cup of tea after another until the last nth cup.
-Before the participant make a decision regarding each cup of tea, the chance
-probabilities of the two possible outcomes are stored in _x0_ variable.
+> for (i in 1:n) {...}
+
+The for loop presents a cup of tea after another until the nth cup.
+Before the participant make a decision, the chance probabilities of the two 
+possible outcomes are stored in _x0_ variable.
+
 ```
 probs <- c(probMT, probTM)
 x0[i, ] <- probs

@@ -38,7 +38,7 @@ people's decision threshold, their decision rate, or both. In the first model,I
 set up a race-threshold model as model1. Below is a list of the abbreviations
 for each experimental factor.
 
-1. RACE: the stimulus shows a African American (A) vs. a European American (E)
+1. RACE: the stimulus shows an African American (A) or a European American (E)
 2. S: the stimulus shows one holding a gun (G) or other object (N, not a gun)
 3. R: response to "shoot" or "not" to shoot
 
