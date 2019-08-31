@@ -14,9 +14,8 @@ Some pre-analysis set up work.
 ```
 ## version 0.2.6.0
 ## install.packages("ggdmc")
-require(ggdmc)
-## The following three packages are for plotting figures.
-library(ggplot2); library(gridExtra); library(ggthemes)
+loadedPackages <-c("ggdmc", "data.table", "ggplot2", "gridExtra", "ggthemes")
+sapply(loadedPackages, require, character.only=TRUE)
 
 ## A function for generating posterior predict samples
 predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
@@ -80,21 +79,29 @@ predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
 ```
 
 In this example, we assumed three accumulators corresponding to three responses. 
-Let's say they are "Word", "Nonword", or "Pseudo-word". They are coded r
-espectively as W, N and P. This is to assume we had run some (visual) 
+Let's say they are "Word", "Nonword", or "Pseudo-word". They are coded 
+respectively as W, N and P. This is to assume we had run some (visual) 
 lexical-decision experiments, instructing participants to decide whether a 
 stimulus is a word, a non-word, or a make-up word. The three types of stimuli 
 are coded as ww, nn and pn.
 
 ```
 model <- BuildModel(
-  p.map     = list(A = "1", B = "1", t0 = "1", mean_v = "M", sd_v = "1",
+  p.map     = list(A = "1", B = "1", t0 = "1", mean_v = "R", sd_v = "1",
                    st0 = "1"),
-  match.map = list(M = list(s1 = 1, s2 = 2)),
-  factors   = list(S = c("s1", "s2")),
+  match.map = list(M = list(ww = "W", nn = "N", pn = "P")),
+  factors   = list(S = c("ww", "nn", "pn")),
   constants = c(st0 = 0, sd_v = 1),
-  responses = c("r1", "r2"),
+  responses = c("W", "N", "P"),
   type      = "norm")
+## Parameter vector names are: ( see attr(,"p.vector") )
+## [1] "A"        "B"        "t0"       "mean_v.W" "mean_v.N" "mean_v.P"
+## 
+## Constants are (see attr(,"constants") ):
+##  st0 sd_v 
+##    0    1 
+## 
+## Model type = norm (posdrift = TRUE ) 
 ```
 
 
@@ -103,16 +110,75 @@ a parameter vector with specific values and on the basis of this particular
 parameter vector, we simulated a data set and fit such data set with the
 model to see if it could recover the values reasonably well.
 
-In this demonstration, we will show the recovery study.  If you have
-empirical data and are happy to contribute, please let us know.
+For now, we will show only the recovery study. We designated a true parameter
+vector.
 
 ```
 p.vector <- c(A = 1.25, B = .25, t0 = .2, mean_v.W = 2.5, mean_v.N = 1.5,
               mean_v.P = 1.2)
 
-## ggdmc adapts print function to help
+## ggdmc adapts print function to help inspect model
 print(model)
+
+## The model array is huge
+## W 
+##         A    B   t0 mean_v.W mean_v.N mean_v.P sd_v  st0
+## ww.W TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## nn.W TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## pn.W TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## ww.N TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## nn.N TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## pn.N TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## ww.P TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## nn.P TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## pn.P TRUE TRUE TRUE     TRUE    FALSE    FALSE TRUE TRUE
+## N 
+##         A    B   t0 mean_v.W mean_v.N mean_v.P sd_v  st0
+## ww.W TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## nn.W TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## pn.W TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## ww.N TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## nn.N TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## pn.N TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## ww.P TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## nn.P TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## pn.P TRUE TRUE TRUE    FALSE     TRUE    FALSE TRUE TRUE
+## P 
+##         A    B   t0 mean_v.W mean_v.N mean_v.P sd_v  st0
+## ww.W TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## nn.W TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## pn.W TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## ww.N TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## nn.N TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## pn.N TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## ww.P TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## nn.P TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## pn.P TRUE TRUE TRUE    FALSE    FALSE     TRUE TRUE TRUE
+## The model object carries this many attributes
+## Attributes: 
+##  [1] "dim"        "dimnames"   "all.par"    "p.vector"   "par.names"  "type"       "factors"
+##  [8] "responses"  "constants"  "posdrift"   "n1.order"   "match.cell" "match.map"  "is.r1"
+## [15] "class"
+
+
 print(model, p.vector)
+## The following is how ggdmc allocates the parameters to each accumulator.
+## [1] "ww.W"
+##      A   b  t0 mean_v sd_v st0
+## 1 1.25 1.5 0.2    2.5    1   0
+## 2 1.25 1.5 0.2    1.5    1   0
+## 3 1.25 1.5 0.2    1.2    1   0
+## [1] "nn.W"
+##      A   b  t0 mean_v sd_v st0
+## 1 1.25 1.5 0.2    2.5    1   0
+## 2 1.25 1.5 0.2    1.5    1   0
+## 3 1.25 1.5 0.2    1.2    1   0
+## [1] "pn.W"
+##      A   b  t0 mean_v sd_v st0
+## 1 1.25 1.5 0.2    2.5    1   0
+## 2 1.25 1.5 0.2    1.5    1   0
+## 3 1.25 1.5 0.2    1.2    1   0
+...
 
 ## To see what other option in the simulate function
 ## ?ggdmc:::simulate.model
@@ -122,7 +188,7 @@ dat <- simulate(model, nsim = nsim, ps = p.vector)
 
 
 We used data.table to help inspect the data frame.  This makes no difference when
-the data set is small. You are welcome to opt for dplyr or traditional
+the data set is small. You are welcome to opt for dplyr/tibble or traditional
 data.frame functions.
 
 ```
@@ -131,11 +197,15 @@ dmi <- BuildDMI(dat, model)
 
 ## Check the factor levels
 sapply(d[, .(S,R)], levels)
+##     S    R  
+## [1,] "ww" "W"
+## [2,] "nn" "N"
+## [3,] "pn" "P"
 ```
 
 
 To inspect the data distributions, we designated three response proportions, instead
-of correct vs. error responses to be more general.
+of correct vs. error.
 
 ```
 ww1 <- d[S == "ww" & R == "W" & RT <= 10, "RT"]
@@ -220,10 +290,10 @@ plot(fit)
 
 The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
 space, so we discard all previous samples as burn-in. That is, we did not turn on the _add_
-switch. Note that the sampler we use reach the parameter space very fast.  It took about
-700 iterations. This is a model with 7 parameters and some of them are correlated. 
+switch. The sampler we reach the parameter space very fast.  It took about
+700 iterations. This is a model with 7 parameters and some of them (A and B) are correlated. 
 
-We ran another 500 (default) iteration and took a sample every 4 iteration.
+We ran another 500 (default) iteration and took a sample every 8 iteration.
 
 ```
 ## ?run to see add and other options in run function
@@ -235,33 +305,31 @@ fit <- run(fit, thin=8)
 plot(fit)
 
 es <- effectiveSize(fit)
-# A        B       t0 mean_v.W mean_v.N mean_v.P 
-# 212.5132 103.6891 121.6212 182.8602 153.9862 138.6604 
-
+## A        B       t0 mean_v.W mean_v.N mean_v.P 
+## 3032.669 3160.306 3264.266 2998.928 2979.326 3022.245 
 
 gelman(fit)
 # Potential scale reduction factors:
 #   
 #   Point est. Upper C.I.
-# A              1.09       1.13
-# B              1.19       1.28
-# t0             1.15       1.23
-# mean_v.W       1.11       1.17
-# mean_v.N       1.14       1.20
-# mean_v.P       1.14       1.21
+# A                 1       1.00
+# B                 1       1.00
+# t0                1       1.01
+# mean_v.W          1       1.00
+# mean_v.N          1       1.00
+# mean_v.P          1       1.00
 # 
 # Multivariate psrf
 # 
-# 1.23
+# 1
 
 est <- summary(fit, ps = p.vector, verbose = TRUE, recovery = TRUE)
-#                    A     B mean_v.N mean_v.P mean_v.W   t0
-# True            1.25  0.25     1.50     1.20     2.50 0.20
-# 2.5% Estimate   1.07  0.20     1.15     0.92     2.21 0.19
-# 50% Estimate    1.17  0.24     1.33     1.10     2.39 0.20
-# 97.5% Estimate  1.28  0.27     1.50     1.28     2.56 0.21
-# Median-True    -0.08 -0.01    -0.17    -0.10    -0.11 0.00
-
+#                   A    B mean_v.N mean_v.P mean_v.W   t0
+# True           1.25 0.25     1.50     1.20     2.50 0.20
+# 2.5% Estimate  1.19 0.23     1.46     1.15     2.39 0.19
+# 50% Estimate   1.31 0.26     1.64     1.33     2.59 0.20
+# 97.5% Estimate 1.45 0.30     1.83     1.52     2.80 0.21
+# Median-True    0.06 0.01     0.14     0.13     0.09 0.00
 
 ```
 
@@ -328,11 +396,10 @@ print(p1)
 
 ```
 
-
-## Appendix
-If data were stored by a previous version or by DMC, their arraies and matrices
+## How to fix array dimension inconsistency
+If data were stored by a previous version of ggdmc or by DMC, their arraies
 are arranged differently as noted [here](https://github.com/yxlin/ggdmc). The 
-following is one way to tranpose arraies and matrices.
+following is one convenient way to transpose them.
 
 ```
 ## First make sure they are indeed needed to be transposed
@@ -340,7 +407,7 @@ dim(sam0$theta)
 dim(sam0$summed_log_prior)
 dim(sam0$log_likelihoods)
 
-## Use aperm and t to transpose an array and matrices
+## Use aperm and t to transpose arraies and matrices
 sam0$theta <- aperm(sam0$theta, c(2, 1, 3))
 sam0$summed_log_prior <- t(sam0$summed_log_prior)
 sam0$log_likelihoods <- t(sam0$log_likelihoods)
@@ -348,4 +415,9 @@ sam0$log_likelihoods <- t(sam0$log_likelihoods)
 sam$theta <- aperm(sam$theta, c(2, 1, 3))
 sam$summed_log_prior <- t(sam$summed_log_prior)
 sam$log_likelihoods <- t(sam$log_likelihoods)
+
+## Attach the model class to the samples. 
+class(fit0) <- c("list", "model")
+class(fit) <- c("list", "model")
+
 ```
