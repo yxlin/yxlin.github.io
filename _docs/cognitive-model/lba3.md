@@ -290,10 +290,11 @@ plot(fit)
 
 The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
 space, so we discard all previous samples as burn-in. That is, we did not turn on the _add_
-switch. The sampler we reach the parameter space very fast.  It took about
-700 iterations. This is a model with 7 parameters and some of them (A and B) are correlated. 
+switch. The sampler reaches the parameter space fast.  It took about
+700 iterations. Note this is a model with 7 parameters and some of them 
+(A and B) are correlated. 
 
-We ran another 500 (default) iteration and took a sample every 8 iteration.
+We ran another 500 (default) iterations and took a sample every 8 iteration.
 
 ```
 ## ?run to see add and other options in run function
