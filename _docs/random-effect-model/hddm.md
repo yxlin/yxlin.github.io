@@ -4,20 +4,28 @@ category: Hierarchical Model
 order: 2
 ---
 
+> We have striven to minimize the number of errors. However, we canot 
+> guarantee the note is 100% accurate.
+
 In this tutorial, I conducted a parameter recovery study, demonstrating
 the pMCMC method to fit a hierarchical DDM for a relatively simple
 factorial design.
 
 ## Set-up a model object
-This particular design is drawn from Heathcote et al's (2018) DMC tutorial,
-which assumes that a word frequency (my interpretation) factor affecting
+This particular design is from Heathcote et al's (2018) DMC tutorial,
+which assumes a word frequency (my interpretation) factor affecting
 the mean drift rate (_v_). Note it is not a good practice to use "F" notation
 in R, because it is also used as a shorthand for the reserved word,
 meaning _FALSE_. However, one of the R strengths is it permits
-idiosyncratic programming habits, even bad ones.
+idiosyncratic programming habits, even bad ones. In the example here, it seems
+not cause any errors.
 
 ```
-library(ggdmc)
+## version 0.2.6.0
+## install.packages("ggdmc")
+loadedPackages <-c("ggdmc", "data.table", "ggplot2", "gridExtra", "ggthemes")
+sapply(loadedPackages, require, character.only=TRUE)
+
 model <- BuildModel(
     p.map     = list(a = "1", v = "F", z = "1", d = "1", sz = "1", sv = "1",
                      t0 = "1", st0 = "1"),
@@ -66,13 +74,14 @@ ps  <- attr(dat, "parameters")
 
 In the hierarchical case of the parameter recovery study, my aim
 is to recover not only _ps_ matrix, but also the data generating
-mechanism.  That is, I wish to be able to known _pop.mean_,
-_pop.scale_ and their marginal distribution, as well as the _ps_.
-A reminder _ps_ is a matrix, storing the true values for each
-DDM parameter. Each row of the matrix represents the parameter
-vector for a participant.
+mechanism.  That is, I also want to known _pop.mean_,
+_pop.scale_ and their marginal distribution.
+Note _ps_ is a matrix, storing the true values for each
+DDM parameter. That is, the simulate function randomly selects nsub
+set of true parameters based on the prior distribution, **pop.prior**. 
+Each row of the ps matrix represents one parameter vector of a participant.
 
-> dplyr::tbl_df(ps)
+> tibble::as_tibble(ps)
 
 
 ```
@@ -92,14 +101,13 @@ vector for a participant.
 ##  with 30 more rows
 ```
 
-OK. The above is only preparation work for a parameter recovery study.
-In the following, I will start to conduct Bayesian sampling to
-draw samples from the posterior distribution, hoping that I
-can recover _pop.mean_, _pop.scale_, the target distribution, and
-the _ps_ matrix.
+The above is only preparation work for a parameter recovery study.
+In the following, I will start to draw samples from the posterior 
+distribution, aiming to recover _pop.mean_, _pop.scale_, the target 
+distribution, and the _ps_ matrix.
 
-I already have the likelihood, which is the DDM equation (Ratcliff &
-Tuerlinckx, 2002). I will need to set up my prior belief, namely
+I already have the likelihood, which is the DDM
+equation (Voss, Rothermund, Voss, 2004). I will need to set up the
 prior distributions for the seven DDM parameters. In the case of
 hierarchical model, there are two sets of prior distributions: one is
 usually called hyper-prior distributions  and the other simply prior
@@ -130,36 +138,37 @@ sigma.prior <- BuildPrior(
 names(sigma.prior) <- GetPNames(model)
 ```
 
-
 A convention in _ggdmc_ is to bind location and scale prior distributions
 as one list object. This is just for the convenience of data handling
-in R, which is not so convenient in C++.
-```
-priors <- list(pprior = p.prior, locaton = mu.prior, scale = sigma.prior)
-```
+in R, which is not so convenient in C++. Note the names of each element in the
+list is critical.
+
+> priors <- list(pprior = p.prior, locaton = mu.prior, scale = sigma.prior)
 
 
 Then, the following run sampling.
 
-
 ```
 ## run the "?" to see the details of function options
-?StartNewHypersamples
+?StartNewsamples
 ?run
+## 7.84 mins
+fit0 <- StartNewsamples(data=dmi, prior=priors)
 
-hsam0 <- run(StartNewHypersamples(5e2, dmi, p.prior, pp.prior, 2),
-             pm = .05, hpm = .05) ## 35 mins
-hsam <- run(RestartHypersamples(5e2, hsam0, thin = 8),
-            pm = 0, hpm = 0)      ## 150 mins
-hsam <- run(RestartHypersamples(5e2, hsam0, thin = 16),
-            pm = 0, hpm = 0)      ## 5 hrs
-hsam <- run(RestartHypersamples(5e2, hsam0, thin = 32),
-            pm = 0, hpm = 0)      ## 10 hrs
-hsam <- run(RestartHypersamples(5e2, hsam0, thin = 64),
-            pm = 0, hpm = 0)      ## 20.6 hrs
+## 19 mins
+fit <- run(fit0)
+
+## 7.54 hrs
+fit <- run(fit, thin = 8)
+
 save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
-     hsam0, hsam, file = "data/hierarchical/ggdmc_4_7_DDM.rda")
+     fit0, fit, file = "data/hierarchical/ggdmc_4_7_DDM.rda")
 
+```
+
+One may use the repeat function to run automatic model fit.
+
+```
 ## 4 rounds
 thin <- 8
 repeat {
@@ -177,10 +186,10 @@ save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
 ```
 
 Similar to many standard modeling works, I must diagnose the
-models so as to make sure I drew a reliable posterior
+model fit to certain I drew a reliable posterior
 distribution, reflecting the target distribution. I
-can check visually as well as calculating some statistics. First,
-I conducted visually checks for the trace plots and posterior
+can check visually as well as calculate some statistics. First,
+I conducted visual checks for the trace plots and posterior
 distributions.
 
 1. Trace plots of posterior log-likelihood at hyper level
@@ -189,8 +198,7 @@ distributions.
 4. Trace plots of each DDM parameters for each participants
 5. Posterior density plots (i.e., marginal posterior distributions)
 for the hyper parameters
-6. Posterior density plots the DDM parameters for each
-parameters
+6. Posterior density plots of each DDM parameters at the data level
 
 
 ```
@@ -212,10 +220,10 @@ probability density for every participant (i.e., figure 6), because there are to
 many. You can print them in a pdf file to check.
 
 Then, I calculated the potential scale reduction factor, for both the hyper
-parameters and each participant.
+parameters and the parameters for each participant.
 
 ```
-rhat <- hgelman(hsam)
+rhats <- hgelman(hsam, verbose = TRUE)
 ## Diagnosing theta for many participants separately
 ## Diagnosing the hyper parameters, phi
 ## hyper     1     2     3     4     5     6     7     8     9    10    11    12
@@ -228,13 +236,13 @@ rhat <- hgelman(hsam)
 ##  1.01  1.01
 ```
 
-Finally, I want to know if I do recover the mechanism of data generation and
+Finally, I want to know if I do recover the data generation mechanism and
 true parameter values for every participant (i.e., _ps_). This can be achieved
-by the _summary_ function.
+by using the _summary_ function.
 
 
 ```
-hest1 <- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.mean, type = 1)
+hest1 <- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.mean,  type = 1)
 hest2 <- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.scale, type = 2)
 round(hest1, 2)
 round(hest2, 2)
@@ -255,7 +263,7 @@ ests <- summary(hsam, recovery = TRUE, ps = ps)
 ## Median-True    0.03 0.00 -0.03 -0.01 -0.01 0.03 0.00
 
 
-## Summary each participant separately
+## Summary statistics across participants
 ##          a  v.f1 v.f2    z    sz   sv   t0
 ## Mean  2.00  3.87 2.94 0.52  0.29 0.72 0.29
 ## True  1.98  3.86 2.94 0.52  0.28 0.78 0.29
