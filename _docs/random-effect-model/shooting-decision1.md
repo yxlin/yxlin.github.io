@@ -324,16 +324,13 @@ Now I am ready to fit the empirical data with the race-threshold model.
 
 [^1]: If one wishes to estimate the DDM variabilities at the hyper level in Python-HDDM, s/he would need to modify the Python-HDDM source codes, which is possible but less convenient.
 
-## Reference
-Pleskac, T.J., Cesario, J. & Johnson, D.J. (2017). How race affects evidence accumulation during the decision to shoot.
+# Reference
+* Pleskac, T.J., Cesario, J. & Johnson, D.J. (2017). How race affects evidence accumulation during the decision to shoot.
 _Psychonomic Bulletin & Review_, 1-30. https://doi.org/10.3758/s13423-017-1369-6
-
-Wong, J. C. (2016, Aprial, 18). ['Scapegoated?' The police killing that left Asian Americans angry – and divided](https://www.theguardian.com/world/2016/apr/18/peter-liang-akai-gurley-killing-asian-american-response).
+* Wong, J. C. (2016, Aprial, 18). ['Scapegoated?' The police killing that left Asian Americans angry – and divided](https://www.theguardian.com/world/2016/apr/18/peter-liang-akai-gurley-killing-asian-american-response).
 _The Guardian_.
-
-[Chinese Community Reels After Brooklyn NYPD Shooting](https://www.nbcnews.com/news/asian-america/chinese-community-reels-after-brooklyn-nypd-shooting-n273931). (2014, December 24). _NBC News_.
-
-[American's police on trial](https://www.economist.com/leaders/2014/12/11/americas-police-on-trial). (2014, December, 11). _The Economist_.
+* [Chinese Community Reels After Brooklyn NYPD Shooting](https://www.nbcnews.com/news/asian-america/chinese-community-reels-after-brooklyn-nypd-shooting-n273931). (2014, December 24). _NBC News_.
+* [American's police on trial](https://www.economist.com/leaders/2014/12/11/americas-police-on-trial). (2014, December, 11). _The Economist_.
 
 
 
