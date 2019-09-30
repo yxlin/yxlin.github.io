@@ -1,7 +1,121 @@
 ---
-title: Circular Diffusion Decision Model
+title: Circular Drift-diffusion Model
 category: Cognitive Model
-order: 4
+order: 5
 ---
 
+> **Disclaimer**: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This tutorial requires the CDDM module, which is part of an ongoing research project, so has not released, yet.
+
+Circular drift-diffusion model (CDDM) is a two-dimension process model. It could be viewed as an extension of the one-dimension diffusion model. One assumption of the 1-D diffusion model is it posits a single unit accumulator accrues evidence towards two opposing, an upper and a lower, boundaries. As illustrated in the right panel in the following figure, when the accumulator moves towards one boundary, it at the same time moves away from the other. This inevitable situation is in fact a powerful design that restricts the model to account for a set of processes. Therefore, the model provides a concise and successful account for the cognitive processes in the now ubiquitous two-alternative forced-choice (2AFC) task in cognitive psychology. 
+
+![random_walk]({{"/images/cognitive-model/random_walk.png" | relative_url}})
+
+However, when one wants to model the tasks allowing more than two response types, it is not immediately clear how the 1-D diffusion model can extend to this situation. One usual option is to use the accumulator models (Ratcliff, Smith, Brown, & McKoon, 2016), for example, the LBA model, the LCA model or the feed forward inhibition model (Brown & Heathcote, 2008; Usher & McClellend, 2001; Mazurek et al., 2003; Niwa & Ditterich, 2008, Roe et al., 2001). These models use the absolute, as oppose to the relative, evidence criteria, as the stopping rule for the process. In this design, each response type corresponds to one unit accumulator, accuring evidence towards either one or multiple response thresholds. 
+
+Although it was discussed largely regarding to its utility to model the continuous report task (Smith, 2016), the circular drift-diffusion model can also account for the tasks with more than two responses. The aim of this tutorial is to demonstrate how this can be done using ggdmc. This tutorial is divided into two sections. First, we will introduce three CDDM core functions, **dcircle**, **rcircle**, and **rcircle_process**. Following the convention of R language, **d** refers to probability density function and **r** refers to random number generation. Instead of recording only the response time and angle, **rcircle_process** simulates the 2-D diffusion process and records the trace, as shown in the left panel in the illustration figure. The source codes, CDDM.hpp and CDDM.cpp, provide the implementation details regarding the three functions. 
+
+In the second section, we conduct a parameter recovery study, using maximum likelihood estimation. The purpose of the recovery study is to provide a template when one wishes to fit an empirical data set from a continuous report task.   
+
+For using the Bayesian method to fit the CDDM, please go to the tutorials of 
+fixed-effect and hierarchical models.
+
+# Core functions
+The 2-D diffusion model has four main parameters, _v1_, _v2_, _a_, and _t0_. _v1_ and _v2_ are the average increments of the evidence on the x and y axes. They are the two components of the drift vector _**v**_, whose magnitude is the Euclidean norm ||_**v**_||.
+
+$$
+\begin{align*}
+& || v || = \sqrt{v_1^2 + v_2^2} 
+& \theta_v = tan^{-1}({v_2 / v1})
+
+\end{align*}
+$$
+
+A second way to describe the drift vector is via its magnitude and its phase angle, $$\theta_v$$. In addition to the deterministic drift vector driving the accumulator, the evidence grows stochastically towards the decision boundary, _a_, on a disc, which is a subset of the Cartesian plane, $$R^2$$. 
+ 
+The stochastic component is from the parameter of within-trial variability, $$\sigma^2$$, namely the diffusion coefficient. For simplicity, the SD, $$\sigma$$, corresponding to the two components of the drift vector are assumed as identical and independent of each other. We code it as sigma1 and sigma2 to remind the user that this is an assumption and the user can relax it by tweaking the source codes. For now, we recommend to set them as 1. 
+
+The time it takes the accumulator hit the boundary is the decision time. The response time is the decision time plus with the non-decision time, _t0_.
+ 
+In summary, the parameter vector composes of:
+
+1. **v1**, the mean drift rate on the x axis,
+2. **v2**, the mean drift rate on the y axis,
+3. **a**, the response criterion,
+4. **t0**, the non-decision time
+5. **sigma1**, the within trial drift-rate standard deviation on the x axis,
+6. **sigma2**, the within trial drift-rate standard deviation on the y axis.
+7. **eta1** and **eta2** are two parameters related to the drift rate SD. They are usually set as 0.
+
+## Random-walk Process
+The illustration figure was generated by the **rcircle_process** and **r1d**, the functions simulating random walk processes.
+
+```
+require(ggdmc)
+## random walk 2d
+## Set the upper bound of simulation time and each time step as 0.1 ms
+tmax <- 2   
+h    <- 1e-4    
+
+p.vector <- c(v1=0, v2=0, a=1, t0=0, sigma1=1, sigma2=1, eta1=0, eta2=0)
+res0 <- rcircle_process(P=p.vector, tmax=tmax, h=h)
+str(res0)
+## List of 3
+##  $ out : num [1:3, 1] 0.732 -2.551 0
+##  $ xPos: num [1:20001, 1] 0 0 0.0074 -0.0104 -0.0172 ...
+##  $ yPos: num [1:20001, 1] 0 0 -0.0183 -0.0258 -0.0364 ...
+
+
+## random walk 1d
+p.vector <- c(v=0, a=1, z=.5, t0=0, s=1)
+res1 <- r1d(P=p.vector, tmax=tmax, h=h)
+idx <- sum(!is.na(res0$Xt)); idx
+str(res1)
+## List of 3
+##  $ T  : num [1:20001, 1] 0e+00 1e-04 2e-04 3e-04 4e-04 5e-04 6e-04 7e-04 8e-04 9e-04 ...
+##  $ out: num [1:2, 1] 0.221 0
+##  $ Xt : num [1:20001, 1] 0.5 0.51 0.513 0.507 0.51 ...
+
+## Plot the traces of 1-D and 2-D diffusion processes
+png(filename='random_walk_2d.png', 800, 600)
+par(mfrow=c(1,2), pty="s")
+plotCircle(res0$xPos[,1], res0$yPos[,1], a=1)
+plot(res1$T[1:idx], res1$Xt[1:idx], type='l', ylim=c(0, 1), xlab='DT (s)',
+     ylab='Evidence')
+abline(h=1, lty='dotted', lwd=1.5)
+abline(h=0, lty='dotted', lwd=1.5)
+points(x=0, y=p.vector[3], col='red')
+dev.off()
+
+```
+
+## Simulation Function 
+To simulate multiple processes, **rcircle** allows the user to enter the number of observation via the **n** option. Another useful option, **nw**, allows the user to divide the response angles into nw response categories. 
+
+```
+n <- 150000
+tmax <- 2
+h <- 1e-4
+p.vector <- c(v1=1, v2=1, a=1, t0=0, sigma1=1, sigma2=1, eta1=0, eta2=0)
+
+## Took ~80 s. Divide the angles evenly into 11 categories
+res0 <- rcircle(n=n, P=p.vector, tmax=tmax, h=h, nw=11)
+
+d <- data.frame(res0)
+names(d) <- c("R", "RT", "A")
+## R stores the centered angle of the response category. 
+# dplyr::tbl_df(d)
+# A tibble: 150,000 x 3
+#         R    RT      A
+#     <dbl> <dbl>  <dbl>
+#  1 -0.286 0.116 -0.310
+#  2  0.857 0.262  0.968
+#  3 -0.286 0.329 -0.151
+#  4  0.857 0.467  0.774
+#  ...
+# … with 149,990 more rows
+
+```
+
+
+## Probability Density Function 
 

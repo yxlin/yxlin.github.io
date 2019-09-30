@@ -17,7 +17,11 @@ Some pre-analysis set up work.
 loadedPackages <-c("ggdmc", "data.table", "ggplot2", "gridExtra", "ggthemes")
 sapply(loadedPackages, require, character.only=TRUE)
 
+<<<<<<< HEAD
+## A function for generating posterior predict fitples
+=======
 ## A function for generating posterior predict samples
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
 predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
                         xlim = NA, seed = NULL)
 {
@@ -38,7 +42,11 @@ predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
   npar   <- object$n.pars
   nchain <- object$n.chains
   nmc    <- object$nmc
+<<<<<<< HEAD
+  ntfitple <- nchain * nmc
+=======
   ntsample <- nchain * nmc
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
   pnames   <- object$p.names
   
   thetas <- matrix(aperm(object$theta, c(3,2,1)), ncol = npar)
@@ -46,12 +54,21 @@ predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
   colnames(thetas) <- pnames
   
   if (is.na(npost)) {
+<<<<<<< HEAD
+    use <- 1:ntfitple
+  } else {
+    if (rand) {
+      use <- fitple(1:ntfitple, npost, replace = F)
+    } else {
+      use <- round(seq(1, ntfitple, length.out = npost))
+=======
     use <- 1:ntsample
   } else {
     if (rand) {
       use <- sample(1:ntsample, npost, replace = F)
     } else {
       use <- round(seq(1, ntsample, length.out = npost))
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
     }
   }
   
@@ -258,9 +275,15 @@ plot(p.prior)
 
 ## Sampling
 
+<<<<<<< HEAD
+The default iteration is 200 for StartNewfitples function. 
+```
+fit0 <- StartNewfitples(dmi, p.prior)
+=======
 The default iteration is 200 for StartNewsamples function. 
 ```
 fit0 <- StartNewsamples(dmi, p.prior)
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
 
 ## About 301 s
 fit <- run(fit0)
@@ -289,12 +312,21 @@ plot(fit)
 ```
 
 The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
+<<<<<<< HEAD
+space, so we discard all previous fitples as burn-in. That is, we did not turn on the _add_
+switch. The fitpler reaches the parameter space fast.  It took about
+700 iterations. Note this is a model with 6 parameters and some of them 
+(A and B) are correlated. 
+
+We ran another 500 (default) iterations and took a fitple every 8 iteration.
+=======
 space, so we discard all previous samples as burn-in. That is, we did not turn on the _add_
 switch. The sampler reaches the parameter space fast.  It took about
 700 iterations. Note this is a model with 6 parameters and some of them 
 (A and B) are correlated. 
 
 We ran another 500 (default) iterations and took a sample every 8 iteration.
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
 
 ```
 ## ?run to see add and other options in run function
@@ -302,7 +334,11 @@ We ran another 500 (default) iterations and took a sample every 8 iteration.
 fit <- run(fit, thin=8)
 
 ## The three follow-up checks show the chains are converged and we have drawn
+<<<<<<< HEAD
+## sufficient size of fitples.
+=======
 ## sufficient size of samples.
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
 plot(fit)
 
 es <- effectiveSize(fit)
@@ -404,6 +440,22 @@ following is one convenient way to transpose them.
 
 ```
 ## First make sure they are indeed needed to be transposed
+<<<<<<< HEAD
+dim(fit0$theta)
+dim(fit0$summed_log_prior)
+dim(fit0$log_likelihoods)
+
+## Use aperm and t to transpose arraies and matrices
+fit0$theta <- aperm(fit0$theta, c(2, 1, 3))
+fit0$summed_log_prior <- t(fit0$summed_log_prior)
+fit0$log_likelihoods <- t(fit0$log_likelihoods)
+
+fit$theta <- aperm(fit$theta, c(2, 1, 3))
+fit$summed_log_prior <- t(fit$summed_log_prior)
+fit$log_likelihoods <- t(fit$log_likelihoods)
+
+## Attach the model class to the fitples. 
+=======
 dim(sam0$theta)
 dim(sam0$summed_log_prior)
 dim(sam0$log_likelihoods)
@@ -418,6 +470,7 @@ sam$summed_log_prior <- t(sam$summed_log_prior)
 sam$log_likelihoods <- t(sam$log_likelihoods)
 
 ## Attach the model class to the samples. 
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
 class(fit0) <- c("list", "model")
 class(fit) <- c("list", "model")
 
