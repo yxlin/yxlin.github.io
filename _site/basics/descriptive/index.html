@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Descriptive Statistics | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Descriptive Statistics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In most RT modelling work, researchers usually want to examine the manifested statistics. Often, these are the average response times (RTs) and accuracy rates. In the following, I used the LNR model LNR (Heathcote &amp; Love, 2012), as an example to illustrate a method to calculate these statistics efficiently. The user wishes to understand and apply LNR model on her / his work can find useful information in the DMC tutorials (Heathcote et al., 2018)." />
+<meta property="og:description" content="In most RT modelling work, researchers usually want to examine the manifested statistics. Often, these are the average response times (RTs) and accuracy rates. In the following, I used the LNR model LNR (Heathcote &amp; Love, 2012), as an example to illustrate a method to calculate these statistics efficiently. The user wishes to understand and apply LNR model on her / his work can find useful information in the DMC tutorials (Heathcote et al., 2018)." />
+<link rel="canonical" href="http://localhost:4000/basics/descriptive/" />
+<meta property="og:url" content="http://localhost:4000/basics/descriptive/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-14T06:58:28+00:00" />
+<script type="application/ld+json">
+{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/basics/descriptive/","headline":"Descriptive Statistics","dateModified":"2019-03-14T06:58:28+00:00","datePublished":"2019-03-14T06:58:28+00:00","description":"In most RT modelling work, researchers usually want to examine the manifested statistics. Often, these are the average response times (RTs) and accuracy rates. In the following, I used the LNR model LNR (Heathcote &amp; Love, 2012), as an example to illustrate a method to calculate these statistics efficiently. The user wishes to understand and apply LNR model on her / his work can find useful information in the DMC tutorials (Heathcote et al., 2018).","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical Normal Model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item current"><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/diagnosis/">Checking Fitted Models</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Modelling Basics</h2>
+				<h3>Descriptive Statistics</h3>
+			</div>
+			<article class="content">
+				<p>In most RT modelling work, researchers usually want to examine the manifested
+statistics.  Often, these are the average response times (RTs) and accuracy rates.
+In the following, I used the LNR model
+LNR (Heathcote &amp; Love, 2012), as an example to illustrate a method to
+calculate these statistics efficiently. The user wishes to understand and
+apply LNR model on her / his work can find useful information in the DMC tutorials
+(Heathcote et al., 2018).</p>
+
+<p>This particular LNR model presumes one stimulus (S) factor, and similar to the LBA
+model, it has a latent matching (M) factor.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">table</span><span class="p">);</span> <span class="n">library</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+
+<span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">meanlog</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">sdlog</span> <span class="p">=</span> <span class="s2">"M"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
+  <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">left</span> <span class="p">=</span> <span class="s2">"LEFT"</span><span class="p">,</span> <span class="n">right</span> <span class="p">=</span> <span class="s2">"RIGHT"</span><span class="p">)),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"left"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">)),</span>
+  <span class="n">responses</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"LEFT"</span><span class="p">,</span> <span class="s2">"RIGHT"</span><span class="p">),</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">st0</span> <span class="p">=</span> <span class="m">0</span><span class="p">),</span>
+  <span class="n">type</span>      <span class="p">=</span> <span class="s2">"lnr"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The arbitrary chosen true parameters generate a reasonable RT distribution,
+which similar with typical choice RT data, giving approximately 25% errors
+(I will show you this later).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p.vector &lt;- c(meanlog.true = -1, meanlog.false = 0, sdlog.true = 1,
+              sdlog.false = 1, t0 = .2)
+</code></pre></div></div>
+
+<p><em>simulate</em> function takes the first option, <em>model</em> to generate data
+based on the provided model. <em>ps</em> option expects a true parameter vector that
+matches the setting in the model object, <em>nsim</em> option expects the number of
+trial per condition.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dat &lt;- simulate(model, ps = p.vector, nsim = 1024)
+d &lt;- data.table(dat)
+##           S     R        RT
+##    1:  left  LEFT 0.3821405
+##    2:  left  LEFT 0.7859101
+##    3:  left  LEFT 0.5237262
+##    4:  left RIGHT 0.3932804
+##    5:  left  LEFT 0.6604592
+##   ---                      
+## 2044: right RIGHT 0.7342084
+## 2045: right RIGHT 1.3628130
+## 2046: right RIGHT 0.3343844
+## 2047: right RIGHT 0.4913930
+## 2048: right RIGHT 0.6119065
+</code></pre></div></div>
+<ul>
+  <li>S is the stimulus factor</li>
+  <li>R is the response type</li>
+  <li>RT stores response time in second</li>
+</ul>
+
+<p>By using  <em>data.table</em> function <strong>.N</strong>, I confirmed that each condition
+does has 1024 trials.</p>
+
+<blockquote>
+  <p>d[, .N, .(S)]</p>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##        S    N
+## 1:  left 1024
+## 2: right 1024
+</code></pre></div>  </div>
+</blockquote>
+
+<p>A similar syntax, with S and R factors, I printed out the information
+regarding the hit, correct rejection, false alarm and miss responses.</p>
+<blockquote>
+  <p>d[, .N, .(S, R)]</p>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##        S     R   N  ## assuming the left is signal and right is noise
+## 1:  left  LEFT 791  ## hit
+## 2:  left RIGHT 233  ## miss
+## 3: right RIGHT 786  ## correct rejection
+## 4: right  LEFT 238  ## false alarm
+</code></pre></div>  </div>
+</blockquote>
+
+<p>I used a <em>ifelse</em> chain to calculate a <em>C</em> column to indicate correct (TRUE)
+and error (FALSE) responses. In real world data, there would be some
+responses missing or participants pressing wrong keys, so the last else
+is “NA” to catch these situations.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d$C &lt;- ifelse(d$S == "left"  &amp; d$R == "LEFT",  TRUE,
+       ifelse(d$S == "right" &amp; d$R == "RIGHT", TRUE,
+       ifelse(d$S == "left"  &amp; d$R == "RIGHT", FALSE,
+       ifelse(d$S == "right" &amp; d$R == "LEFT",  FALSE, NA))))
+</code></pre></div></div>
+
+<p>The data table now looks like below.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##           S     R        RT     C
+##    1:  left  LEFT 0.3821405  TRUE
+##    2:  left  LEFT 0.7859101  TRUE
+##    3:  left  LEFT 0.5237262  TRUE
+##    4:  left RIGHT 0.3932804 FALSE
+##    5:  left  LEFT 0.6604592  TRUE
+##   ---                            
+## 2044: right RIGHT 0.7342084  TRUE
+## 2045: right RIGHT 1.3628130  TRUE
+## 2046: right RIGHT 0.3343844  TRUE
+## 2047: right RIGHT 0.4913930  TRUE
+## 2048: right RIGHT 0.6119065  TRUE
+</code></pre></div></div>
+
+<p>This is one way to calculate average RTs with data.table.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d[, .(MRT = round(mean(RT), 2)), .(C)]
+##        C  MRT
+## 1:  TRUE 0.61
+## 2: FALSE 0.71
+</code></pre></div></div>
+
+<p>The syntax to calculate the response proportions, namely correct and
+error rates, are less straightforward, but possible. Firstly, I
+calculated the counts for hit, correct rejection, miss, and false
+alarm and store them in <em>prop</em>. Then I made up a new column, called <em>NN</em>, to store
+the total number of trial. Lastly, I divided the four conditions by
+the total number of trial. I also used a <em>round</em> to print only to the
+two decimal place below zero. These are almost 25% error rates, as promised.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prop &lt;- d[, .N, .(S, R)]
+prop[, NN := sum(N), .(S)]
+prop[, acc := round(N/NN, 2)]
+prop
+##        S     R   N   NN  acc
+## 1:  left  LEFT 791 1024 0.77
+## 2:  left RIGHT 233 1024 0.23
+## 3: right RIGHT 786 1024 0.77
+## 4: right  LEFT 238 1024 0.23
+</code></pre></div></div>
+
+<h2 id="real-world-example">Real-world Example</h2>
+<p>In this section, I will demonstrate more data processing techniques, using the
+empirical data (Holmes, Trueblood &amp; Heathcote (2016). This data set can be downloaded
+from my <a href="https://osf.io/p4pdh/">OSF site</a>.</p>
+
+<p>One raw data format often found is one subject per text or csv file
+(*.txt or *.csv). For example, the file, “S125.2014-04-23_6-22-36.txt”, stores the data
+from participant, <strong>S125</strong>. There are 47 of them. All are in the same format.
+In another tutorial, I will illustrate how to handle similar but not
+identical formatted data files.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>block	trial	target	 CO1	CO2	ST	resp	RT	correct
+    1	    1	     R    50	 -1	-1	   1   1076       1
+    1	    2	     L    50	 -1	-1	   0    733       1
+    1	    3	     R    50	 -1	-1	   1    637       1
+    1	    4	     R    50	 -1	-1	   1    517       1
+...
+</code></pre></div></div>
+
+<h3 id="how-to-read-large-data-sets-efficiently">How to read large data sets efficiently</h3>
+<p>I stored data files in a standard location of usual R packaging. The
+folder, named <em>data</em> unsurprisingly, immediately in a project folder. And the
+analysis scripts are stored in a folder, called <em>R</em>. I then used
+<em>list.files</em> function to store all file names in a object, called <em>fn</em>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>?list.files
+dp &lt;- "data/Holmes_etal_CogPsych_2016_Data";  ## data path
+fn &lt;- list.files(dp, pattern = "*.txt")       ## file name
+print(fn)
+##  [1] "S125.2014-04-23_6-22-36.txt"           
+##  [2] "S126.2014-04-23_6-25-38.txt"           
+##  [3] "S127.2014-04-23_6-26-46.txt"           
+## ...
+## [45] "S169.2014-05-07_6-16-49.txt"           
+## [46] "S170.2014-05-07_6-18-16.txt"           
+## [47] "S171.2014-05-07_6-38-56.txt"
+</code></pre></div></div>
+
+<p>Next I created a <em>DTLapply</em> function to pipe the text files one after another to
+the <em>fread</em> of data.table to quickly process them.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function(fn, dp) {
+    v &lt;- lapply(seq_along(fn), function(i) {
+       s &lt;- strsplit(fn[i], split = "[.]")[[1]][1]
+       d &lt;- data.table::fread(file.path(dp, fn[i]))
+       S &lt;- d$target
+       R  &lt;- d$resp
+       RTSec &lt;- d$RT / 1e3
+       C  &lt;- d$correct
+       return(d[, c("s", "S", "R", "RT", "C") := list(s, S, R, RTSec, C)])
+    })
+    return(data.table::rbindlist(v))
+}
+
+x0 &lt;- DTLapply(fn, dp)
+</code></pre></div></div>
+
+<p><strong>seq_along</strong> function will convert <em>fn</em>, which store 47 file name strings to
+numerical indices, for the looping.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>seq_along(fn)
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+[26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+</code></pre></div></div>
+
+<p><strong>function(i)</strong> inside the <em>lapply</em> function is an anonymous function, namely
+a function used internally by the <em>lappy</em> function. Inside this anonymous function is
+basically a quicker R for loop. The first line in the anonymous function is to extract
+the label for a participant. For example, if I just processed the first text file,
+the <em>strsplit</em> function splits the string whenever it finds a dot symbol.
+Because <em>strsplit</em> returns an R list, I took the first element in the first list.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print(fn[1])
+## [1] "S125.2014-04-23_6-22-36.txt"
+
+strsplit(fn[1], split = "[.]")
+## [[1]]
+## [1] "S125"               "2014-04-23_6-22-36" "txt"
+
+s &lt;- strsplit(fn[i], split = "[.]")[[1]][1]
+print(s)
+## [1] "S125"
+</code></pre></div></div>
+
+<p>Next line uses the convenient function, <strong>file.path</strong> in <em>R</em> base to construct
+a file path to a particular file. For example, if I extract the first participant.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dp &lt;- "data/Holmes_etal_CogPsych_2016_Data";  ## data path
+file.path(dp)
+## [1] "data/Holmes_etal_CogPsych_2016_Data"
+file.path(dp, fn[1])
+## [1] "data/Holmes_etal_CogPsych_2016_Data/S125.2014-04-23_6-22-36.txt"
+</code></pre></div></div>
+
+<p>The function, <em>file.path</em> returns the complete relative file path to the data file, which
+is then read by the <em>fread</em> function. Note I can easily use the relative path method,
+because the folder structure follows strictly R packaging structure.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d &lt;- data.table::fread(file.path(dp, fn[1]))
+##       block trial target CO1 CO2  ST resp   RT correct
+##    1:     1     1      R  50  -1  -1    1 1076       1
+##    2:     1     2      L  50  -1  -1    0  733       1
+##    3:     1     3      R  50  -1  -1    1  637       1
+##    4:     1     4      R  50  -1  -1    1  517       1
+##    5:     1     5      L  50  -1  -1    0  476       1
+##   ---                                                 
+## 1276:    20    68      L  15  -1  -1   -1   -1       1
+## 1277:    20    69      L  15  -1  -1    0 1077       0
+## 1278:    20    70     LR  15  15 529    0 1463       1
+## 1279:    20    71      L  15  -1  -1    0 1895       0
+## 1280:    20    72     LR  15  15 529    0 1311       1
+</code></pre></div></div>
+
+<p>The following four lines were simply to temporarily save the columns,
+“target”, “resp”, “RT” (converted to second), and “correct” to four different
+R vectors, “S”, “R”, “RTSec”, and “C”.  These operations just converted
+the original column naming to my factor naming convention. For example,
+<em>target</em> column indicates whether a
+stimulus was one of the four levels:</p>
+<ol>
+  <li>right (stationary trial),</li>
+  <li>left (stationary trial),</li>
+  <li>left and right (switching trial) or</li>
+  <li>right and left moving dot (switching trial),
+so I converted it to as stimulus, <em>S</em>, factor. Similarly, R factor is from
+the <em>resp</em> response column, RT column was converted to second, 
+and <em>correct</em> column was converted to <em>C</em>.</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>S     &lt;- d$target
+R     &lt;- d$resp
+RTSec &lt;- d$RT / 1e3
+C     &lt;- d$correct
+</code></pre></div></div>
+<p>These four R vectors were then grouped together as a R list.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>list(s, S, R, RTSec, C)
+
+## [[1]]
+## [1] "S125"
+## [[2]]
+##    [1] "R"  "L"  "R"  "R"  "L"  "R"  "R"  "R"  "L"  "L"  "L"  "R"  "L"  "L" 
+##   [15] "L"  "R"  "L"  "R"  "R"  "L"  "L"  "R"  "R"  "L"  "R"  "L"  "L"  "R" 
+##   [29] "L"  "R"  "L"  "R"  "L"  "R"  "L"  "L"  "R"  "R"  "R"  "L"  "R"  "R" 
+##   ...
+## [[3]]
+##    [1]  1  0  1  1  0  1  1  1  0  0  0  1  0  0  0  1  0  0  1  0  0  1  1  0
+##   [25]  1  0  0  1  0  1  0  1  0  1  0  0  1  0  1  0  1  1  1  1  0  1  1  1
+##   [49]  1  0 -1  1  1  0  0  1  0  1  1  0  1  1  1  1  1  0  1  1  1  1  0  1
+##   ...
+## [[4]]
+##    [1]  1.076  0.733  0.637  0.517  0.476  0.419  0.493  0.486  0.685  0.581
+##   [11]  0.460  0.462  0.666  0.557  0.446  0.438  0.549  0.358  0.486  0.516
+##   [21]  0.484  0.589  0.679  0.743  0.550  0.646  0.516  0.486  0.588  0.463
+## [[5]]
+##    [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##   [38] 0 1 1 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 1 1 0 0 1 1 0 0 0 0 1 1 1 1 1 1 0 1 1
+##   [75] 1 1 0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 0 1 0 1 0 0 1 1 0 1 0 1 1
+##   ...
+</code></pre></div></div>
+
+<p>This list was directly inserted into the data.table, <em>d</em>, which created five new
+columns on top the original ones (i.e., block, trial, etc.).</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d[, c("s", "S", "R", "RT", "C") := list(s, S, R, RTSec, C)]
+</code></pre></div></div>
+
+<p>The result was then returned to the <em>lapply</em> function as its output. <em>:=</em> is
+just the assignment symbol in data.table syntax.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>return(d[, c("s", "S", "R", "RT", "C") := list(s, S, R, RTSec, C)])
+</code></pre></div></div>
+
+<p>Each participant file was looped through in a fastest possible way in
+R language and finally, each of them was glued together via the data.table
+function, <em>rbindlist</em>, which return as the output for my homemade <em>DTLapply</em>
+function.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 60,160 x 13
+##    block trial target   CO1   CO2    ST  resp    RT correct s     S         R
+##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;
+##  1     1     1 R         50    -1    -1     1 1.08        1 S125  R         1
+##  2     1     2 L         50    -1    -1     0 0.733       1 S125  L         0
+##  3     1     3 R         50    -1    -1     1 0.637       1 S125  R         1
+##  4     1     4 R         50    -1    -1     1 0.517       1 S125  R         1
+##  5     1     5 L         50    -1    -1     0 0.476       1 S125  L         0
+##  6     1     6 R         50    -1    -1     1 0.419       1 S125  R         1
+##  7     1     7 R         50    -1    -1     1 0.493       1 S125  R         1
+##  8     1     8 R         50    -1    -1     1 0.486       1 S125  R         1
+##  9     1     9 L         50    -1    -1     0 0.685       1 S125  L         0
+## 10     1    10 L         50    -1    -1     0 0.581       1 S125  L         0
+## # ... with 60,150 more rows, and 1 more variable: C &lt;int&gt;
+
+</code></pre></div></div>
+
+<h3 id="how-to-trim-off-irregular-participants">How to trim off irregular participants</h3>
+<p>It is not uncommon in a data set to have few participants who do not engage in
+performing a task or drop out in the middle of an experiment. With convincing
+evidence, we can exclude these participants. Here I demonstrated
+one way to conduct this operation.</p>
+
+<p>I used the <em>match</em> function, which has a symbol form, <em>%in%</em>. This
+is an R internal function, which uses efficient algorithm.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Excluding 3 + 13 participants from model fitting, due to
+## (1) a computer error and,
+## (2) less than 70% accuracy on the stationary trials in 4-18  blocks.
+## They are 126, 129, 130, 133, 134, 138, 139, 140, 143, 147, 148, 150, 155,
+## 156, 161, 162
+badsubjs &lt;- c("S126", "S129", "S130", "S133", "S134", "S138", "S139", "S140",
+              "S143", "S147", "S148", "S150", "S155", "S156", "S161", "S162")
+x1 &lt;- x0[ !(s %in% badsubjs) ]
+</code></pre></div></div>
+
+<h2 id="reference">Reference</h2>
+<ul>
+  <li>
+    <p>Heathcote A., and Love J. (2012) Linear deterministic accumulator models of simple choice.
+ frontiers in Psychology, 23. https://doi.org/10.3389/fpsyg.2012.00292.</p>
+  </li>
+  <li>
+    <p>Holmes, W.R. et al, A new framework for modeling decisions about changing
+ information: The Piecewise Linear Ballistic Accumulator model”, 2015,
+ <em>Cognitive Psychology</em> 85, 1-29.</p>
+  </li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>
