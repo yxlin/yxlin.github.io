@@ -1,13 +1,13 @@
 ---
-title: Linear Ballistic Accumulation Model
+title: LBA Model
 category: Cognitive Model
-order: 2
+order: 1
 ---
 
 This lesson demonstrates how to control the "golem" (McElreath, 2016), the
 canonical linear ballistic accumulation (LBA) model (Brown & Heathcote, 2008).
-Please refer to the above LBA paper for more details. Here I focus only on 
-how to use this model in the Bayesian MCMC context.
+Please refer to the LBA paper for more details. Here we focus only on 
+how to use this model in the context of Bayesian MCMC.
 
 The LBA model posits a latent matching (M) factor and a response factor (R)
 on top of regular experimental factors. For most people who are not familiar

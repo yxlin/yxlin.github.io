@@ -4,7 +4,11 @@ category: Cognitive Model
 order: 8
 ---
 
+<<<<<<< HEAD
+> The LCA and simulated PDF modules have not uploaded to GitHub. Note this is an ongoing project. 
+=======
 > The LCA and simulated PDF modules have not uploaded to GitHub. 
+>>>>>>> 883650102262895c76c847a34bc17afd4f659a28
 
 This tutorial demonstrates the method of conducting maximum likelihood 
 parameter estimation for the leaking, competing accumulator model. You will 
