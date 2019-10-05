@@ -1,7 +1,7 @@
 ---
-title: Hierarchical PM Model
+title: HPM Model
 category: Hierarchical Model
-order: 6
+order: 7
 ---
 
 > Disclaimer: This tutorial is to fit Strickland et al's (2018) PM model. For any questions regarding the model, please contact luke.strickland@uwa.edu.au

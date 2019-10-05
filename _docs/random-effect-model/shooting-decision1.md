@@ -1,7 +1,7 @@
 ---
 title: Shooting Decision Model - Recovery Study
 category: Hierarchical Model
-order: 4
+order: 3
 ---
 
 Pleskac, Cesario and Johnson (2017) examined a thorny issue in U.S.A (Wong, 2016;

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>CDDM | Cognitive Models</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="CDDM" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later." />
+<meta property="og:description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later." />
+<link rel="canonical" href="http://localhost:4000/fixed-effect-model/cddm12S/" />
+<meta property="og:url" content="http://localhost:4000/fixed-effect-model/cddm12S/" />
+<meta property="og:site_name" content="Cognitive Models" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-10-04T13:40:30+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2019-10-04T13:40:30+00:00","description":"Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/cddm12S/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"CDDM","dateModified":"2019-10-04T13:40:30+00:00","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+	  <header>
+	    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
+	    
+			<h1>
+				<a href="/"><img src="/images/emblem.svg" width="40" height="40" alt="Cognitive Models logo"></a>
+				Cognitive Models
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav >
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/"></a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/BUGS/hnormal/">BUGS Examples Volumn 1</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/BUGS/hnormal/">Hierarchical Normal Model</a></li>
+								
+									<li class="nav-item "><a href="/BUGS/seeds/">Random effect logistic regression</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/approximation/kde/">Likelihood Free Method</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/approximation/kde/">Kernel Density Estimation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/pda/">Probability Density Approximation</a></li>
+								
+									<li class="nav-item "><a href="/approximation/ppda/">Parallel Probability Density Approximation</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/basics/model_array/">Modelling Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/basics/model_array/">Model Array</a></li>
+								
+									<li class="nav-item "><a href="/basics/simulation/">Simulation</a></li>
+								
+									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/bayes-basics/theorem/">Bayesian Basics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/bayes-basics/theorem/">Bayes' Theorem</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/prior/">Prior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/likelihood/">Model Likelihood</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/posterior/">Posterior Distribution</a></li>
+								
+									<li class="nav-item "><a href="/bayes-basics/diagnosis/">Checking Fitted Models</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/cognitive-model/lba/">Cognitive Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba/">LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pm/">PM Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lca/">LCA Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/fixed-effect-model/one_participant/">Fixed-effects Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+									<li class="nav-item current"><a href="/fixed-effect-model/cddm12S/">CDDM</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/mcmc/mcmc/">Modern Bayesian Statistics</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/mcmc/mcmc/">Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/rwm/">Random Walk Metropolis</a></li>
+								
+									<li class="nav-item "><a href="/mcmc/hastings/">Metropolis-Hastings</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/random-effect-model/hlba/">HLBA Model</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hddm/">HDDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">HCDDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hpm/">HPM Model</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/sampling/genetic/">Sampling Techniques</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/sampling/genetic/">Population-based Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/crossover/">Crossover</a></li>
+								
+									<li class="nav-item "><a href="/sampling/migration/">Migration</a></li>
+								
+									<li class="nav-item "><a href="/sampling/mutation/">Mutation</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demc/">Differential Evolution Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/demcmc/">Differential Evolution Markov Chain Monte Carlo</a></li>
+								
+									<li class="nav-item "><a href="/sampling/dgmc/">Distributed Genetic Monte Carlo</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Fixed-effects Model</h2>
+				<h3>CDDM</h3>
+			</div>
+			<article class="content">
+				<blockquote>
+  <p><strong>Disclaimer</strong>: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later.</p>
+</blockquote>
+
+<p>First, we set up a 2-D diffusion model, simulate a data set and then define a set of prior distribution for the CDDM parameters.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rm</span><span class="p">(</span><span class="k">list</span> <span class="p">=</span> <span class="n">ls</span><span class="p">())</span>
+<span class="n">require</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+
+<span class="n">nw</span> <span class="p">&lt;-</span> <span class="m">4</span>
+
+<span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v2</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span>
+                   <span class="n">sigma2</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="s2">"1"</span><span class="p">),</span>
+  <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">,</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">sigma1</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">sigma2</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="m">6</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="m">1e-4</span><span class="p">),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">)),</span>
+  <span class="n">responses</span> <span class="p">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s1">'theta_'</span><span class="p">,</span> <span class="n">letters</span><span class="p">[</span><span class="m">1</span><span class="p">:</span><span class="n">nw</span><span class="p">]),</span>
+  <span class="n">type</span>      <span class="p">=</span> <span class="s2">"cddm"</span><span class="p">)</span>
+<span class="n">npar</span> <span class="p">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">GetPNames</span><span class="p">(</span><span class="k">model</span><span class="p">))</span>
+
+<span class="n">pop</span><span class="p">.</span><span class="n">mean</span>  <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span>  <span class="m">2</span><span class="p">,</span>  <span class="n">v2</span> <span class="p">=</span>  <span class="m">2</span><span class="p">,</span>  <span class="n">a</span> <span class="p">=</span> <span class="m">1.5</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">0.1</span><span class="p">)</span>
+<span class="n">pop</span><span class="p">.</span><span class="n">scale</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="m">.1</span><span class="p">,</span>  <span class="n">v2</span> <span class="p">=</span> <span class="m">.1</span><span class="p">,</span>  <span class="n">a</span> <span class="p">=</span> <span class="m">.05</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">0.05</span><span class="p">)</span>
+<span class="n">pop</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+  <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+  <span class="n">p1</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span>
+  <span class="n">p2</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span>
+  <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,</span> <span class="p">-</span><span class="m">5</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+  <span class="n">upper</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span> <span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>
+
+<span class="p">##</span> <span class="n">Simulate</span> <span class="n">data</span>
+<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">simulate</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">nsub</span> <span class="p">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">nsim</span> <span class="p">=</span> <span class="m">1e2</span><span class="p">,</span> <span class="n">prior</span> <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">prior</span><span class="p">)</span>
+<span class="n">ps</span> <span class="p">&lt;-</span> <span class="n">attr</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="s2">"parameters"</span><span class="p">)</span>
+<span class="n">dmi</span> <span class="p">&lt;-</span> <span class="n">BuildDMI</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="k">model</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+  <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+  <span class="n">p1</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">a</span><span class="p">=</span><span class="m">1</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">1</span><span class="p">),</span>
+  <span class="n">p2</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">a</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">2</span><span class="p">),</span>
+  <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,</span> <span class="p">-</span><span class="m">5</span><span class="p">,</span> <span class="n">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">2</span><span class="p">)),</span>
+  <span class="n">upper</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">npar</span><span class="p">))</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">pop</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">ps</span><span class="p">=</span><span class="n">ps</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">ps</span><span class="p">=</span><span class="n">ps</span><span class="p">)</span>
+<span class="n">save</span><span class="p">(</span><span class="n">dmi</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="k">model</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">pop</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">pop</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">file</span> <span class="p">=</span> <span class="s2">"tests/Group5/test_cddm12S.RData"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Then we use 6 CPU cores, <strong>ncore=6</strong> to run 6 parallel model fits. The <strong>block</strong> option indicates whether we want to update the entire parameter vector or just one parameter in the vector at a time. This is critical for the hierarchical model fit, but inconsequential for the fixed-effect model fit, so to gain more speed, we choose to disable it, <strong>block=FALSE</strong>.</p>
+
+<blockquote>
+  <p>Note in R 3.6.1, the <strong>mc.cores</strong> option in <strong>mclapply</strong> has been altered. It now takes the ncore option via “getOpion(“mc.cores”, 2L)”. This renders the ggdmc 0.2.6.0 always run 2 cores, which is a default setting of the mclapply function. To launch the number of CPU core you want, you have to adjust this manually in the two internal R functions, <strong>run_many</strong> and <strong>rerun_many</strong>, accordingly.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## 2 mins
+system.time(
+  fit0 &lt;- StartNewsamples(dmi, p.prior, block = FALSE, nmc=500, ncore=6)
+)
+
+## 507 s
+system.time(
+  fit  &lt;- run(fit0, ncore=6)
+)
+</code></pre></div></div>
+
+<p>After finishing the model fit, we check whether the chains are well-converged. The potential scale reduction factors, PSRT, are below 1.10 for the data from the 12 participants.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhat &lt;- gelman(fit, verbose=TRUE)
+# Diagnosing theta for many participants separately
+# Mean    5    3   10    7    1    4    2   11    8   12    6    9 
+# 1.02 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.02 1.02 1.02 1.03 1.10 
+
+est &lt;- summary(fit, recovery = TRUE, ps = ps, verbose = FALSE)
+</code></pre></div></div>
+
+<p>The parameters are well recovered.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Summary each participant separately
+#         v1    v2     a   t0
+# Mean  1.98  1.92  1.52 0.12
+# True  1.98  2.01  1.49 0.12
+# Diff  0.00  0.10 -0.03 0.00
+# Sd    0.14  0.17  0.12 0.04
+# True  0.08  0.09  0.07 0.04
+# Diff -0.06 -0.08 -0.05 0.00
+</code></pre></div></div>
+
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+
+			
+		</script>
+
+		  
+		</script>
+	</body>
+</html>

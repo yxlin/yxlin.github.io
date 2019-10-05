@@ -16,7 +16,7 @@
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <script type="application/ld+json">
-{"@type":"WebSite","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/","name":"Cognitive Models","headline":"Cognitive Models","sameAs":[null],"description":"Dynamic Models of Choice with Better Graphic Tools and Quicker Computations","@context":"http://schema.org"}</script>
+{"sameAs":[null],"description":"Dynamic Models of Choice with Better Graphic Tools and Quicker Computations","@type":"WebSite","url":"http://localhost:4000/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"name":"Cognitive Models","headline":"Cognitive Models","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -120,34 +120,38 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<a href="/cognitive-model/lba/">Cognitive Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/lba/">LBA Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/pm/">PM Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
-								
-									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lca/">LCA Model</a></li>
 								
 							</ul>
 						</li>
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<a href="/fixed-effect-model/one_participant/">Fixed-effects Model</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/cddm12S/">CDDM</a></li>
 								
 							</ul>
 						</li>
@@ -171,15 +175,17 @@
 							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hlba/">HLBA Model</a></li>
 								
-									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
-								
-									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hddm/">HDDM</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">HCDDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hpm/">HPM Model</a></li>
 								
 							</ul>
 						</li>
@@ -227,27 +233,24 @@
 
 <p>The package, evolving from dynamic model of choice (<em>DMC</em>,
 Heathcote, Lin, et al., 2018), is a generic tool for conducting Bayesian Computations 
-on cognitive models, with a specific emphasis on the challenging hierarchical models
-and likelihood approximation methods.</p>
+on cognitive models, with a specific emphasis on the challenging hierarchical
+choice response-time models.</p>
 
 <ol>
   <li>
     <p>Instead of using Gibbs or HMC, <strong><em>ggdmc</em></strong> uses population-based MCMC (pMCMC) 
-samplers. A notable Gibbs example is the Gibbs-based Python software,
-HDDM (Wiecki, Sofer &amp; Frank, 2013), which fit the Wiener diffusion model.
-This specific diffusion model presumes no variability at the starting point
-and drift rates.</p>
+samplers. A notable Gibbs example for the diffusion model is the Gibbs-based
+Python software, HDDM (Wiecki, Sofer &amp; Frank, 2013). This Python-based method
+does not have convenient interface to model the parameter variability. We expand
+this in our software.</p>
   </li>
   <li>
-    <p>An HMC example aiming for conducting Bayesian RT models is Ahn, Haines, and
-Zhang’s <em>hBayesDM</em>, which is an R package providing convenient wrapper functions
-for the well-known Stan software. That is, the user needs to write their own Stan
-codes or modify the DDM / LBA Stan codes, packaged together in <em>hBayesDM</em> for
-the specific models / probability density functions, even just a change in
-the experimental design. This has been considered in the design of <em>DMC</em>
-(Heathcote et al., 2018), which <em>ggdmc</em> also includes, is that we provide a
-convenient interface to allow the user to fit many, if not all, different
-experimental designs of, for instance, DDM and LBA model.</p>
+    <p>An HMC example aiming for conducting hierarchical Bayesian models is Ahn, Haines,
+and Zhang’s <em>hBayesDM</em>, which is an R package providing convenient wrapper functions
+for the well-known Stan software. It is a great package and has included interface to
+fit models for different cognitive task.  However, in <em>hBayesDM</em>, the user still needs
+to modify their own Stan codes for models when s/he uses different designs, not included
+in the package.  <em>DMC</em> expands this function, (Heathcote et al., 2018), so does <em>ggdmc</em>.</p>
   </li>
   <li>
     <p><strong><em>ggdmc</em></strong> uses two different variants of <em>migration</em> operator in addition to
@@ -283,7 +286,7 @@ C++ codes in <strong><em>ggdmc</em></strong>.</li>
 to request a free copy of the latest software)</p>
 
 <blockquote>
-  <p>install.packages(“ggdmc_0.2.5.5.tar.gz”, repos = NULL, type=”source”)</p>
+  <p>install.packages(“ggdmc_0.2.6.0.tar.gz”, repos = NULL, type=”source”)</p>
 </blockquote>
 
 <h4 id="load-ggdmc-package">Load <em>ggdmc</em> Package</h4>
@@ -293,13 +296,6 @@ to request a free copy of the latest software)</p>
 </blockquote>
 
 <h4 id="faq">FAQ</h4>
-
-<h4 id="advertisement">Advertisement</h4>
-
-<p>!!!Warning!!! This is an advertisement</p>
-
-<p>I am looking for a job! If you are interested in my Bayesian software here and / or
-my <a href="https://github.com/TasCL/ppda">CUDA C software</a>, please get in touch with me.</p>
 
 
 			</article>

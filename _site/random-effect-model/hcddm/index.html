@@ -6,19 +6,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Begin Jekyll SEO tag v2.4.0 -->
-<title>Hierarchical Circular DDM | Cognitive Models</title>
+<title>HCDDM | Cognitive Models</title>
 <meta name="generator" content="Jekyll v3.7.2" />
-<meta property="og:title" content="Hierarchical Circular DDM" />
+<meta property="og:title" content="HCDDM" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Dynamic Models of Choice with Better Graphic Tools and Quicker Computations" />
-<meta property="og:description" content="Dynamic Models of Choice with Better Graphic Tools and Quicker Computations" />
+<meta name="description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting hierarchical 2-D diffusion model. The explanation will be added later." />
+<meta property="og:description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting hierarchical 2-D diffusion model. The explanation will be added later." />
 <link rel="canonical" href="http://localhost:4000/random-effect-model/hcddm/" />
 <meta property="og:url" content="http://localhost:4000/random-effect-model/hcddm/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-03-14T06:58:28+00:00" />
+<meta property="article:published_time" content="2019-10-04T13:40:30+00:00" />
 <script type="application/ld+json">
-{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/random-effect-model/hcddm/","headline":"Hierarchical Circular DDM","dateModified":"2019-03-14T06:58:28+00:00","datePublished":"2019-03-14T06:58:28+00:00","description":"Dynamic Models of Choice with Better Graphic Tools and Quicker Computations","@context":"http://schema.org"}</script>
+{"datePublished":"2019-10-04T13:40:30+00:00","description":"Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting hierarchical 2-D diffusion model. The explanation will be added later.","@type":"Article","url":"http://localhost:4000/random-effect-model/hcddm/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"HCDDM","dateModified":"2019-10-04T13:40:30+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -122,34 +122,38 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<a href="/cognitive-model/lba/">Cognitive Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/lba/">LBA Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/pm/">PM Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
-								
-									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lca/">LCA Model</a></li>
 								
 							</ul>
 						</li>
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<a href="/fixed-effect-model/one_participant/">Fixed-effects Model</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/cddm12S/">CDDM</a></li>
 								
 							</ul>
 						</li>
@@ -173,15 +177,17 @@
 							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hlba/">HLBA Model</a></li>
 								
-									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
-								
-									<li class="nav-item current"><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hddm/">HDDM</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+									<li class="nav-item current"><a href="/random-effect-model/hcddm/">HCDDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hpm/">HPM Model</a></li>
 								
 							</ul>
 						</li>
@@ -222,10 +228,128 @@
 		<section class="main">
 			<div class="page-header">
 				<h2>Hierarchical Model</h2>
-				<h3>Hierarchical Circular DDM</h3>
+				<h3>HCDDM</h3>
 			</div>
 			<article class="content">
-				
+				<blockquote>
+  <p><strong>Disclaimer</strong>: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting hierarchical 2-D diffusion model. The explanation will be added later.</p>
+</blockquote>
+
+<p>First, we set up a 2-D diffusion model, simulate a data set and then define three sets of prior distributions for the CDDM parameters.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v2</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span>
+                   <span class="n">sigma2</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="s2">"1"</span><span class="p">),</span>
+  <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">,</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">sigma1</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">sigma2</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="m">6</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="m">1e-4</span><span class="p">),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">)),</span>
+  <span class="n">responses</span> <span class="p">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s1">'theta_'</span><span class="p">,</span> <span class="n">letters</span><span class="p">[</span><span class="m">1</span><span class="p">:</span><span class="m">4</span><span class="p">]),</span>
+  <span class="n">type</span>      <span class="p">=</span> <span class="s2">"cddm"</span><span class="p">)</span>
+<span class="n">npar</span> <span class="p">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">GetPNames</span><span class="p">(</span><span class="k">model</span><span class="p">))</span>
+
+<span class="n">pop</span><span class="p">.</span><span class="n">mean</span>  <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span>  <span class="m">2</span><span class="p">,</span>  <span class="n">v2</span> <span class="p">=</span>  <span class="m">2</span><span class="p">,</span>  <span class="n">a</span> <span class="p">=</span> <span class="m">1.5</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">0.1</span><span class="p">)</span>
+<span class="n">pop</span><span class="p">.</span><span class="n">scale</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="m">.1</span><span class="p">,</span>  <span class="n">v2</span> <span class="p">=</span> <span class="m">.1</span><span class="p">,</span>  <span class="n">a</span> <span class="p">=</span> <span class="m">.05</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">0.05</span><span class="p">)</span>
+<span class="n">pop</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+  <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+  <span class="n">p1</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span>
+  <span class="n">p2</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span>
+  <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,</span> <span class="p">-</span><span class="m">5</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+  <span class="n">upper</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span> <span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>
+
+<span class="p">##</span> <span class="n">Simulate</span> <span class="n">some</span> <span class="n">data</span>
+<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">simulate</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">nsub</span> <span class="p">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">nsim</span> <span class="p">=</span> <span class="m">1e2</span><span class="p">,</span> <span class="n">prior</span> <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">prior</span><span class="p">)</span>
+<span class="n">ps</span> <span class="p">&lt;-</span> <span class="n">attr</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="s2">"parameters"</span><span class="p">)</span>
+<span class="n">dmi</span> <span class="p">&lt;-</span> <span class="n">BuildDMI</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="k">model</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+ <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+ <span class="n">p1</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">a</span><span class="p">=</span><span class="m">1</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">1</span><span class="p">),</span>
+ <span class="n">p2</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">a</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">1</span><span class="p">),</span>
+ <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,</span> <span class="p">-</span><span class="m">5</span><span class="p">,</span> <span class="n">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">2</span><span class="p">)),</span>
+ <span class="n">upper</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">npar</span><span class="p">))</span>
+
+<span class="n">mu</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">ggdmc</span><span class="p">::</span><span class="n">BuildPrior</span><span class="p">(</span>
+   <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+   <span class="n">p1</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span>
+   <span class="n">p2</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">scale</span><span class="p">*</span><span class="m">5</span><span class="p">,</span>
+   <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,-</span><span class="m">5</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+   <span class="n">upper</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">sigma</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
+   <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"beta"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+   <span class="n">p1</span>    <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">1</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">1</span><span class="p">,</span> <span class="n">a</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">1</span><span class="p">),</span>
+   <span class="n">p2</span>    <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
+   <span class="n">upper</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">npar</span><span class="p">))</span>
+
+<span class="n">priors</span> <span class="p">&lt;-</span> <span class="k">list</span><span class="p">(</span><span class="n">pprior</span><span class="p">=</span><span class="n">p</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">location</span><span class="p">=</span><span class="n">mu</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">scale</span><span class="p">=</span><span class="n">sigma</span><span class="p">.</span><span class="n">prior</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>A conventional practice in our parameter-recovery study is to check the prior distributions</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot(pop.prior, ps=ps)
+plot(p.prior,   ps=ps)
+plot(mu.prior)
+plot(sigma.prior)
+
+save(priors, dmi, model, ps, pop.mean, pop.scale, file = "tests/Group5/test_hcddm12S.RData")
+</code></pre></div></div>
+
+<p>The hierarchical model fit takes usually more time than the fixed-effect model fit.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## 23.7 mins
+fit0 &lt;- StartNewsamples(dmi, priors, nmc=5e2)
+
+## 25.8 mins
+fit  &lt;- run(fit0)
+
+## 51.5 mins
+fit  &lt;- run(fit, thin=2)
+save(fit, fit0, priors, dmi, model, ps, pop.mean, pop.scale,
+     file = "tests/Group5/test_hcddm12S.RData")
+</code></pre></div></div>
+
+<p>The PSRT reports the chains are converged.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>res &lt;- hgelman(fit, verbose = TRUE)
+## hyper    10     6     4     2     5    12    11     9     7     3     8     1 
+##  1.14  1.02  1.02  1.03  1.04  1.04  1.04  1.05  1.06  1.10  1.13  1.14  1.16 
+</code></pre></div></div>
+
+<p>The estimates averaged across particiapnts and their standard deviations are close to the true values.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>est0 &lt;- summary(fit, recovery = TRUE, ps = ps, verbose = TRUE)
+
+#         v1   v2     a   t0
+# Mean  2.03 1.92  1.54 0.10
+# True  1.99 2.03  1.51 0.10
+# Diff -0.04 0.11 -0.03 0.00
+# Sd    0.11 0.11  0.02 0.05
+# True  0.11 0.11  0.03 0.04
+# Diff  0.00 0.00  0.02 0.00
+</code></pre></div></div>
+
+<p>The estimates of the hyper parameters are fairly close to the true values, too.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>est1 &lt;- summary(fit, hyper = TRUE, recovery = TRUE, ps = pop.mean,  type = 1, verbose = TRUE)
+#                   a    t0   v1    v2
+# True           1.50  0.10 2.00  2.00
+# 2.5% Estimate  1.50  0.01 1.90  1.79
+# 50% Estimate   1.54  0.09 2.03  1.92
+# 97.5% Estimate 1.58  0.13 2.16  2.04
+# Median-True    0.04 -0.01 0.03 -0.08
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>est2 &lt;- summary(fit, hyper = TRUE, recovery = TRUE, ps = pop.scale, type = 2, verbose = TRUE)
+
+#                    a   t0   v1   v2
+# True            0.05 0.05 0.10 0.10
+# 2.5% Estimate   0.01 0.04 0.09 0.08
+# 50% Estimate    0.04 0.07 0.17 0.16
+# 97.5% Estimate  0.11 0.14 0.34 0.32
+# Median-True    -0.01 0.02 0.07 0.06
+</code></pre></div></div>
 
 			</article>
 		</section>

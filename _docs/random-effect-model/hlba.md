@@ -1,5 +1,5 @@
 ---
-title: Hierarchical LBA Model
+title: HLBA Model
 category: Hierarchical Model
 order: 1
 ---

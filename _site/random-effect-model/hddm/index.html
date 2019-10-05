@@ -6,19 +6,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Begin Jekyll SEO tag v2.4.0 -->
-<title>Hierarchical DDM | Cognitive Models</title>
+<title>HDDM | Cognitive Models</title>
 <meta name="generator" content="Jekyll v3.7.2" />
-<meta property="og:title" content="Hierarchical DDM" />
+<meta property="og:title" content="HDDM" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="In this tutorial, I conducted a parameter recovery study, demonstrating the pMCMC method to fit a hierarchical DDM for a relatively simple factorial design." />
-<meta property="og:description" content="In this tutorial, I conducted a parameter recovery study, demonstrating the pMCMC method to fit a hierarchical DDM for a relatively simple factorial design." />
+<meta name="description" content="We have striven to minimize the number of errors. However, we canot guarantee the note is 100% accurate." />
+<meta property="og:description" content="We have striven to minimize the number of errors. However, we canot guarantee the note is 100% accurate." />
 <link rel="canonical" href="http://localhost:4000/random-effect-model/hddm/" />
 <meta property="og:url" content="http://localhost:4000/random-effect-model/hddm/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-03-14T06:58:28+00:00" />
+<meta property="article:published_time" content="2019-10-04T13:40:30+00:00" />
 <script type="application/ld+json">
-{"@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/random-effect-model/hddm/","headline":"Hierarchical DDM","dateModified":"2019-03-14T06:58:28+00:00","datePublished":"2019-03-14T06:58:28+00:00","description":"In this tutorial, I conducted a parameter recovery study, demonstrating the pMCMC method to fit a hierarchical DDM for a relatively simple factorial design.","@context":"http://schema.org"}</script>
+{"datePublished":"2019-10-04T13:40:30+00:00","description":"We have striven to minimize the number of errors. However, we canot guarantee the note is 100% accurate.","@type":"Article","url":"http://localhost:4000/random-effect-model/hddm/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"HDDM","dateModified":"2019-10-04T13:40:30+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -122,34 +122,38 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<a href="/cognitive-model/lba/">Cognitive Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/lba/">LBA Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/pm/">PM Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
-								
-									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lca/">LCA Model</a></li>
 								
 							</ul>
 						</li>
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<a href="/fixed-effect-model/one_participant/">Fixed-effects Model</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/cddm12S/">CDDM</a></li>
 								
 							</ul>
 						</li>
@@ -173,15 +177,17 @@
 							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hlba/">HLBA Model</a></li>
 								
-									<li class="nav-item current"><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
-								
-									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+									<li class="nav-item current"><a href="/random-effect-model/hddm/">HDDM</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">HCDDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hpm/">HPM Model</a></li>
 								
 							</ul>
 						</li>
@@ -222,22 +228,32 @@
 		<section class="main">
 			<div class="page-header">
 				<h2>Hierarchical Model</h2>
-				<h3>Hierarchical DDM</h3>
+				<h3>HDDM</h3>
 			</div>
 			<article class="content">
-				<p>In this tutorial, I conducted a parameter recovery study, demonstrating
+				<blockquote>
+  <p>We have striven to minimize the number of errors. However, we canot 
+guarantee the note is 100% accurate.</p>
+</blockquote>
+
+<p>In this tutorial, I conducted a parameter recovery study, demonstrating
 the pMCMC method to fit a hierarchical DDM for a relatively simple
 factorial design.</p>
 
 <h2 id="set-up-a-model-object">Set-up a model object</h2>
-<p>This particular design is drawn from Heathcote et al’s (2018) DMC tutorial,
-which assumes that a word frequency (my interpretation) factor affecting
+<p>This particular design is from Heathcote et al’s (2018) DMC tutorial,
+which assumes a word frequency (my interpretation) factor affecting
 the mean drift rate (<em>v</em>). Note it is not a good practice to use “F” notation
 in R, because it is also used as a shorthand for the reserved word,
 meaning <em>FALSE</em>. However, one of the R strengths is it permits
-idiosyncratic programming habits, even bad ones.</p>
+idiosyncratic programming habits, even bad ones. In the example here, it seems
+not cause any errors.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">##</span> <span class="k">version</span> <span class="m">0.2.6.0</span>
+<span class="p">##</span> <span class="n">install</span><span class="p">.</span><span class="n">packages</span><span class="p">(</span><span class="s2">"ggdmc"</span><span class="p">)</span>
+<span class="n">loadedPackages</span> <span class="p">&lt;-</span><span class="n">c</span><span class="p">(</span><span class="s2">"ggdmc"</span><span class="p">,</span> <span class="s2">"data.table"</span><span class="p">,</span> <span class="s2">"ggplot2"</span><span class="p">,</span> <span class="s2">"gridExtra"</span><span class="p">,</span> <span class="s2">"ggthemes"</span><span class="p">)</span>
+<span class="n">sapply</span><span class="p">(</span><span class="n">loadedPackages</span><span class="p">,</span> <span class="n">require</span><span class="p">,</span> <span class="n">character</span><span class="p">.</span><span class="n">only</span><span class="p">=</span><span class="nb">TRUE</span><span class="p">)</span>
+
 <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
     <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v</span> <span class="p">=</span> <span class="s2">"F"</span><span class="p">,</span> <span class="n">z</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">d</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sz</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sv</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span>
                      <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
@@ -282,14 +298,15 @@ ps  &lt;- attr(dat, "parameters")
 
 <p>In the hierarchical case of the parameter recovery study, my aim
 is to recover not only <em>ps</em> matrix, but also the data generating
-mechanism.  That is, I wish to be able to known <em>pop.mean</em>,
-<em>pop.scale</em> and their marginal distribution, as well as the <em>ps</em>.
-A reminder <em>ps</em> is a matrix, storing the true values for each
-DDM parameter. Each row of the matrix represents the parameter
-vector for a participant.</p>
+mechanism.  That is, I also want to known <em>pop.mean</em>,
+<em>pop.scale</em> and their marginal distribution.
+Note <em>ps</em> is a matrix, storing the true values for each
+DDM parameter. That is, the simulate function randomly selects nsub
+set of true parameters based on the prior distribution, <strong>pop.prior</strong>. 
+Each row of the ps matrix represents one parameter vector of a participant.</p>
 
 <blockquote>
-  <p>dplyr::tbl_df(ps)</p>
+  <p>tibble::as_tibble(ps)</p>
 </blockquote>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## A tibble: 40 x 7
@@ -308,14 +325,13 @@ vector for a participant.</p>
 ##  with 30 more rows
 </code></pre></div></div>
 
-<p>OK. The above is only preparation work for a parameter recovery study.
-In the following, I will start to conduct Bayesian sampling to
-draw samples from the posterior distribution, hoping that I
-can recover <em>pop.mean</em>, <em>pop.scale</em>, the target distribution, and
-the <em>ps</em> matrix.</p>
+<p>The above is only preparation work for a parameter recovery study.
+In the following, I will start to draw samples from the posterior 
+distribution, aiming to recover <em>pop.mean</em>, <em>pop.scale</em>, the target 
+distribution, and the <em>ps</em> matrix.</p>
 
-<p>I already have the likelihood, which is the DDM equation (Ratcliff &amp;
-Tuerlinckx, 2002). I will need to set up my prior belief, namely
+<p>I already have the likelihood, which is the DDM
+equation (Voss, Rothermund, Voss, 2004). I will need to set up the
 prior distributions for the seven DDM parameters. In the case of
 hierarchical model, there are two sets of prior distributions: one is
 usually called hyper-prior distributions  and the other simply prior
@@ -347,30 +363,35 @@ names(sigma.prior) &lt;- GetPNames(model)
 
 <p>A convention in <em>ggdmc</em> is to bind location and scale prior distributions
 as one list object. This is just for the convenience of data handling
-in R, which is not so convenient in C++.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>priors &lt;- list(pprior = p.prior, locaton = mu.prior, scale = sigma.prior)
-</code></pre></div></div>
+in R, which is not so convenient in C++. Note the names of each element in the
+list is critical.</p>
+
+<blockquote>
+  <p>priors &lt;- list(pprior = p.prior, locaton = mu.prior, scale = sigma.prior)</p>
+</blockquote>
 
 <p>Then, the following run sampling.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## run the "?" to see the details of function options
-?StartNewHypersamples
+?StartNewsamples
 ?run
+## 7.84 mins
+fit0 &lt;- StartNewsamples(data=dmi, prior=priors)
 
-hsam0 &lt;- run(StartNewHypersamples(5e2, dmi, p.prior, pp.prior, 2),
-             pm = .05, hpm = .05) ## 35 mins
-hsam &lt;- run(RestartHypersamples(5e2, hsam0, thin = 8),
-            pm = 0, hpm = 0)      ## 150 mins
-hsam &lt;- run(RestartHypersamples(5e2, hsam0, thin = 16),
-            pm = 0, hpm = 0)      ## 5 hrs
-hsam &lt;- run(RestartHypersamples(5e2, hsam0, thin = 32),
-            pm = 0, hpm = 0)      ## 10 hrs
-hsam &lt;- run(RestartHypersamples(5e2, hsam0, thin = 64),
-            pm = 0, hpm = 0)      ## 20.6 hrs
+## 19 mins
+fit &lt;- run(fit0)
+
+## 7.54 hrs
+fit &lt;- run(fit, thin = 8)
+
 save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
-     hsam0, hsam, file = "data/hierarchical/ggdmc_4_7_DDM.rda")
+     fit0, fit, file = "data/hierarchical/ggdmc_4_7_DDM.rda")
 
-## 4 rounds
+</code></pre></div></div>
+
+<p>One may use the repeat function to run automatic model fit.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## 4 rounds
 thin &lt;- 8
 repeat {
      hsam &lt;- run(RestartHypersamples(5e2, hsam, thin = thin),
@@ -387,10 +408,10 @@ save(pop.mean, pop.scale, pop.prior, model, dat, dmi, npar, ps,
 </code></pre></div></div>
 
 <p>Similar to many standard modeling works, I must diagnose the
-models so as to make sure I drew a reliable posterior
+model fit to certain I drew a reliable posterior
 distribution, reflecting the target distribution. I
-can check visually as well as calculating some statistics. First,
-I conducted visually checks for the trace plots and posterior
+can check visually as well as calculate some statistics. First,
+I conducted visual checks for the trace plots and posterior
 distributions.</p>
 
 <ol>
@@ -400,8 +421,7 @@ distributions.</p>
   <li>Trace plots of each DDM parameters for each participants</li>
   <li>Posterior density plots (i.e., marginal posterior distributions)
 for the hyper parameters</li>
-  <li>Posterior density plots the DDM parameters for each
-parameters</li>
+  <li>Posterior density plots of each DDM parameters at the data level</li>
 </ol>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot(hsam, hyper = TRUE)                           ## 1.
@@ -420,9 +440,9 @@ probability density for every participant (i.e., figure 6), because there are to
 many. You can print them in a pdf file to check.</p>
 
 <p>Then, I calculated the potential scale reduction factor, for both the hyper
-parameters and each participant.</p>
+parameters and the parameters for each participant.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhat &lt;- hgelman(hsam)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhats &lt;- hgelman(hsam, verbose = TRUE)
 ## Diagnosing theta for many participants separately
 ## Diagnosing the hyper parameters, phi
 ## hyper     1     2     3     4     5     6     7     8     9    10    11    12
@@ -435,11 +455,11 @@ parameters and each participant.</p>
 ##  1.01  1.01
 </code></pre></div></div>
 
-<p>Finally, I want to know if I do recover the mechanism of data generation and
+<p>Finally, I want to know if I do recover the data generation mechanism and
 true parameter values for every participant (i.e., <em>ps</em>). This can be achieved
-by the <em>summary</em> function.</p>
+by using the <em>summary</em> function.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hest1 &lt;- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.mean, type = 1)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hest1 &lt;- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.mean,  type = 1)
 hest2 &lt;- summary(hsam, recovery = TRUE, hyper = TRUE, ps = pop.scale, type = 2)
 round(hest1, 2)
 round(hest2, 2)
@@ -460,7 +480,7 @@ ests &lt;- summary(hsam, recovery = TRUE, ps = ps)
 ## Median-True    0.03 0.00 -0.03 -0.01 -0.01 0.03 0.00
 
 
-## Summary each participant separately
+## Summary statistics across participants
 ##          a  v.f1 v.f2    z    sz   sv   t0
 ## Mean  2.00  3.87 2.94 0.52  0.29 0.72 0.29
 ## True  1.98  3.86 2.94 0.52  0.28 0.78 0.29

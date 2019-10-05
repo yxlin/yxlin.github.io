@@ -1,7 +1,7 @@
 ---
 title: Shooting Decision Model - Empirical Data
 category: Hierarchical Model
-order: 5
+order: 4
 ---
 
 I continued the shooting decision model by fitting the empirical data in study 1 in Pleskac,

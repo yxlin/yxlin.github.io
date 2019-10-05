@@ -16,7 +16,7 @@
 <meta property="og:url" content="http://localhost:4000/changelog/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <script type="application/ld+json">
-{"@type":"WebPage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"url":"http://localhost:4000/changelog/","headline":"Change Log","description":"Dynamic Models of Choice with Better Graphic Tools and Quicker Computations","@context":"http://schema.org"}</script>
+{"description":"Dynamic Models of Choice with Better Graphic Tools and Quicker Computations","@type":"WebPage","url":"http://localhost:4000/changelog/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Change Log","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -120,34 +120,38 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/cognitive-model/sdt/">Cognitive Model</a>
+							<a href="/cognitive-model/lba/">Cognitive Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/cognitive-model/sdt/">Signal Detection Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/lba/">LBA Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/lba/">Linear Ballistic Accumulation Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/pm/">PM Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
 								
-									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Diffusion Decision Model</a></li>
-								
-									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
+									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/pddm/">PDDM</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/lba3/">Three-accumulator LBA Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/lca/">LCA Model</a></li>
 								
 							</ul>
 						</li>
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/fixed-effect-model/one_participant/">Fixed Effects Model</a>
+							<a href="/fixed-effect-model/one_participant/">Fixed-effects Model</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/one_participant/">One Participant</a></li>
 								
 									<li class="nav-item "><a href="/fixed-effect-model/many_participants/">Multiple Participants</a></li>
+								
+									<li class="nav-item "><a href="/fixed-effect-model/cddm12S/">CDDM</a></li>
 								
 							</ul>
 						</li>
@@ -171,15 +175,17 @@
 							<a href="/random-effect-model/hlba/">Hierarchical Model</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/random-effect-model/hlba/">Hierarchical LBA Model</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hlba/">HLBA Model</a></li>
 								
-									<li class="nav-item "><a href="/random-effect-model/hddm/">Hierarchical DDM</a></li>
-								
-									<li class="nav-item "><a href="/random-effect-model/hcddm/">Hierarchical Circular DDM</a></li>
+									<li class="nav-item "><a href="/random-effect-model/hddm/">HDDM</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision1/">Shooting Decision Model - Recovery Study</a></li>
 								
 									<li class="nav-item "><a href="/random-effect-model/shooting-decision2/">Shooting Decision Model - Empirical Data</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hcddm/">HCDDM</a></li>
+								
+									<li class="nav-item "><a href="/random-effect-model/hpm/">HPM Model</a></li>
 								
 							</ul>
 						</li>
@@ -230,49 +236,45 @@
 <div class="changelog">
 	
 		<div class="changelog-item">
-			<h3>Documents</h3>
-			<p><span class="date">July 14, 2018</span> <span class="badge minor">minor</span></p>
+			<h3>Software</h3>
+			<p><span class="date">July 14, 2018</span> <span class="badge major">major</span></p>
 
-			<p>This release fixes a few minor issues reported by users.</p>
+			<p>This release add new featues and fixes a few minor issues.</p>
 
 <p><strong>Features:</strong></p>
 
 <ul>
-  <li>Test</li>
-  <li>Test</li>
+  <li>2019-09-05 Add help page for the DIC and BPIC function.</li>
+  <li>2019-09-05 Expand DIC and BPIC functions to handle model object with many subjects.</li>
+  <li>2019-09-22 Add 2-D diffusion model, CDDM.cpp and CDDM.hpp.</li>
+  <li>2019-09-29 Modified lba_ in Likelihood.hpp and rlba_norm in random.R to adapt for PM model. Adapted two bessel-function routines, gsl_sf_bessel_zero_J0 &amp; gsl_sf_bessel_J1 from GSL for the zero-drift process.</li>
 </ul>
 
 <p><strong>Fixes:</strong></p>
 
 <ul>
-  <li>Test</li>
-  <li>Test</li>
+  <li>2019-09-22 Fix run_many and rerun_many in sampling.R to cope with the change in mclapply. Now the ncore option is entered mclapply via getOption(“mc.cores”, ncore)).</li>
 </ul>
+
 
 
 			<p class="editor-link"><a href="cloudcannon:collections/_posts/2018-07-14-software.md" class="btn"><strong>&#9998;</strong> Update Entry</a></p>
 		</div>
 	
 		<div class="changelog-item">
-			<h3>Software</h3>
+			<h3>Documents</h3>
 			<p><span class="date">July 14, 2018</span> <span class="badge major">major</span></p>
 
-			<p>Test, test, test</p>
+			<p>The page log the changes and NEWS in the documentations.</p>
 
 <p><strong>Features:</strong></p>
 
 <ul>
-  <li>Test</li>
-  <li>Test</li>
-  <li>Test</li>
+  <li>2019-09-05 Add the LCA model to the chapter of Cognitive Model</li>
+  <li>2019-09-21 Add 2-D diffusion model, Circular Drift-diffusion Model in the chapter of Cognition Model and CDDM and HCDDM in the chapters of Fixed-effect Model and Hierarchical Model</li>
+  <li>2019-09-28 Add PM Model in Cognitive Model.</li>
 </ul>
 
-<p><strong>Fixes:</strong></p>
-
-<ul>
-  <li>Test</li>
-  <li>Test</li>
-</ul>
 
 
 			<p class="editor-link"><a href="cloudcannon:collections/_posts/2018-07-14-document.md" class="btn"><strong>&#9998;</strong> Update Entry</a></p>
