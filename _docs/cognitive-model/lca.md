@@ -6,19 +6,13 @@ order: 8
 
 > The code here needs the LCA and C++-based PDA modules
 
-This tutorial demonstrates the method of conducting maximum likelihood 
-parameter estimation for the leaking, competing accumulator model. You will 
-need the subplex routines for optimization, because I use the PDA to construct
-the simulated PDF of the LCA model. The simulated PDF is an approximation of 
-analytic PDF, so sPDF is noisy. The subplex is designed to handle such 
-situation. The package can be downloaded from 
-https://github.com/kingaa/subplex/ or CRAN.
+This tutorial demonstrates the method of conducting maximum likelihood parameter estimation for the leaky competing accumulator model. You will need the subplex routines for optimization, because I use the PDA to construct the simulated PDF of the LCA model. The simulated PDF is an approximation of analytic PDF, so sPDF is noisy. The subplex is designed to handle such situation. The package can be downloaded from https://github.com/kingaa/subplex/ or CRAN.
  
 ```
 rm(list = ls())
 setwd('~/Documents/LCA5/tests/Group3/')
-load("LCA1S_MLE_1e2_subplex.RData")
-load("LCA1S_MLE_1e3_subplex.RData")
+## load("LCA1S_MLE_1e2_subplex.RData")
+## load("LCA1S_MLE_1e3_subplex.RData")
 require(ggdmc); require(subplex)
 
 model <- BuildModel(
@@ -34,8 +28,7 @@ p.vector  <- c(kappa=1.15, beta=1, Z=0.5, t0=.200, I.true=1.2, I.false=1, x0 =.1
 nsim <- ntrial <- 1e2
 ## nsim <- ntrial <- 1e3
 
-## use the seed option to make sure I always replicate the result
-## remove it, if you want to see the stochastic process.
+## I use the seed option to make sure I always replicate the result.
 dat <- simulate(model, nsim = ntrial, ps = p.vector, seed = 123)
 dmi <- BuildDMI(dat, model)
 d <- data.table::data.table(dat)
@@ -69,6 +62,7 @@ init_par <- runif(length(p.vector))
 init_par[4] <- runif(1, 0, min(dmi$RT)) 
 names(init_par) <- names(p.vector)
 
+## Note the LCA PDF was calculated by using on PDA method (nsim = 16384)
 ## 8.1 hrs for 1e2 observations on Intel i5-6200U
 ## 5.14 hrs on Intel i7
 res <- subplex(par = init_par, fn = objective_fun, data = dmi)
