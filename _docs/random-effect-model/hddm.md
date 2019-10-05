@@ -1,5 +1,5 @@
 ---
-title: Hierarchical DDM
+title: HDDM
 category: Hierarchical Model
 order: 2
 ---
