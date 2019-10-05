@@ -4,11 +4,7 @@ category: Cognitive Model
 order: 8
 ---
 
-<<<<<<< HEAD
-> The LCA and simulated PDF modules have not uploaded to GitHub. Note this is an ongoing project. 
-=======
-> The LCA and simulated PDF modules have not uploaded to GitHub. 
->>>>>>> 883650102262895c76c847a34bc17afd4f659a28
+> The code here needs the LCA and C++-based PDA modules
 
 This tutorial demonstrates the method of conducting maximum likelihood 
 parameter estimation for the leaking, competing accumulator model. You will 
@@ -82,9 +78,9 @@ round(res$par, 2)  ## remember to check res$convergence
 save(res, dat, p.vector, file = "LCA1S_MLE_1e2_subplex.RData")
 save(res, dat, p.vector, file = "LCA1S_MLE_1e3_subplex.RData")
 
-##      kappa    beta       Z     t0   I.true  I.false      x0    
-## True  1.15      1     0.5    0.20     1.2        1      .15
-## 1e2  0.77    0.33    0.64    0.06    0.83     0.83     0.33 
-## 1e3  0.33    0.92    0.37    0.32    0.53     0.53     0.14  
+##      kappa    beta       Z      t0   I.true  I.false      x0    
+## True  1.15       1     0.5    0.20     1.2        1      .15
+## 1e2   0.77    0.33    0.64    0.06    0.83     0.83     0.33 
+## 1e3   0.33    0.92    0.37    0.32    0.53     0.53     0.14  
 
 ``` 
