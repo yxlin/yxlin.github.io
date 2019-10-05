@@ -7,7 +7,7 @@ order: 7
 > We have striven to minimize the number of errors. However, we canot 
 > guarantee the note is 100% accurate.
 
-This is a note for fitting 3-accumulator LBA model.
+This is a quick note for fitting 3-accumulator LBA model.
 
 Some pre-analysis set up work.
 
@@ -84,12 +84,7 @@ predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
   
 ```
 
-In this example, we assumed three accumulators corresponding to three responses. 
-Let's say they are "Word", "Nonword", or "Pseudo-word". They are coded 
-respectively as W, N and P. This is to assume we had run some (visual) 
-lexical-decision experiments, instructing participants to decide whether a 
-stimulus is a word, a non-word, or a make-up word. The three types of stimuli 
-are coded as ww, nn and pn.
+In this example, we assumed three accumulators corresponding to three responses. Let's say they are "Word", "Nonword", and "Pseudo-word". They are coded respectively as W, N and P. This is to assume we had run some (visual) lexical-decision experiments, instructing participants to decide whether a stimulus is a word, a non-word, or a make-up word. The three types of stimuli are coded as ww, nn and pn.
 
 ```
 model <- BuildModel(
@@ -109,7 +104,6 @@ model <- BuildModel(
 ## 
 ## Model type = norm (posdrift = TRUE ) 
 ```
-
 
 Firstly, as usual, we conducted a small recovery study. That is, we designated
 a parameter vector with specific values and on the basis of this particular
@@ -186,16 +180,14 @@ print(model, p.vector)
 ## 3 1.25 1.5 0.2    1.2    1   0
 ...
 
-## To see what other option in the simulate function
+## To see what other options in the simulate function
 ## ?ggdmc:::simulate.model
 nsim <- 2048
 dat <- simulate(model, nsim = nsim, ps = p.vector)
 ```
 
-
 We used data.table to help inspect the data frame.  This makes no difference when
-the data set is small. You are welcome to opt for dplyr/tibble or traditional
-data.frame functions.
+the data set is small. 
 
 ```
 d <- data.table(dat)
@@ -260,15 +252,12 @@ p.prior <- BuildPrior(
 plot(p.prior)
 ```
 
-
-
 ## Sampling
-
-The default iteration is 200 for StartNewfitples function. 
+The default number of iteration is 200 for _StartNewsamples_ function. 
 
 ```
 ## The default iteration is 200 for StartNewsamples function. 
-fit0 <- StartNewfitples(dmi, p.prior)
+fit0 <- StartNewsamples(dmi, p.prior)
 
 ## About 301 s
 fit <- run(fit0)
@@ -297,30 +286,22 @@ plot(fit)
 ```
 
 The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
-space, so we discard all previous fitples as burn-in. That is, we did not turn on the _add_
-switch. The fitpler reaches the parameter space fast.  It took about
-700 iterations. Note this is a model with 6 parameters and some of them 
-(A and B) are correlated. 
-
-We ran another 500 (default) iterations and took a fitple every 8 iteration.
 space, so we discard all previous samples as burn-in. That is, we did not turn on the _add_
-switch. The sampler reaches the parameter space fast.  It took about
-700 iterations. Note this is a model with 6 parameters and some of them 
-(A and B) are correlated. 
+switch. The samples reaches the parameter space very fast.  It took about 700 iterations. Note this is a model with 6 parameters and some of them (A and B) are correlated. 
 
-We ran another 500 (default) iterations and took a sample every 8 iteration.
+Then We ran another 500 (default) iterations and took a sample every 8th iteration.
 
 ```
 ## ?run to see add and other options in run function
 ## Watch out! This would take a while (~ 1 hr or more depending on your CPU)
 fit <- run(fit, thin=8)
 
-## The three follow-up checks show the chains are converged and we have drawn
-## sufficient size of samples.
+## The three follow-up checks show the chains are converged and we have drawn a
+## sufficient sample size.
 plot(fit)
 
 es <- effectiveSize(fit)
-## A        B       t0 mean_v.W mean_v.N mean_v.P 
+##        A        B       t0 mean_v.W mean_v.N mean_v.P 
 ## 3032.669 3160.306 3264.266 2998.928 2979.326 3022.245 
 
 gelman(fit)
@@ -348,16 +329,14 @@ est <- summary(fit, ps = p.vector, verbose = TRUE, recovery = TRUE)
 
 ```
 
-
-The posterior prediction check takes up a lot of manually coding work. Anyway,
-the figure show the data and posterior predictions are consistent, confirming
-the model can successfully recover the data (at least in an ideal simulation
-scenario).
+The posterior prediction figure shows the data and posterior predictions are 
+consistent, confirming the model can successfully describe the data.
 
 ```
 pp <- predict_one(fit, xlim = c(0, 5))
 
-original_data <- fit1$data
+original_data <- fit$data
+
 dplyr::tbl_df(original_data)
 d <- data.table(original_data)
 
