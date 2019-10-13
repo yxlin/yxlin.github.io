@@ -10,15 +10,15 @@
 <meta name="generator" content="Jekyll v3.7.2" />
 <meta property="og:title" content="CDDM" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later." />
-<meta property="og:description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later." />
+<meta name="description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model." />
+<meta property="og:description" content="Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model." />
 <link rel="canonical" href="http://localhost:4000/fixed-effect-model/cddm12S/" />
 <meta property="og:url" content="http://localhost:4000/fixed-effect-model/cddm12S/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-10-04T13:40:30+00:00" />
+<meta property="article:published_time" content="2019-10-10T09:40:41+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2019-10-04T13:40:30+00:00","description":"Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/cddm12S/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"CDDM","dateModified":"2019-10-04T13:40:30+00:00","@context":"http://schema.org"}</script>
+{"datePublished":"2019-10-10T09:40:41+00:00","description":"Disclaimer: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/cddm12S/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"CDDM","dateModified":"2019-10-10T09:40:41+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -232,70 +232,102 @@
 			</div>
 			<article class="content">
 				<blockquote>
-  <p><strong>Disclaimer</strong>: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model. The explanation will be added later.</p>
+  <p><strong>Disclaimer</strong>: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This note records the codes for fitting fixed-effect 2-D diffusion model.</p>
 </blockquote>
 
-<p>First, we set up a 2-D diffusion model, simulate a data set and then define a set of prior distribution for the CDDM parameters.</p>
+<p>In this tutorial, we conducted a parameter recovery of a CDDM associating a speed-and-accuracy (SAT) factor with the threshold parameter, <em>a</em>. A classic SAT experiment usually encourages participants to emphaize response speed in one condition and response accuracy in the other.  The SAT factor is often found selectively affecting threshold-related parameters in 1-D diffusion model.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rm</span><span class="p">(</span><span class="k">list</span> <span class="p">=</span> <span class="n">ls</span><span class="p">())</span>
+<p>The model description prepares for a design with two factors: a three-level stimulus factor (S) and a two-level speed-and-accuracy (SAT) factor. However, it assumes only the threshold parameter, <em>a</em> is affected by the SAT factor and the S factor is inconseuqntial.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">##</span> <span class="n">This</span> <span class="n">cleans</span> <span class="n">up</span> <span class="n">objects</span> <span class="k">in</span> <span class="n">the</span> <span class="n">workspace</span><span class="p">,</span> <span class="n">but</span> <span class="n">already</span><span class="p">-</span><span class="n">loaded</span> <span class="n">pacakges</span> <span class="n">will</span> <span class="n">be</span> 
+<span class="p">##</span> <span class="n">stilled</span> <span class="n">loaded</span><span class="p">.</span> <span class="k">To</span> <span class="n">get</span> <span class="n">a</span> <span class="n">clear</span> <span class="n">start</span> <span class="k">of</span> <span class="n">an</span> <span class="n">R</span> <span class="n">session</span><span class="p">,</span> <span class="n">use</span> <span class="n">the</span> <span class="n">hot</span><span class="p">-</span><span class="n">key</span> <span class="n">Ctrl</span><span class="p">-</span><span class="n">Shift</span><span class="p">-</span><span class="n">F10</span> 
+<span class="p">##</span> <span class="k">in</span> <span class="n">RStudio</span> <span class="n">for</span> <span class="n">instance</span><span class="p">.</span>
+<span class="n">rm</span><span class="p">(</span><span class="k">list</span> <span class="p">=</span> <span class="n">ls</span><span class="p">())</span>   
 <span class="n">require</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
 
-<span class="n">nw</span> <span class="p">&lt;-</span> <span class="m">4</span>
-
+<span class="n">nw</span> <span class="p">&lt;-</span> <span class="m">4</span>  
 <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
-  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v2</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v2</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">a</span> <span class="p">=</span> <span class="s2">"SAT"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span>
                    <span class="n">sigma2</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="s2">"1"</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="s2">"1"</span><span class="p">),</span>
   <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">,</span>
-  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">sigma1</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">sigma2</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="m">6</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="m">1e-4</span><span class="p">),</span>
-  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">)),</span>
+  <span class="n">constants</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="n">sigma1</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">sigma2</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">eta1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">eta2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">tmax</span><span class="p">=</span><span class="m">3</span><span class="p">,</span> <span class="n">h</span><span class="p">=</span><span class="m">1e-4</span><span class="p">),</span>
+  <span class="n">factors</span>   <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">S</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">"s1"</span><span class="p">,</span> <span class="s2">"s2"</span><span class="p">,</span> <span class="s2">"s3"</span><span class="p">),</span> <span class="n">SAT</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="s2">"speed"</span><span class="p">,</span> <span class="s2">"accuracy"</span><span class="p">)),</span>
   <span class="n">responses</span> <span class="p">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s1">'theta_'</span><span class="p">,</span> <span class="n">letters</span><span class="p">[</span><span class="m">1</span><span class="p">:</span><span class="n">nw</span><span class="p">]),</span>
   <span class="n">type</span>      <span class="p">=</span> <span class="s2">"cddm"</span><span class="p">)</span>
 <span class="n">npar</span> <span class="p">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">GetPNames</span><span class="p">(</span><span class="k">model</span><span class="p">))</span>
-
-<span class="n">pop</span><span class="p">.</span><span class="n">mean</span>  <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span>  <span class="m">2</span><span class="p">,</span>  <span class="n">v2</span> <span class="p">=</span>  <span class="m">2</span><span class="p">,</span>  <span class="n">a</span> <span class="p">=</span> <span class="m">1.5</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">0.1</span><span class="p">)</span>
-<span class="n">pop</span><span class="p">.</span><span class="n">scale</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">v1</span> <span class="p">=</span> <span class="m">.1</span><span class="p">,</span>  <span class="n">v2</span> <span class="p">=</span> <span class="m">.1</span><span class="p">,</span>  <span class="n">a</span> <span class="p">=</span> <span class="m">.05</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">0.05</span><span class="p">)</span>
-<span class="n">pop</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
-  <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
-  <span class="n">p1</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span>
-  <span class="n">p2</span>    <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span>
-  <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,</span> <span class="p">-</span><span class="m">5</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
-  <span class="n">upper</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span> <span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span>  <span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>
-
-<span class="p">##</span> <span class="n">Simulate</span> <span class="n">data</span>
-<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">simulate</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">nsub</span> <span class="p">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">nsim</span> <span class="p">=</span> <span class="m">1e2</span><span class="p">,</span> <span class="n">prior</span> <span class="p">=</span> <span class="n">pop</span><span class="p">.</span><span class="n">prior</span><span class="p">)</span>
-<span class="n">ps</span> <span class="p">&lt;-</span> <span class="n">attr</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="s2">"parameters"</span><span class="p">)</span>
-<span class="n">dmi</span> <span class="p">&lt;-</span> <span class="n">BuildDMI</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="k">model</span><span class="p">)</span>
-
-<span class="n">p</span><span class="p">.</span><span class="n">prior</span> <span class="p">&lt;-</span> <span class="n">BuildPrior</span><span class="p">(</span>
-  <span class="n">dists</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="s2">"tnorm"</span><span class="p">,</span> <span class="n">npar</span><span class="p">),</span>
-  <span class="n">p1</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">a</span><span class="p">=</span><span class="m">1</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">1</span><span class="p">),</span>
-  <span class="n">p2</span><span class="p">=</span><span class="n">c</span><span class="p">(</span><span class="n">v1</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">v2</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">a</span><span class="p">=</span><span class="m">2</span><span class="p">,</span> <span class="n">t0</span><span class="p">=</span><span class="m">2</span><span class="p">),</span>
-  <span class="n">lower</span> <span class="p">=</span> <span class="n">c</span><span class="p">(-</span><span class="m">5</span><span class="p">,</span> <span class="p">-</span><span class="m">5</span><span class="p">,</span> <span class="n">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">2</span><span class="p">)),</span>
-  <span class="n">upper</span> <span class="p">=</span> <span class="n">rep</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">npar</span><span class="p">))</span>
-
-<span class="n">plot</span><span class="p">(</span><span class="n">pop</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">ps</span><span class="p">=</span><span class="n">ps</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="n">ps</span><span class="p">=</span><span class="n">ps</span><span class="p">)</span>
-<span class="n">save</span><span class="p">(</span><span class="n">dmi</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">prior</span><span class="p">,</span> <span class="k">model</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">pop</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">pop</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">file</span> <span class="p">=</span> <span class="s2">"tests/Group5/test_cddm12S.RData"</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Then we use 6 CPU cores, <strong>ncore=6</strong> to run 6 parallel model fits. The <strong>block</strong> option indicates whether we want to update the entire parameter vector or just one parameter in the vector at a time. This is critical for the hierarchical model fit, but inconsequential for the fixed-effect model fit, so to gain more speed, we choose to disable it, <strong>block=FALSE</strong>.</p>
+<p>In the following, we set up an assumed mechanism to generate twelve sets of true parameters, inside the <em>simulate</em> function. The true parameters are stored as a <em>ps</em> matrix, an  attribute attached to the output object from the <em>simulate</em> function. Each row of the <em>ps</em> matrix represents one participant.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pop.mean  &lt;- c(v1=1.2, v2=2.2, a.speed = 1.5, a.accuracy = 2.0, t0=0.1)
+pop.scale &lt;- c(v1=2.5, v2=2.5, a.speed=2,     a.accuracy=2.0,   t0=0.5)
+
+pop.prior &lt;- BuildPrior(
+  dists = rep("tnorm", npar),
+  p1    = pop.mean,
+  p2    = pop.scale,
+  lower = c(rep(-5, 2), 0, 0, 0),
+  upper = c(rep( 5, 2), 5, 5, 2))
+
+
+dat &lt;- simulate(model, nsub=12, nsim = 30, prior = pop.prior);
+ps  &lt;- attr(dat, "parameters")
+dmi &lt;- BuildDMI(dat, model)
+
+</code></pre></div></div>
+
+<p>We then set up prior distributions for each CDDM parameter. Before we proceed to fit the data, we check whether our prior distributions cover the all true target parameters.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p.prior &lt;- BuildPrior(
+  dists = rep("tnorm", npar),
+  p1    = pop.mean,
+  p2    = pop.scale,
+  lower = c(rep(-10, 2), 0, 0, 0),
+  upper = c(rep( 10, 2), 8, 8, 5))
+
+prior_d &lt;- plot(p.prior, save = TRUE)
+
+wide &lt;- data.table::data.table(ps)
+wide$s &lt;- factor(1:nrow(ps))
+pveclines &lt;- data.table::melt.data.table(
+  wide, id.vars = "s", variable.name = "Parameter", value.name = "true")
+
+## require(ggplot2)
+p0 &lt;- ggplot(prior_d, aes_string(x = "xpos", y = "ypos")) +
+  geom_line() +
+  geom_vline(data = pveclines, aes_string(xintercept = "true"),
+             linetype = "dotted", size = 1) +
+  xlab("")+ ylab("")+
+  facet_wrap(~Parameter, scales="free") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.text.x = element_text(size = 16),
+        strip.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 16),
+        axis.text.y = element_text(size = 16),
+        axis.title.x = element_blank())
+
+</code></pre></div></div>
+
+<p><img src="/images/fixed-effect-model/prior_cddm.png" alt="prior" /></p>
+
+<p>Then we use 3 CPU cores, <strong>ncore=3</strong> to run 3 parallel model fits. The <strong>block</strong> option indicates whether we want to update the entire parameter vector or just one parameter in the vector at a time. This is critical for the hierarchical model fit, but inconsequential for the fixed-effect model fit, so to gain more speed, we choose to disable it, <strong>block=FALSE</strong>.</p>
 
 <blockquote>
-  <p>Note in R 3.6.1, the <strong>mc.cores</strong> option in <strong>mclapply</strong> has been altered. It now takes the ncore option via “getOpion(“mc.cores”, 2L)”. This renders the ggdmc 0.2.6.0 always run 2 cores, which is a default setting of the mclapply function. To launch the number of CPU core you want, you have to adjust this manually in the two internal R functions, <strong>run_many</strong> and <strong>rerun_many</strong>, accordingly.</p>
+  <p>Note in R 3.6.1, the <strong>mc.cores</strong> option in <strong>mclapply</strong> has been altered. It now takes the ncore option via “getOpion(“mc.cores”, 2L)”. This renders the ggdmc 0.2.6.0 always run 2 cores, which is a default setting of the mclapply function. To launch the number of CPU core you want, you have to adjust this manually in the two internal R functions, <strong>run_many</strong> and <strong>rerun_many</strong>, accordingly, or update your ggdmc via devtool tools.</p>
 </blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## 2 mins
-system.time(
-  fit0 &lt;- StartNewsamples(dmi, p.prior, block = FALSE, nmc=500, ncore=6)
-)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The latest ggdmc 0.2.7.1 will report its processing time! 
+## Processing time: 214.3 secs.
+fit0 &lt;- StartNewsamples(dmi, p.prior, block=FALSE, ncore=3)
 
-## 507 s
-system.time(
-  fit  &lt;- run(fit0, ncore=6)
-)
+## Processing time: 611.43 secs.
+fit  &lt;- run(fit0, block=FALSE, ncore=3)
+
 </code></pre></div></div>
 
-<p>After finishing the model fit, we check whether the chains are well-converged. The potential scale reduction factors, PSRT, are below 1.10 for the data from the 12 participants.</p>
+<p>After finishing the model fit, we check whether the chains are converged. The potential scale reduction factors, PSRT, are all below well 1.10.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rhat &lt;- gelman(fit, verbose=TRUE)
 # Diagnosing theta for many participants separately
@@ -305,7 +337,7 @@ system.time(
 est &lt;- summary(fit, recovery = TRUE, ps = ps, verbose = FALSE)
 </code></pre></div></div>
 
-<p>The parameters are well recovered.</p>
+<p>Plus, the parameters are precisely recovered.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Summary each participant separately
 #         v1    v2     a   t0

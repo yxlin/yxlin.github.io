@@ -406,26 +406,7 @@ fit0$theta <- aperm(fit0$theta, c(2, 1, 3))
 fit0$summed_log_prior <- t(fit0$summed_log_prior)
 fit0$log_likelihoods <- t(fit0$log_likelihoods)
 
-fit$theta <- aperm(fit$theta, c(2, 1, 3))
-fit$summed_log_prior <- t(fit$summed_log_prior)
-fit$log_likelihoods <- t(fit$log_likelihoods)
-
-## Attach the model class to the fitples. 
-dim(sam0$theta)
-dim(sam0$summed_log_prior)
-dim(sam0$log_likelihoods)
-
-## Use aperm and t to transpose arraies and matrices
-sam0$theta <- aperm(sam0$theta, c(2, 1, 3))
-sam0$summed_log_prior <- t(sam0$summed_log_prior)
-sam0$log_likelihoods <- t(sam0$log_likelihoods)
-
-sam$theta <- aperm(sam$theta, c(2, 1, 3))
-sam$summed_log_prior <- t(sam$summed_log_prior)
-sam$log_likelihoods <- t(sam$log_likelihoods)
-
 ## Attach the model class to the samples. 
 class(fit0) <- c("list", "model")
-class(fit) <- c("list", "model")
 
 ```

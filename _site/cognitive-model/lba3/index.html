@@ -16,9 +16,9 @@
 <meta property="og:url" content="http://localhost:4000/cognitive-model/lba3/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-10-04T13:40:30+00:00" />
+<meta property="article:published_time" content="2019-10-10T09:40:41+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2019-10-04T13:40:30+00:00","description":"We have striven to minimize the number of errors. However, we canot guarantee the note is 100% accurate.","@type":"Article","url":"http://localhost:4000/cognitive-model/lba3/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Three-accumulator LBA Model","dateModified":"2019-10-04T13:40:30+00:00","@context":"http://schema.org"}</script>
+{"datePublished":"2019-10-10T09:40:41+00:00","description":"We have striven to minimize the number of errors. However, we canot guarantee the note is 100% accurate.","@type":"Article","url":"http://localhost:4000/cognitive-model/lba3/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Three-accumulator LBA Model","dateModified":"2019-10-10T09:40:41+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -236,7 +236,7 @@
 guarantee the note is 100% accurate.</p>
 </blockquote>
 
-<p>This is a note for fitting 3-accumulator LBA model.</p>
+<p>This is a quick note for fitting 3-accumulator LBA model.</p>
 
 <p>Some pre-analysis set up work.</p>
 
@@ -245,11 +245,7 @@ guarantee the note is 100% accurate.</p>
 <span class="n">loadedPackages</span> <span class="p">&lt;-</span><span class="n">c</span><span class="p">(</span><span class="s2">"ggdmc"</span><span class="p">,</span> <span class="s2">"data.table"</span><span class="p">,</span> <span class="s2">"ggplot2"</span><span class="p">,</span> <span class="s2">"gridExtra"</span><span class="p">,</span> <span class="s2">"ggthemes"</span><span class="p">)</span>
 <span class="n">sapply</span><span class="p">(</span><span class="n">loadedPackages</span><span class="p">,</span> <span class="n">require</span><span class="p">,</span> <span class="n">character</span><span class="p">.</span><span class="n">only</span><span class="p">=</span><span class="nb">TRUE</span><span class="p">)</span>
 
-<span class="p">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="n">HEAD</span>
-<span class="p">##</span> <span class="n">A</span> <span class="k">function</span> <span class="n">for</span> <span class="n">generating</span> <span class="n">posterior</span> <span class="n">predict</span> <span class="n">fitples</span>
-<span class="p">=======</span>
 <span class="p">##</span> <span class="n">A</span> <span class="k">function</span> <span class="n">for</span> <span class="n">generating</span> <span class="n">posterior</span> <span class="n">predict</span> <span class="n">samples</span>
-<span class="p">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="m">883650102262895</span><span class="n">c76c847a34bc17afd4f659a28</span>
 <span class="n">predict_one</span> <span class="p">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">rand</span> <span class="p">=</span> <span class="nb">TRUE</span><span class="p">,</span> <span class="n">factors</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span>
                         <span class="n">xlim</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span> <span class="n">seed</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">)</span>
 <span class="p">{</span>
@@ -270,11 +266,7 @@ guarantee the note is 100% accurate.</p>
   <span class="n">npar</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">n</span><span class="p">.</span><span class="n">pars</span>
   <span class="n">nchain</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">n</span><span class="p">.</span><span class="n">chains</span>
   <span class="n">nmc</span>    <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">nmc</span>
-<span class="p">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="n">HEAD</span>
-  <span class="n">ntfitple</span> <span class="p">&lt;-</span> <span class="n">nchain</span> <span class="p">*</span> <span class="n">nmc</span>
-<span class="p">=======</span>
   <span class="n">ntsample</span> <span class="p">&lt;-</span> <span class="n">nchain</span> <span class="p">*</span> <span class="n">nmc</span>
-<span class="p">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="m">883650102262895</span><span class="n">c76c847a34bc17afd4f659a28</span>
   <span class="n">pnames</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">p</span><span class="p">.</span><span class="n">names</span>
   
   <span class="n">thetas</span> <span class="p">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">aperm</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">theta</span><span class="p">,</span> <span class="n">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">1</span><span class="p">)),</span> <span class="n">ncol</span> <span class="p">=</span> <span class="n">npar</span><span class="p">)</span>
@@ -282,21 +274,18 @@ guarantee the note is 100% accurate.</p>
   <span class="n">colnames</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="p">&lt;-</span> <span class="n">pnames</span>
   
   <span class="k">if</span> <span class="p">(</span><span class="n">is</span><span class="p">.</span><span class="n">na</span><span class="p">(</span><span class="n">npost</span><span class="p">))</span> <span class="p">{</span>
-<span class="p">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="n">HEAD</span>
     <span class="n">use</span> <span class="p">&lt;-</span> <span class="m">1</span><span class="p">:</span><span class="n">ntfitple</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">rand</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">use</span> <span class="p">&lt;-</span> <span class="n">fitple</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">ntfitple</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">replace</span> <span class="p">=</span> <span class="n">F</span><span class="p">)</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="n">use</span> <span class="p">&lt;-</span> <span class="nb">round</span><span class="p">(</span><span class="n">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">ntfitple</span><span class="p">,</span> <span class="n">length</span><span class="p">.</span><span class="n">out</span> <span class="p">=</span> <span class="n">npost</span><span class="p">))</span>
-<span class="p">=======</span>
     <span class="n">use</span> <span class="p">&lt;-</span> <span class="m">1</span><span class="p">:</span><span class="n">ntsample</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">rand</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">use</span> <span class="p">&lt;-</span> <span class="n">sample</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">ntsample</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">replace</span> <span class="p">=</span> <span class="n">F</span><span class="p">)</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="n">use</span> <span class="p">&lt;-</span> <span class="nb">round</span><span class="p">(</span><span class="n">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">ntsample</span><span class="p">,</span> <span class="n">length</span><span class="p">.</span><span class="n">out</span> <span class="p">=</span> <span class="n">npost</span><span class="p">))</span>
-<span class="p">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="m">883650102262895</span><span class="n">c76c847a34bc17afd4f659a28</span>
     <span class="p">}</span>
   <span class="p">}</span>
   
@@ -323,12 +312,7 @@ guarantee the note is 100% accurate.</p>
   
 </code></pre></div></div>
 
-<p>In this example, we assumed three accumulators corresponding to three responses. 
-Let’s say they are “Word”, “Nonword”, or “Pseudo-word”. They are coded 
-respectively as W, N and P. This is to assume we had run some (visual) 
-lexical-decision experiments, instructing participants to decide whether a 
-stimulus is a word, a non-word, or a make-up word. The three types of stimuli 
-are coded as ww, nn and pn.</p>
+<p>In this example, we assumed three accumulators corresponding to three responses. Let’s say they are “Word”, “Nonword”, and “Pseudo-word”. They are coded respectively as W, N and P. This is to assume we had run some (visual) lexical-decision experiments, instructing participants to decide whether a stimulus is a word, a non-word, or a make-up word. The three types of stimuli are coded as ww, nn and pn.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
   <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">A</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">B</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">mean_v</span> <span class="p">=</span> <span class="s2">"R"</span><span class="p">,</span> <span class="n">sd_v</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span>
@@ -422,15 +406,14 @@ print(model, p.vector)
 ## 3 1.25 1.5 0.2    1.2    1   0
 ...
 
-## To see what other option in the simulate function
+## To see what other options in the simulate function
 ## ?ggdmc:::simulate.model
 nsim &lt;- 2048
 dat &lt;- simulate(model, nsim = nsim, ps = p.vector)
 </code></pre></div></div>
 
 <p>We used data.table to help inspect the data frame.  This makes no difference when
-the data set is small. You are welcome to opt for dplyr/tibble or traditional
-data.frame functions.</p>
+the data set is small.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d &lt;- data.table(dat)
 dmi &lt;- BuildDMI(dat, model)
@@ -491,242 +474,177 @@ plot(p.prior)
 </code></pre></div></div>
 
 <h2 id="sampling">Sampling</h2>
+<p>The default number of iteration is 200 for <em>StartNewsamples</em> function.</p>
 
-<p>«««&lt; HEAD
-The default iteration is 200 for StartNewfitples function.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fit0 &lt;- StartNewfitples(dmi, p.prior)
-=======
-The default iteration is 200 for StartNewsamples function. 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The default iteration is 200 for StartNewsamples function. 
+fit0 &lt;- StartNewsamples(dmi, p.prior)
+
+## About 301 s
+fit &lt;- run(fit0)
+
+## Diagnosis checks
+gelman(fit)
+# Potential scale reduction factors:
+#   
+#   Point est. Upper C.I.
+# A              1.55       1.80
+# B              1.71       2.01
+# t0             1.80       2.24
+# mean_v.W       1.57       1.82
+# mean_v.N       1.47       1.69
+# mean_v.P       1.41       1.60
+# 
+# Multivariate psrf
+# 
+# 1.98
 </code></pre></div></div>
-<p>fit0 &lt;- StartNewsamples(dmi, p.prior)</p>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>883650102262895c76c847a34bc17afd4f659a28</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
 
-<h2 id="about-301-s">About 301 s</h2>
-<p>fit &lt;- run(fit0)</p>
+<p>The PSRF suggests that the chains have yet converged to a stable parameter space.</p>
 
-<h2 id="diagnosis-checks">Diagnosis checks</h2>
-<p>gelman(fit)</p>
-<h1 id="potential-scale-reduction-factors">Potential scale reduction factors:</h1>
-<p>#</p>
-<h1 id="point-est-upper-ci">Point est. Upper C.I.</h1>
-<h1 id="a--------------155-------180">A              1.55       1.80</h1>
-<h1 id="b--------------171-------201">B              1.71       2.01</h1>
-<h1 id="t0-------------180-------224">t0             1.80       2.24</h1>
-<h1 id="mean_vw-------157-------182">mean_v.W       1.57       1.82</h1>
-<h1 id="mean_vn-------147-------169">mean_v.N       1.47       1.69</h1>
-<h1 id="mean_vp-------141-------160">mean_v.P       1.41       1.60</h1>
-<p>#</p>
-<h1 id="multivariate-psrf">Multivariate psrf</h1>
-<p>#</p>
-<h1 id="198">1.98</h1>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-The PSRF suggests that the chains have yet converged to a stable parameter space.
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot(fit)
 </code></pre></div></div>
-<p>plot(fit)</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-space, so we discard all previous fitples as burn-in. That is, we did not turn on the _add_
-switch. The fitpler reaches the parameter space fast.  It took about
-700 iterations. Note this is a model with 6 parameters and some of them 
-(A and B) are correlated. 
 
-We ran another 500 (default) iterations and took a fitple every 8 iteration.
-=======
-space, so we discard all previous samples as burn-in. That is, we did not turn on the _add_
-switch. The sampler reaches the parameter space fast.  It took about
-700 iterations. Note this is a model with 6 parameters and some of them 
-(A and B) are correlated. 
+<p>The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
+space, so we discard all previous samples as burn-in. That is, we did not turn on the <em>add</em>
+switch. The samples reaches the parameter space very fast.  It took about 700 iterations. Note this is a model with 6 parameters and some of them (A and B) are correlated.</p>
 
-We ran another 500 (default) iterations and took a sample every 8 iteration.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; 883650102262895c76c847a34bc17afd4f659a28
+<p>Then We ran another 500 (default) iterations and took a sample every 8th iteration.</p>
 
-</code></pre></div></div>
-<h2 id="run-to-see-add-and-other-options-in-run-function">?run to see add and other options in run function</h2>
-<h2 id="watch-out-this-would-take-a-while--1-hr-or-more-depending-on-your-cpu">Watch out! This would take a while (~ 1 hr or more depending on your CPU)</h2>
-<p>fit &lt;- run(fit, thin=8)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## ?run to see add and other options in run function
+## Watch out! This would take a while (~ 1 hr or more depending on your CPU)
+fit &lt;- run(fit, thin=8)
 
-<h2 id="the-three-follow-up-checks-show-the-chains-are-converged-and-we-have-drawn">The three follow-up checks show the chains are converged and we have drawn</h2>
-<p>«««&lt; HEAD</p>
-<h2 id="sufficient-size-of-fitples">sufficient size of fitples.</h2>
-<p>=======</p>
-<h2 id="sufficient-size-of-samples">sufficient size of samples.</h2>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>883650102262895c76c847a34bc17afd4f659a28
-plot(fit)</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
+## The three follow-up checks show the chains are converged and we have drawn a
+## sufficient sample size.
+plot(fit)
 
-<p>es &lt;- effectiveSize(fit)</p>
-<h2 id="a--------b-------t0-mean_vw-mean_vn-mean_vp">A        B       t0 mean_v.W mean_v.N mean_v.P</h2>
-<h2 id="3032669-3160306-3264266-2998928-2979326-3022245">3032.669 3160.306 3264.266 2998.928 2979.326 3022.245</h2>
+es &lt;- effectiveSize(fit)
+##        A        B       t0 mean_v.W mean_v.N mean_v.P 
+## 3032.669 3160.306 3264.266 2998.928 2979.326 3022.245 
 
-<p>gelman(fit)</p>
-<h1 id="potential-scale-reduction-factors-1">Potential scale reduction factors:</h1>
-<p>#</p>
-<h1 id="point-est-upper-ci-1">Point est. Upper C.I.</h1>
-<h1 id="a-----------------1-------100">A                 1       1.00</h1>
-<h1 id="b-----------------1-------100">B                 1       1.00</h1>
-<h1 id="t0----------------1-------101">t0                1       1.01</h1>
-<h1 id="mean_vw----------1-------100">mean_v.W          1       1.00</h1>
-<h1 id="mean_vn----------1-------100">mean_v.N          1       1.00</h1>
-<h1 id="mean_vp----------1-------100">mean_v.P          1       1.00</h1>
-<p>#</p>
-<h1 id="multivariate-psrf-1">Multivariate psrf</h1>
-<p>#</p>
-<h1 id="1">1</h1>
+gelman(fit)
+# Potential scale reduction factors:
+#   
+#   Point est. Upper C.I.
+# A                 1       1.00
+# B                 1       1.00
+# t0                1       1.01
+# mean_v.W          1       1.00
+# mean_v.N          1       1.00
+# mean_v.P          1       1.00
+# 
+# Multivariate psrf
+# 
+# 1
 
-<p>est &lt;- summary(fit, ps = p.vector, verbose = TRUE, recovery = TRUE)</p>
-<h1 id="a----b-mean_vn-mean_vp-mean_vw---t0">A    B mean_v.N mean_v.P mean_v.W   t0</h1>
-<h1 id="true-----------125-025-----150-----120-----250-020">True           1.25 0.25     1.50     1.20     2.50 0.20</h1>
-<h1 id="25-estimate--119-023-----146-----115-----239-019">2.5% Estimate  1.19 0.23     1.46     1.15     2.39 0.19</h1>
-<h1 id="50-estimate---131-026-----164-----133-----259-020">50% Estimate   1.31 0.26     1.64     1.33     2.59 0.20</h1>
-<h1 id="975-estimate-145-030-----183-----152-----280-021">97.5% Estimate 1.45 0.30     1.83     1.52     2.80 0.21</h1>
-<h1 id="median-true----006-001-----014-----013-----009-000">Median-True    0.06 0.01     0.14     0.13     0.09 0.00</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-
-The posterior prediction check takes up a lot of manually coding work. Anyway,
-the figure show the data and posterior predictions are consistent, confirming
-the model can successfully recover the data (at least in an ideal simulation
-scenario).
+est &lt;- summary(fit, ps = p.vector, verbose = TRUE, recovery = TRUE)
+#                   A    B mean_v.N mean_v.P mean_v.W   t0
+# True           1.25 0.25     1.50     1.20     2.50 0.20
+# 2.5% Estimate  1.19 0.23     1.46     1.15     2.39 0.19
+# 50% Estimate   1.31 0.26     1.64     1.33     2.59 0.20
+# 97.5% Estimate 1.45 0.30     1.83     1.52     2.80 0.21
+# Median-True    0.06 0.01     0.14     0.13     0.09 0.00
 
 </code></pre></div></div>
-<p>pp &lt;- predict_one(fit, xlim = c(0, 5))</p>
 
-<p>original_data &lt;- fit1$data
+<p>The posterior prediction figure shows the data and posterior predictions are 
+consistent, confirming the model can successfully describe the data.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pp &lt;- predict_one(fit, xlim = c(0, 5))
+
+original_data &lt;- fit$data
+
 dplyr::tbl_df(original_data)
-d &lt;- data.table(original_data)</p>
+d &lt;- data.table(original_data)
 
-<h2 id="response-proportions">Response proportions</h2>
-<p>d[, .N, .(S)]
-d[, .N/100, .(S, R)]</p>
+## Response proportions
+d[, .N, .(S)]
+d[, .N/100, .(S, R)]
 
-<h2 id="score-for-the-correct-and-error-response">Score for the correct and error response</h2>
-<p>dat$C &lt;- ifelse(dat$S == “ww” &amp; dat$R == “W”, “O”,
-         ifelse(dat$S == “nn” &amp; dat$R == “N”, “O”,
-         ifelse(dat$S == “pn” &amp; dat$R == “P”, “O”,
-         ifelse(dat$S == “ww” &amp; dat$R == “N”, “X”,
-         ifelse(dat$S == “ww” &amp; dat$R == “P”, “X”,
-         ifelse(dat$S == “nn” &amp; dat$R == “W”, “X”,
-         ifelse(dat$S == “nn” &amp; dat$R == “P”, “X”,
-         ifelse(dat$S == “pn” &amp; dat$R == “N”, “X”,
-         ifelse(dat$S == “pn” &amp; dat$R == “W”, “X”, NA)))))))))</p>
 
-<p>pp$C &lt;- ifelse(pp$S == “ww” &amp; pp$R == “W”, “O”,
-        ifelse(pp$S == “nn” &amp; pp$R == “N”, “O”,
-        ifelse(pp$S == “pn” &amp; pp$R == “P”, “O”,
-        ifelse(pp$S == “ww” &amp; pp$R == “N”, “X”,
-        ifelse(pp$S == “ww” &amp; pp$R == “P”, “X”,
-        ifelse(pp$S == “nn” &amp; pp$R == “W”, “X”,
-        ifelse(pp$S == “nn” &amp; pp$R == “P”, “X”,
-        ifelse(pp$S == “pn” &amp; pp$R == “N”, “X”,
-        ifelse(pp$S == “pn” &amp; pp$R == “W”, “X”, NA)))))))))</p>
+## Score for the correct and error response
+dat$C &lt;- ifelse(dat$S == "ww" &amp; dat$R == "W", "O",
+         ifelse(dat$S == "nn" &amp; dat$R == "N", "O",
+         ifelse(dat$S == "pn" &amp; dat$R == "P", "O",
+         ifelse(dat$S == "ww" &amp; dat$R == "N", "X",
+         ifelse(dat$S == "ww" &amp; dat$R == "P", "X",
+         ifelse(dat$S == "nn" &amp; dat$R == "W", "X",
+         ifelse(dat$S == "nn" &amp; dat$R == "P", "X",
+         ifelse(dat$S == "pn" &amp; dat$R == "N", "X",
+         ifelse(dat$S == "pn" &amp; dat$R == "W", "X", NA)))))))))
 
-<p>dat0 &lt;- dat
+pp$C &lt;- ifelse(pp$S == "ww" &amp; pp$R == "W", "O",
+        ifelse(pp$S == "nn" &amp; pp$R == "N", "O",
+        ifelse(pp$S == "pn" &amp; pp$R == "P", "O",
+        ifelse(pp$S == "ww" &amp; pp$R == "N", "X",
+        ifelse(pp$S == "ww" &amp; pp$R == "P", "X",
+        ifelse(pp$S == "nn" &amp; pp$R == "W", "X",
+        ifelse(pp$S == "nn" &amp; pp$R == "P", "X",
+        ifelse(pp$S == "pn" &amp; pp$R == "N", "X",
+        ifelse(pp$S == "pn" &amp; pp$R == "W", "X", NA)))))))))
+
+
+dat0 &lt;- dat
 dat0$reps &lt;- NA
-dat0$type &lt;- “Data”
+dat0$type &lt;- "Data"
 pp$reps &lt;- factor(pp$reps)
-pp$type &lt;- “Simulation”
-combined_data &lt;- rbind(dat0, pp)</p>
+pp$type &lt;- "Simulation"
+combined_data &lt;- rbind(dat0, pp)
 
-<p>dplyr::tbl_df(combined_data)</p>
+dplyr::tbl_df(combined_data)
 
-<p>p1 &lt;- ggplot(combined_data, aes(RT, color = reps, size = type)) +
+p1 &lt;- ggplot(combined_data, aes(RT, color = reps, size = type)) +
   geom_freqpoly(binwidth = .10) +
   scale_size_manual(values = c(1, .3)) +
-  scale_color_grey(na.value = “black”) +
-  ylab(“Count”) +
+  scale_color_grey(na.value = "black") +
+  ylab("Count") +
   facet_grid(S ~ C) +
   theme_bw(base_size = 16) +
   theme(strip.background = element_blank(),
-        legend.position=”none”)</p>
+        legend.position="none") 
 
-<p>print(p1)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## How to fix array dimension inconsistency
-If data were stored by a previous version of ggdmc or by DMC, their arraies
-are arranged differently as noted [here](https://github.com/yxlin/ggdmc). The 
-following is one convenient way to transpose them.
+print(p1)
 
 </code></pre></div></div>
-<h2 id="first-make-sure-they-are-indeed-needed-to-be-transposed">First make sure they are indeed needed to be transposed</h2>
-<p>«««&lt; HEAD
+
+<h2 id="how-to-fix-array-dimension-inconsistency">How to fix array dimension inconsistency</h2>
+<p>If data were stored by a previous version of ggdmc or by DMC, their arraies
+are arranged differently as noted <a href="https://github.com/yxlin/ggdmc">here</a>. The 
+following is one convenient way to transpose them.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## First make sure they are indeed needed to be transposed
 dim(fit0$theta)
 dim(fit0$summed_log_prior)
-dim(fit0$log_likelihoods)</p>
+dim(fit0$log_likelihoods)
 
-<h2 id="use-aperm-and-t-to-transpose-arraies-and-matrices">Use aperm and t to transpose arraies and matrices</h2>
-<p>fit0$theta &lt;- aperm(fit0$theta, c(2, 1, 3))
+## Use aperm and t to transpose arraies and matrices
+fit0$theta &lt;- aperm(fit0$theta, c(2, 1, 3))
 fit0$summed_log_prior &lt;- t(fit0$summed_log_prior)
-fit0$log_likelihoods &lt;- t(fit0$log_likelihoods)</p>
+fit0$log_likelihoods &lt;- t(fit0$log_likelihoods)
 
-<p>fit$theta &lt;- aperm(fit$theta, c(2, 1, 3))
+fit$theta &lt;- aperm(fit$theta, c(2, 1, 3))
 fit$summed_log_prior &lt;- t(fit$summed_log_prior)
-fit$log_likelihoods &lt;- t(fit$log_likelihoods)</p>
+fit$log_likelihoods &lt;- t(fit$log_likelihoods)
 
-<h2 id="attach-the-model-class-to-the-fitples">Attach the model class to the fitples.</h2>
-<p>=======
+## Attach the model class to the fitples. 
 dim(sam0$theta)
 dim(sam0$summed_log_prior)
-dim(sam0$log_likelihoods)</p>
+dim(sam0$log_likelihoods)
 
-<h2 id="use-aperm-and-t-to-transpose-arraies-and-matrices-1">Use aperm and t to transpose arraies and matrices</h2>
-<p>sam0$theta &lt;- aperm(sam0$theta, c(2, 1, 3))
+## Use aperm and t to transpose arraies and matrices
+sam0$theta &lt;- aperm(sam0$theta, c(2, 1, 3))
 sam0$summed_log_prior &lt;- t(sam0$summed_log_prior)
-sam0$log_likelihoods &lt;- t(sam0$log_likelihoods)</p>
+sam0$log_likelihoods &lt;- t(sam0$log_likelihoods)
 
-<p>sam$theta &lt;- aperm(sam$theta, c(2, 1, 3))
+sam$theta &lt;- aperm(sam$theta, c(2, 1, 3))
 sam$summed_log_prior &lt;- t(sam$summed_log_prior)
-sam$log_likelihoods &lt;- t(sam$log_likelihoods)</p>
+sam$log_likelihoods &lt;- t(sam$log_likelihoods)
 
-<h2 id="attach-the-model-class-to-the-samples">Attach the model class to the samples.</h2>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>883650102262895c76c847a34bc17afd4f659a28
-class(fit0) &lt;- c(“list”, “model”)
-class(fit) &lt;- c(“list”, “model”)</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
+## Attach the model class to the samples. 
+class(fit0) &lt;- c("list", "model")
+class(fit) &lt;- c("list", "model")
 
-<p>```</p>
+</code></pre></div></div>
 
 			</article>
 		</section>
