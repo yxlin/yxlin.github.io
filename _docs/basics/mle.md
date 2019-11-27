@@ -69,7 +69,7 @@ But if you use the bare-bones LBA density functions, say
 "ggdmc:::n1PDFfixedt0" (meaning node 1 probability density
 function), "ggdmc:::fptcdf" or "ggdmc:::fptpdf", you need to handle
 the calculation of "defective distributions" accordingly. These 
-are the functions originally from Heathcote and Brown (2008), but since
+are the functions originally from Brown and Heathcote(2008), but since
 version 0.2.6.7, _ggdmc_ has no longer exposed them in R interface.
 
 By the way, the top x axis in the above figure labels _TRUE_, representing
