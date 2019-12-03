@@ -17,12 +17,13 @@ this in our software.
 2. An HMC example aiming for conducting hierarchical Bayesian models is Ahn, Haines,
 and Zhang's _hBayesDM_, which is an R package providing convenient wrapper functions
 for the well-known Stan software. It is a great package and has included interface to
-fit models for different cognitive task.  However, in _hBayesDM_, the user still needs
+fit models for different cognitive tasks.  However, in _hBayesDM_, the user still needs
 to modify their own Stan codes for models when s/he uses different designs, not included
 in the package.  _DMC_ expands this function, (Heathcote et al., 2018), so does _ggdmc_.
 
 3. **_ggdmc_** uses two different variants of _migration_ operator in addition to
 the crossover operator.
+
 
 ### Getting Started
 
@@ -36,16 +37,15 @@ Here is a quick getting start guide:
 C++ codes in **_ggdmc_**.
 3. Install the package:
 
-> install.packages("ggdmc")
+> install.packages('ggdmc')
 
 or from GitHub 
 
-> devtools::install_github("yxlin/ggdmc")
+> devtools::install_github('yxlin/ggdmc')
 
-or from source tarball. You can email me at, <yishinlin001@gmail.com>
-to request a free copy of the latest software)
+or from source tarball. 
 
-> install.packages("ggdmc_0.2.6.0.tar.gz", repos = NULL, type="source")
+> install.packages('ggdmc_0.2.6.0.tar.gz', repos = NULL, type='source')
 
 #### Load _ggdmc_ Package
 
