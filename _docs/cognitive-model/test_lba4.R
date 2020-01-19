@@ -5,16 +5,6 @@ rm(list = ls())
 ## setwd('/home/yslin/yxlin.github.io-master/_docs/cognitive-model/')
 require(ggdmc)
 
-model <- BuildModel(
-     p.map     = list(A = "1", B = "R", t0 = "1", mean_v = c("D", "M"),
-                      sd_v = "M", st0 = "1"),
-     ## BuildModel will convert 1, 2, 3, and 4 to "s1", "s2", "s3", and "s4".
-     match.map = list(M = list(s1 = 1, s2 = 2, s3 = 3, s4 = 4)),
-     factors   = list(S = c("s1", "s2", "s3", "s4"), D = c("d1", "d2", "d3", "d4")),
-     constants = c(sd_v.false = 1, st0 = 0),
-     responses = c("r1", "r2", "r3", "r4"),
-    type      = "norm")
-
 ## 4 stimuli that have a shape and color (blue_diamond, blue_heart, green_diamond, and green_heart)
 ## I assume a difficulty hierarchy (from easy to hard): green_diamond (e1) > green_heart (e2) > blue_diamond (e3) > blue_heart (e4). I also assume the easier stimulus, the higher its drift rate and the more variable its drift rate standard deviation. 
 model <- BuildModel(
@@ -26,6 +16,7 @@ model <- BuildModel(
     constants = c(sd_v.false = 1, st0 = 0),
     responses = c("BD", "BH", "GD", "GH"),
     type      = "norm")
+model@npar
 
 pop.mean <- c(A=.4, B.BD=.5, B.BH=.6, B.GD=.7, B.GH=.8,
               t0=.3,
