@@ -2,3 +2,4 @@ tests
 .sass-cache
 .git
 *~
+*.R
