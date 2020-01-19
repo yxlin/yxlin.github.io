@@ -10,15 +10,15 @@
 <meta name="generator" content="Jekyll v3.7.2" />
 <meta property="og:title" content="One Participant" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Fixed-effects models assume participants own separate mechanisms of parameter generation. This is relative to the random-effect models, where they are under a common mechanism of parameter generation. The latter is sometimes described as hierarchical or multi-level models, although they can carry subtle different concepts." />
-<meta property="og:description" content="Fixed-effects models assume participants own separate mechanisms of parameter generation. This is relative to the random-effect models, where they are under a common mechanism of parameter generation. The latter is sometimes described as hierarchical or multi-level models, although they can carry subtle different concepts." />
+<meta name="description" content="Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed as hierarchical or multi-level models, although the three terms could carry subtle different ideas." />
+<meta property="og:description" content="Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed as hierarchical or multi-level models, although the three terms could carry subtle different ideas." />
 <link rel="canonical" href="http://localhost:4000/fixed-effect-model/one_participant/" />
 <meta property="og:url" content="http://localhost:4000/fixed-effect-model/one_participant/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-10-10T09:40:41+00:00" />
+<meta property="article:published_time" content="2020-01-19T14:22:09+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2019-10-10T09:40:41+00:00","description":"Fixed-effects models assume participants own separate mechanisms of parameter generation. This is relative to the random-effect models, where they are under a common mechanism of parameter generation. The latter is sometimes described as hierarchical or multi-level models, although they can carry subtle different concepts.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/one_participant/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"One Participant","dateModified":"2019-10-10T09:40:41+00:00","@context":"http://schema.org"}</script>
+{"datePublished":"2020-01-19T14:22:09+00:00","description":"Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed as hierarchical or multi-level models, although the three terms could carry subtle different ideas.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/one_participant/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"One Participant","dateModified":"2020-01-19T14:22:09+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -231,31 +231,29 @@
 				<h3>One Participant</h3>
 			</div>
 			<article class="content">
-				<p>Fixed-effects models assume participants own separate mechanisms of 
-parameter generation. This is relative to the random-effect models, where
-they are under a common mechanism of parameter generation.  The latter
-is sometimes described as hierarchical or multi-level models, although they 
-can carry subtle different concepts.</p>
+				<p>Fixed-effects models assume each participant has his/her own specific 
+mechanism of parameter generation. This assumption is relative to the 
+random-effect models, which assume one common mechanism is responsible 
+for generating parameters for all participants.  The latter is sometimes dubbed
+as hierarchical or multi-level models, although the three terms could carry 
+subtle different ideas.</p>
 
-<p>In this tutorial, I illustrate the method of conducting Bayesian sampling
-of the fixed-effects models. Given many observations of response latency
+<p>In this tutorial, I illustrate the method of conducting the 
+fixed-effects modelling. Given many observations of response times (RT)
 and choices, one modelling aim is to estimate the parameters that
-generate the observations. Bayesian sampling helps to draw samples 
-from the probability distribution generating the data.</p>
+generate the observations.</p>
 
-<p>The usual situation is that we would collect data (<em>dat</em>) by inviting
-participants to visit our lab, having them perform some sort of
-cognitive tasks and in the meantime recording their RTs and choices. 
-In this more realistic situation, we need to estimate <em>mu</em>
-and <em>sigma</em>.  Of course, this presumes that if we 
-assume that the Gaussian is the model accounting for participants’
-particular behaviours when they are doing the cognitive tasks.</p>
+<p>A typical scenario is we collect data by inviting participants to visit 
+our laboratory, having them do some cognitive tasks, and recording their 
+RTs and choices.</p>
 
-<p>More often, we would use a RT model, for example diffusion decision model
-(DDM) (Ratcliff &amp; McKoon, 2008)<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. As usual, I firstly set up a model
-object. The <em>type</em> = <strong>“rd”</strong>, refers to Ratcliff’s diffusion model.</p>
+<p>Often, we would use a RT model, for example diffusion decision model
+(DDM) (Ratcliff &amp; McKoon, 2008)<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> to estimate latent variables. I 
+first set up a model object. The <em>type</em> = <strong>“rd”</strong>, refers to 
+Ratcliff’s diffusion model.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">require</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+<span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BuildModel</span><span class="p">(</span>
   <span class="n">p</span><span class="p">.</span><span class="n">map</span>     <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">a</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">v</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">z</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">d</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sz</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">sv</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span>
                    <span class="n">t0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">,</span> <span class="n">st0</span> <span class="p">=</span> <span class="s2">"1"</span><span class="p">),</span>
   <span class="n">match</span><span class="p">.</span><span class="n">map</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">M</span> <span class="p">=</span> <span class="k">list</span><span class="p">(</span><span class="n">s1</span> <span class="p">=</span> <span class="s2">"r1"</span><span class="p">,</span> <span class="n">s2</span> <span class="p">=</span> <span class="s2">"r2"</span><span class="p">)),</span>
@@ -285,17 +283,20 @@ object. The <em>type</em> = <strong>“rd”</strong>, refers to Ratcliff’s di
 
 </code></pre></div></div>
 
-<p>Because the data were simulated from a set of presume true values, <em>p.vector</em>,
-I can use them later to verify whether the sampling process appropriately
-estimates the parameters. In Bayesian statistics, we also need prior
-distributions, so let’s build a set of prior distributions for each
-DDM parameters.</p>
+<p>Because the data were simulated from one set of presumed true values, <em>p.vector</em>,
+I can use them later to verify whether the sampling process does recovery
+the parameters. In Bayesian inference, we also need prior distributions, so 
+let’s build a set of prior distributions for each DDM parameters.</p>
 
-<p>A beta distribution with shape1 = 1 and shape2 = 1, equals to a uniform
-distribution (<em>beta(1, 1)</em>). This is for the start point, <em>z</em>, its variability
-<em>sz</em> and <em>t0</em> parameters. All three are bounded by 0 and 1. Others use
-truncated normal distributions bounded by <em>lower</em> and <em>upper</em> arguments.
-<em>plot</em> draws the prior distribution, providing a visual check method.</p>
+<p>A beta distribution with <em>shape1</em> = 1 and <em>shape2</em> = 1, equals to a uniform
+distribution (<em>beta(1, 1)</em>). This choice is to regularize the parameters,
+(1) the start point, <em>z</em>, (2) its variability <em>sz</em> and (3) <em>t0</em>. All three 
+are bounded by 0 and 1. Others use truncated normal distributions bounded 
+by <em>lower</em> and <em>upper</em> arguments.</p>
+
+<p><em>plot</em> draws the prior distributions, providing a visual check method. This 
+method, in the case of parameter recovery study, is to make sure the prior
+distribution does cover the true values.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p.prior  &lt;- BuildPrior(
   dists = c(rep("tnorm", 2), "beta", "beta", "tnorm", "beta"),
@@ -309,15 +310,16 @@ plot(p.prior, ps = p.vector)
 <p><img src="/images/fixed-effect-model/prior.png" alt="prior" /></p>
 
 <p>By default <em>StartNewsamples</em> uses p.prior to randomly draw start
-points and 500 MCMC samples.  This step uses a mixture of crossover
-and migration operators. The <em>run</em> function by default draw 500
-MCMC samples, using only crossover operator. <em>gelman</em> function
-report rhat value of 1.06 in this case. A rhat value less than 1.1
-is usually considered an indication of chains converged.</p>
+points and samples 200 MCMC samples.  This step uses a mixture of 
+crossover and migration operators. The <em>run</em> function by default 
+draws 500 MCMC samples, using only crossover operator. <em>gelman</em> function
+reports PSRF value of 1.06 in this case. A potential scale reduction 
+factor (PSRF<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>) less than 1.1 suggests chains are converged.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fit0 &lt;- StartNewsamples(dmi, p.prior)
 fit  &lt;- run(fit0)
 rhat &lt;- gelman(fit, verbose = TRUE)
+es   &lt;- effectiveSize(fit)
 ## Diagnosing a single participant, theta. Rhat = 1.06
 
 </code></pre></div></div>
@@ -353,51 +355,54 @@ dev.off()
 using <em>summary</em></p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>est &lt;- summary(fit, recover = TRUE, ps = p.vector, verbose = TRUE)
-##                   a   sv    sz   t0    v     z
-## True           1.00 0.20  0.25 0.15 1.20  0.38
-## 2.5% Estimate  0.99 0.02  0.01 0.14 1.09  0.32
-## 50% Estimate   1.07 0.41  0.22 0.15 1.45  0.35
-## 97.5% Estimate 1.16 1.18  0.43 0.16 1.81  0.39
-## Median-True    0.07 0.21 -0.03 0.00 0.25 -0.03
+## Recovery summarises only default quantiles: 2.5% 25% 50% 75% 97.5% 
+##                     a     sv      sz      t0      v     z
+## True           1.0000 0.2000  0.2500  0.1500 1.2000 0.3800
+## 2.5% Estimate  0.9656 0.0401  0.0112  0.1338 1.1463 0.3504
+## 50% Estimate   1.0419 0.6010  0.2174  0.1444 1.4983 0.3867
+## 97.5% Estimate 1.1509 1.7128  0.4781  0.1522 2.0005 0.4273
+## Median-True    0.0419 0.4010 -0.0326 -0.0056 0.2983 0.0067
+
 </code></pre></div></div>
 
 <p>Finally, we may want to check whether the model fits the data
-well.  There are many methods to to quantify the goodness of fit.
+well.  There are many methods to quantify the goodness of fit.
 Here, I illustrate two methods. First method is to calculate DIC
 and BPIC. These information criteria are useful for model selection. 
 (need &gt; ggdmc 2.5.5)</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DIC(fit)
-BPIC(fit)
+DIC(fit, BPIC=TRUE)
 </code></pre></div></div>
 
-<p>Secondly, I simulate post-predictive data, based on the parameter estimates.
+<p>Secondly, I simulate post-predictive data, based on the estimated parameters.
 <em>xlim</em> trims off outlier values in the simulation data.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">predict_one</span> <span class="p">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">rand</span> <span class="p">=</span> <span class="nb">TRUE</span><span class="p">,</span> <span class="n">factors</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">predict_one</span> <span class="p">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">rand</span> <span class="p">=</span> <span class="nb">TRUE</span><span class="p">,</span> <span class="n">factors</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span>
                         <span class="n">xlim</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span> <span class="n">seed</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">attributes</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">data</span><span class="p">)$</span><span class="k">model</span>
-  <span class="n">facs</span> <span class="p">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="s2">"factors"</span><span class="p">))</span>
-  <span class="n">class</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">data</span><span class="p">)</span> <span class="p">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s2">"data.frame"</span><span class="p">,</span> <span class="s2">"list"</span><span class="p">)</span>
+    <span class="p">##</span> <span class="n">Update</span> <span class="n">for</span> <span class="n">using</span> <span class="n">S4</span> <span class="n">class</span>
+    <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">@</span><span class="n">dmi</span><span class="p">@</span><span class="k">model</span>
+    <span class="n">facs</span> <span class="p">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="s2">"factors"</span><span class="p">));</span> 
 
-  <span class="k">if</span> <span class="p">(</span><span class="c1">!is.null(factors))
-</span>  <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="n">is</span><span class="p">.</span><span class="n">na</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span> <span class="n">factors</span> <span class="p">&lt;-</span> <span class="n">facs</span>
-    <span class="k">if</span> <span class="p">(</span><span class="c1">!all(factors %in% facs))
-</span>      <span class="nf">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">"Factors argument must contain one or more of:"</span><span class="p">,</span>
-                 <span class="n">paste</span><span class="p">(</span><span class="n">facs</span><span class="p">,</span> <span class="n">collapse</span><span class="p">=</span><span class="s2">","</span><span class="p">)))</span>
-  <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="c1">!is.null(factors))
+</span>    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="n">is</span><span class="p">.</span><span class="n">na</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span> <span class="n">factors</span> <span class="p">&lt;-</span> <span class="n">facs</span>
+        <span class="k">if</span> <span class="p">(</span><span class="c1">!all(factors %in% facs))
+</span>            <span class="nf">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">"Factors argument must contain one or more of:"</span><span class="p">,</span> <span class="n">paste</span><span class="p">(</span><span class="n">facs</span><span class="p">,</span> <span class="n">collapse</span><span class="p">=</span><span class="s2">","</span><span class="p">)))</span>
+    <span class="p">}</span>
 
-  <span class="n">resp</span> <span class="p">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="s2">"responses"</span><span class="p">))</span>
-  <span class="n">ns</span>   <span class="p">&lt;-</span> <span class="n">table</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">data</span><span class="p">[,</span><span class="n">facs</span><span class="p">],</span> <span class="n">dnn</span> <span class="p">=</span> <span class="n">facs</span><span class="p">)</span>
-  <span class="n">npar</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">n</span><span class="p">.</span><span class="n">pars</span>
-  <span class="n">nchain</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">n</span><span class="p">.</span><span class="n">chains</span>
-  <span class="n">nmc</span>    <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">nmc</span>
-  <span class="n">ntsample</span> <span class="p">&lt;-</span> <span class="n">nchain</span> <span class="p">*</span> <span class="n">nmc</span>
-  <span class="n">pnames</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">p</span><span class="p">.</span><span class="n">names</span>
-  <span class="n">thetas</span> <span class="p">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">aperm</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">theta</span><span class="p">,</span> <span class="n">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">1</span><span class="p">)),</span> <span class="n">ncol</span> <span class="p">=</span> <span class="n">npar</span><span class="p">)</span>
-
-  <span class="n">colnames</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="p">&lt;-</span> <span class="n">pnames</span>
+    
+    <span class="n">resp</span> <span class="p">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="s2">"responses"</span><span class="p">));</span> 
+    <span class="n">ns</span>   <span class="p">&lt;-</span> <span class="n">table</span><span class="p">(</span><span class="n">object</span><span class="p">@</span><span class="n">dmi</span><span class="p">@</span><span class="n">data</span><span class="p">[,</span><span class="n">facs</span><span class="p">],</span> <span class="n">dnn</span> <span class="p">=</span> <span class="n">facs</span><span class="p">);</span> 
+    <span class="n">npar</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">@</span><span class="n">npar</span>
+    <span class="n">nchain</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">@</span><span class="n">nchain</span>
+    <span class="n">nmc</span>    <span class="p">&lt;-</span> <span class="n">object</span><span class="p">@</span><span class="n">nmc</span><span class="p">;</span> 
+    <span class="n">ntsample</span> <span class="p">&lt;-</span> <span class="n">nchain</span> <span class="p">*</span> <span class="n">nmc</span>
+    <span class="n">pnames</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">@</span><span class="n">pnames</span>
+    
+    <span class="n">thetas</span> <span class="p">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">aperm</span><span class="p">(</span><span class="n">object</span><span class="p">@</span><span class="n">theta</span><span class="p">,</span> <span class="n">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">1</span><span class="p">)),</span> <span class="n">ncol</span> <span class="p">=</span> <span class="n">npar</span><span class="p">)</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="p">&lt;-</span> <span class="n">pnames</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="n">is</span><span class="p">.</span><span class="n">na</span><span class="p">(</span><span class="n">npost</span><span class="p">))</span> <span class="p">{</span>
     <span class="n">use</span> <span class="p">&lt;-</span> <span class="m">1</span><span class="p">:</span><span class="n">ntsample</span>
@@ -405,6 +410,7 @@ BPIC(fit)
     <span class="k">if</span> <span class="p">(</span><span class="n">rand</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">use</span> <span class="p">&lt;-</span> <span class="n">sample</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">ntsample</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">replace</span> <span class="p">=</span> <span class="n">F</span><span class="p">)</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+	  <span class="p">##</span> <span class="n">Debugging</span> <span class="n">purpose</span>
       <span class="n">use</span> <span class="p">&lt;-</span> <span class="nb">round</span><span class="p">(</span><span class="n">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">ntsample</span><span class="p">,</span> <span class="n">length</span><span class="p">.</span><span class="n">out</span> <span class="p">=</span> <span class="n">npost</span><span class="p">))</span>
     <span class="p">}</span>
   <span class="p">}</span>
@@ -414,8 +420,9 @@ BPIC(fit)
   <span class="n">nttrial</span> <span class="p">&lt;-</span> <span class="k">sum</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span> <span class="p">##</span> <span class="n">number</span> <span class="k">of</span> <span class="n">total</span> <span class="n">trials</span>
 
   <span class="n">v</span> <span class="p">&lt;-</span> <span class="n">lapply</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">npost</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">simulate_one</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">n</span> <span class="p">=</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ps</span> <span class="p">=</span> <span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">,],</span> <span class="n">seed</span> <span class="p">=</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="n">ggdmc</span><span class="p">:::</span><span class="n">simulate_one</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">n</span> <span class="p">=</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ps</span> <span class="p">=</span> <span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">,],</span> <span class="n">seed</span> <span class="p">=</span> <span class="n">seed</span><span class="p">)</span>
   <span class="p">})</span>
+    
   <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">data</span><span class="p">.</span><span class="n">table</span><span class="p">::</span><span class="n">rbindlist</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
   <span class="n">reps</span> <span class="p">&lt;-</span> <span class="n">rep</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">npost</span><span class="p">,</span> <span class="n">each</span> <span class="p">=</span> <span class="n">nttrial</span><span class="p">)</span>
   <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">reps</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
@@ -425,12 +432,13 @@ BPIC(fit)
     <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">out</span><span class="p">[</span><span class="n">RT</span> <span class="p">&gt;</span> <span class="n">xlim</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">&amp;</span> <span class="n">RT</span> <span class="p">&lt;</span> <span class="n">xlim</span><span class="p">[</span><span class="m">2</span><span class="p">]]</span>
   <span class="p">}</span>
 
-  <span class="n">attr</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">data</span>
   <span class="n">return</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 <span class="p">}</span>
 
 
-<span class="n">pp</span> <span class="p">&lt;-</span> <span class="n">predict_one</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlim</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">))</span>
+<span class="n">pp</span>  <span class="p">&lt;-</span> <span class="n">predict_one</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlim</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">))</span>
+<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">fit</span><span class="p">@</span><span class="n">dmi</span><span class="p">@</span><span class="n">data</span>
+
 <span class="n">dat</span><span class="p">$</span><span class="n">C</span> <span class="p">&lt;-</span> <span class="n">ifelse</span><span class="p">(</span><span class="n">dat</span><span class="p">$</span><span class="n">S</span> <span class="p">==</span> <span class="s2">"s1"</span>  <span class="p">&amp;</span> <span class="n">dat</span><span class="p">$</span><span class="n">R</span> <span class="p">==</span> <span class="s2">"r1"</span><span class="p">,</span>  <span class="nb">TRUE</span><span class="p">,</span>
          <span class="n">ifelse</span><span class="p">(</span><span class="n">dat</span><span class="p">$</span><span class="n">S</span> <span class="p">==</span> <span class="s2">"s2"</span> <span class="p">&amp;</span> <span class="n">dat</span><span class="p">$</span><span class="n">R</span> <span class="p">==</span> <span class="s2">"r2"</span><span class="p">,</span> <span class="nb">TRUE</span><span class="p">,</span>
          <span class="n">ifelse</span><span class="p">(</span><span class="n">dat</span><span class="p">$</span><span class="n">S</span> <span class="p">==</span> <span class="s2">"s1"</span>  <span class="p">&amp;</span> <span class="n">dat</span><span class="p">$</span><span class="n">R</span> <span class="p">==</span> <span class="s2">"r2"</span><span class="p">,</span> <span class="nb">FALSE</span><span class="p">,</span>
@@ -446,6 +454,8 @@ BPIC(fit)
 <span class="n">pp</span><span class="p">$</span><span class="n">type</span> <span class="p">&lt;-</span> <span class="s2">"Simulation"</span>
 
 <span class="n">DT</span> <span class="p">&lt;-</span> <span class="n">rbind</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
+
+<span class="n">require</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
 <span class="n">p1</span> <span class="p">&lt;-</span> <span class="n">ggplot</span><span class="p">(</span><span class="n">DT</span><span class="p">,</span> <span class="n">aes</span><span class="p">(</span><span class="n">RT</span><span class="p">,</span> <span class="n">color</span> <span class="p">=</span> <span class="n">reps</span><span class="p">,</span> <span class="n">size</span> <span class="p">=</span> <span class="n">type</span><span class="p">))</span> <span class="p">+</span>
   <span class="n">geom_freqpoly</span><span class="p">(</span><span class="n">binwidth</span> <span class="p">=</span> <span class="m">.05</span><span class="p">)</span> <span class="p">+</span>
   <span class="n">scale_size_manual</span><span class="p">(</span><span class="n">values</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">.3</span><span class="p">))</span> <span class="p">+</span>
@@ -466,16 +476,19 @@ BPIC(fit)
 
 <p>The grey lines are model predictions. By default, predict_one randomly draws 100
 parameter estimates and simulate data based on them.  Therefore, there are 100 
-lines, showing the prediction variability. The solid dark line is
-the data, in the case, appropriately fall within the range covering by the grey lines.
+lines, showing the prediction variability. The solid dark line shows
+the data. In this case, the dark line is within the range covering by the grey lines.
 Note that the error responses (FALSE) are not predicted as well as the correct responses.
-This is fairly common, when the number of trial is minimal. In this case, it has only
+This is fairly common, when the number of trial is small. In this case, it has only
 13 trials.</p>
 
 <div class="footnotes">
   <ol>
     <li id="fn:1">
       <p>This is often dubbed, drift-diffusion model, but in Ratcliff and McKoon’s work, they called it diffusion decision model. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Brook, S. P., &amp; Gelman, A. (1998) General Methods for Monitoring Convergence of Iterative Simulations, Journal of Computational and Graphical Statistics, 7:4 . <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>

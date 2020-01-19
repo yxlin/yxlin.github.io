@@ -10,15 +10,15 @@
 <meta name="generator" content="Jekyll v3.7.2" />
 <meta property="og:title" content="Software" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This release add new featues and fixes a few minor issues." />
-<meta property="og:description" content="This release add new featues and fixes a few minor issues." />
+<meta name="description" content="Here lists new featues and bug fixes." />
+<meta property="og:description" content="Here lists new featues and bug fixes." />
 <link rel="canonical" href="http://localhost:4000/2018/07/14/software/" />
 <meta property="og:url" content="http://localhost:4000/2018/07/14/software/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-07-14T00:00:00+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2018-07-14T00:00:00+00:00","description":"This release add new featues and fixes a few minor issues.","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/07/14/software/"},"url":"http://localhost:4000/2018/07/14/software/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Software","dateModified":"2018-07-14T00:00:00+00:00","@context":"http://schema.org"}</script>
+{"datePublished":"2018-07-14T00:00:00+00:00","description":"Here lists new featues and bug fixes.","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/07/14/software/"},"url":"http://localhost:4000/2018/07/14/software/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Software","dateModified":"2018-07-14T00:00:00+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -231,21 +231,39 @@
 				<h3>Software</h3>
 			</div>
 			<article class="content">
-				<p>This release add new featues and fixes a few minor issues.</p>
+				<p>Here lists new featues and bug fixes.</p>
 
 <p><strong>Features:</strong></p>
 
 <ul>
   <li>2019-09-05 Add help page for the DIC and BPIC function.</li>
-  <li>2019-09-05 Expand DIC and BPIC functions to handle model object with many subjects.</li>
+  <li>2019-09-05 Expand DIC and BPIC functions to handle model object with many 
+subjects.</li>
   <li>2019-09-22 Add 2-D diffusion model, CDDM.cpp and CDDM.hpp.</li>
-  <li>2019-09-29 Modified lba_ in Likelihood.hpp and rlba_norm in random.R to adapt for PM model. Adapted two bessel-function routines, gsl_sf_bessel_zero_J0 &amp; gsl_sf_bessel_J1 from GSL for the zero-drift process.</li>
+  <li>2019-09-29 Modified lba_ in Likelihood.hpp and rlba_norm in random.R to adapt 
+for PM model. Adapted two bessel-function routines, gsl_sf_bessel_zero_J0 &amp; 
+gsl_sf_bessel_J1 from GSL for the zero-drift process.</li>
+  <li>2019-10-14 Add model selection modules.</li>
+  <li>2019-11-07 Add FCalculation_new. This adds a faster version of distribution 
+function of the diffusion decision model when high precision is needed 
+(precision &gt; 4)</li>
+  <li>2019-11-15 Upgrade informal S3 class to formal S4 class</li>
+  <li>2019-11-22 vectorized rlba_norm to accommodate PM model</li>
 </ul>
 
 <p><strong>Fixes:</strong></p>
 
 <ul>
-  <li>2019-09-22 Fix run_many and rerun_many in sampling.R to cope with the change in mclapply. Now the ncore option is entered mclapply via getOption(“mc.cores”, ncore)).</li>
+  <li>2019-09-22 Fix run_many and rerun_many in sampling.R to cope with the change 
+in mclapply. Now the ncore option enters mclapply via 
+getOption(“mc.cores”, ncore)).</li>
+  <li>2019-10-13 Fix deviance.model dimension error, in ‘apply’ function from across 
+column to across row</li>
+  <li>2019-11-26 Temporarily remove FCalculation_new.cpp and class CDF in 
+FCalculator.hpp to accommodate that Windows, because it does not have GSL 
+library (ie gsl_integration.h).</li>
+  <li>2019-11-28 Fixed simulate_one in model-class.R when trial numbers are 0 for 
+some design cell.</li>
 </ul>
 
 
