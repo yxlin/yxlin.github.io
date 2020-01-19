@@ -4,83 +4,48 @@ category: Cognitive Model
 order: 7
 ---
 
-> We have striven to minimize the number of errors. However, we canot 
+> 1. We have striven to minimize the number of errors. However, we canot 
 > guarantee the note is 100% accurate.
+> 2. We have updated the predict_one function for S4 class (19/01/2020). 
+> 3. This update is tested on Ubuntu 18.04.3 LTS (Intel® Core™ i5-8400 CPU @ 2.80GHz × 6; Memory: 7.7 GB)
 
-This is a quick note for fitting 3-accumulator LBA model.
-
-Some pre-analysis set up work.
+This is a quick note for fitting 3-accumulator LBA model. First, some pre-analysis set up work.
 
 ```
-## version 0.2.6.0
-## install.packages("ggdmc")
+## version 0.2.7.8
+## devtools::install_github("yxlin/ggdmc")
 loadedPackages <-c("ggdmc", "data.table", "ggplot2", "gridExtra", "ggthemes")
 sapply(loadedPackages, require, character.only=TRUE)
 
-## A function for generating posterior predict samples
-predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
-                        xlim = NA, seed = NULL)
+## A function for generating posterior predictive samples for one participant fit
+predict_one <- function(object, npost = 100, xlim = NA, seed = NULL)
 {
-  model <- attributes(object$data)$model
-  facs <- names(attr(model, "factors"))
-  class(object$data) <- c("data.frame", "list")
+    facs   <- attr(object@dmi@model, "factors"); 
+    fnames <- names(facs); 
+    ns <- table( object@dmi@data[, fnames], dnn = fnames)
+    nsample <- object@nchain * object@nmc; 
+    pnames <- object@pnames; 
+
+    thetas <- matrix(aperm(object@theta, c(3,2,1)), ncol = object@npar)
+    colnames(thetas) <- pnames
   
-  if (!is.null(factors))
-  {
-    if (any(is.na(factors))) factors <- facs
-    if (!all(factors %in% facs))
-      stop(paste("Factors argument must contain one or more of:",
-                 paste(facs, collapse=",")))
-  }
+    if (is.na(npost)) stop("Must specify npost!")
+    
+    use    <- sample(1:nsample, npost, replace = FALSE); 
+    npost  <- length(use)
+    posts  <- thetas[use, ]
+    ntrial <- sum(ns) 
+    v <- lapply(1:npost, function(i) {
+        simulate(object@dmi@model, nsim = ns, ps = posts[i,], seed = seed)
+    })
+    out <- data.table::rbindlist(v)
+    reps <- rep(1:npost, each = ntrial)
+    out <- cbind(reps, out)
   
-  resp <- names(attr(model, "responses"))
-  ns   <- table(object$data[,facs], dnn = facs)
-  npar   <- object$n.pars
-  nchain <- object$n.chains
-  nmc    <- object$nmc
-  ntsample <- nchain * nmc
-  pnames   <- object$p.names
-  
-  thetas <- matrix(aperm(object$theta, c(3,2,1)), ncol = npar)
-  
-  colnames(thetas) <- pnames
-  
-  if (is.na(npost)) {
-    use <- 1:ntfitple
-  } else {
-    if (rand) {
-      use <- fitple(1:ntfitple, npost, replace = F)
-    } else {
-      use <- round(seq(1, ntfitple, length.out = npost))
-    use <- 1:ntsample
-  } else {
-    if (rand) {
-      use <- sample(1:ntsample, npost, replace = F)
-    } else {
-      use <- round(seq(1, ntsample, length.out = npost))
-    }
-  }
-  
-  npost  <- length(use)
-  posts   <- thetas[use, ]
-  nttrial <- sum(ns) ## number of total trials
-  
-  v <- lapply(1:npost, function(i) {
-    ggdmc:::simulate_one(model, n = ns, ps = posts[i,], seed = seed)
-  })
-  out <- data.table::rbindlist(v)
-  
-  reps <- rep(1:npost, each = nttrial)
-  out <- cbind(reps, out)
-  
-  if (!any(is.na(xlim)))
-  {
-    out <- out[RT > xlim[1] & RT < xlim[2]]
-  }
-  
-  attr(out, "data") <- object$data
-  return(out)
-  }
+    if (!any(is.na(xlim))) out <- out[RT > xlim[1] & RT < xlim[2]]
+    attr(out, "data") <- object@dmi
+    return(out)
+}
   
 ```
 
@@ -110,8 +75,7 @@ a parameter vector with specific values and on the basis of this particular
 parameter vector, we simulated a data set and fit such data set with the
 model to see if it could recover the values reasonably well.
 
-For now, we will show only the recovery study. We designated a true parameter
-vector.
+For now, we will show only the recovery study. 
 
 ```
 p.vector <- c(A = 1.25, B = .25, t0 = .2, mean_v.W = 2.5, mean_v.N = 1.5,
@@ -181,12 +145,12 @@ print(model, p.vector)
 ...
 
 ## To see what other options in the simulate function
-## ?ggdmc:::simulate.model
+## ?ggdmc:::simulate
 nsim <- 2048
 dat <- simulate(model, nsim = nsim, ps = p.vector)
 ```
 
-We used data.table to help inspect the data frame.  This makes no difference when
+We used data.table to inspect the data frame.  This makes no difference when
 the data set is small. 
 
 ```
@@ -195,15 +159,14 @@ dmi <- BuildDMI(dat, model)
 
 ## Check the factor levels
 sapply(d[, .(S,R)], levels)
-##     S    R  
+##     S    R
 ## [1,] "ww" "W"
 ## [2,] "nn" "N"
 ## [3,] "pn" "P"
 ```
 
-
-To inspect the data distributions, we designated three response proportions, instead
-of correct vs. error.
+To inspect the response time distributions, we designated the response proportions for each
+of the response types.
 
 ```
 ww1 <- d[S == "ww" & R == "W" & RT <= 10, "RT"]
@@ -229,7 +192,7 @@ hist(nn1$RT, breaks = "fd", freq = TRUE, xlim = xlim, main='Non-word',
 hist(nn2$RT, breaks = "fd", freq = TRUE, add = TRUE, col = "lightblue")
 hist(nn3$RT, breaks = "fd", freq = TRUE, add = TRUE, col = "orange")
 
-hist(pn1$RT, breaks = "fd", freq = TRUE, xlim = xlim, main='P-word', 
+hist(pn1$RT, breaks = "fd", freq = TRUE, xlim = xlim, main='Pseudo-word', 
      xlab='RT(s)', ylab='', cex.lab=1.5)
 hist(pn2$RT, breaks = "fd", freq = TRUE, add = TRUE, col = "lightblue")
 hist(pn3$RT, breaks = "fd", freq = TRUE, add = TRUE, col = "orange")
@@ -249,94 +212,75 @@ p.prior <- BuildPrior(
   upper = c(NA, NA, 1, NA, NA, NA))
 
 ## Visually check the prior distributions
-plot(p.prior)
+plot(p.prior, ps = p.vector)
 ```
 
 ## Sampling
 The default number of iteration is 200 for _StartNewsamples_ function. 
 
 ```
-## The default iteration is 200 for StartNewsamples function. 
-fit0 <- StartNewsamples(dmi, p.prior)
-
-## About 301 s
-fit <- run(fit0)
-
-## Diagnosis checks
-gelman(fit)
-# Potential scale reduction factors:
-#   
-#   Point est. Upper C.I.
-# A              1.55       1.80
-# B              1.71       2.01
-# t0             1.80       2.24
-# mean_v.W       1.57       1.82
-# mean_v.N       1.47       1.69
-# mean_v.P       1.41       1.60
-# 
-# Multivariate psrf
-# 
-# 1.98
-```
-
-The PSRF suggests that the chains have yet converged to a stable parameter space.
-
-```
-plot(fit)
-```
-
-The trace plot of posterior log-likelihood suggests the chains almost approach the parameter
-space, so we discard all previous samples as burn-in. That is, we did not turn on the _add_
-switch. The samples reaches the parameter space very fast.  It took about 700 iterations. Note this is a model with 6 parameters and some of them (A and B) are correlated. 
-
-Then We ran another 500 (default) iterations and took a sample every 8th iteration.
-
-```
 ## ?run to see add and other options in run function
-## Watch out! This would take a while (~ 1 hr or more depending on your CPU)
-fit <- run(fit, thin=8)
+fit0 <- StartNewsamples(dmi, p.prior, thin = 2)
+fit  <- run(fit0, thin = 2, block = FALSE)
 
-## The three follow-up checks show the chains are converged and we have drawn a
-## sufficient sample size.
-plot(fit)
+## gelman function also provide subchain option.
+## Note the method to call this option is different
+res <- gelman(fit, verbose = TRUE, subchain = 1:3)
 
-es <- effectiveSize(fit)
+
+## Calculate chains: 1 2 3 
+## Multivariate psrf: 
+##          Point est. Upper C.I.
+## A              1.02       1.08
+## B              1.00       1.01
+## t0             1.01       1.01
+## mean_v.W       1.01       1.03
+## mean_v.N       1.01       1.03
+## mean_v.P       1.01       1.02
+
+
+## By convention, most Bayesian inference checks 3 or 4 chains
+p1 <- plot(fit)
+p2 <- plot(fit, pll=F, den=T)
+p3 <- plot(fit, subchain = TRUE)
+p4 <- plot(fit, pll=F, den=T, subchain = TRUE)
+
+png(file = "LBA3A-checks.png", 800, 600)
+grid.arrange(p1, p2, p3, p4)
+dev.off()
+
+```
+
+![LBA3A-checks]({{"/images/cognitive-model/LBA3A-checks.png" | relative_url}})
+
+
+```
+es <- effectiveSize(fit, verbose = TRUE)
 ##        A        B       t0 mean_v.W mean_v.N mean_v.P 
-## 3032.669 3160.306 3264.266 2998.928 2979.326 3022.245 
-
-gelman(fit)
-# Potential scale reduction factors:
-#   
-#   Point est. Upper C.I.
-# A                 1       1.00
-# B                 1       1.00
-# t0                1       1.01
-# mean_v.W          1       1.00
-# mean_v.N          1       1.00
-# mean_v.P          1       1.00
-# 
-# Multivariate psrf
-# 
-# 1
+##   843.04   838.92   863.98   828.97   840.93   894.25 
 
 est <- summary(fit, ps = p.vector, verbose = TRUE, recovery = TRUE)
-#                   A    B mean_v.N mean_v.P mean_v.W   t0
-# True           1.25 0.25     1.50     1.20     2.50 0.20
-# 2.5% Estimate  1.19 0.23     1.46     1.15     2.39 0.19
-# 50% Estimate   1.31 0.26     1.64     1.33     2.59 0.20
-# 97.5% Estimate 1.45 0.30     1.83     1.52     2.80 0.21
-# Median-True    0.06 0.01     0.14     0.13     0.09 0.00
+## Recovery summarises only default quantiles: 2.5% 25% 50% 75% 97.5% 
+##                     A       B mean_v.N mean_v.P mean_v.W     t0
+## True           1.2500  0.2500   1.5000   1.2000   2.5000 0.2000
+## 2.5% Estimate  1.1516  0.2153   1.3745   1.0190   2.3058 0.1900
+## 50% Estimate   1.2724  0.2495   1.5667   1.2116   2.5075 0.2000
+## 97.5% Estimate 1.4053  0.2920   1.7573   1.4070   2.7250 0.2085
+## Median-True    0.0224 -0.0005   0.0667   0.0116   0.0075 0.0000
 
 ```
 
-The posterior prediction figure shows the data and posterior predictions are 
-consistent, confirming the model can successfully describe the data.
+The posterior predictive figure shows the data and posterior predictions are 
+consistent, confirming the model does work well. 
 
 ```
 pp <- predict_one(fit, xlim = c(0, 5))
 
-original_data <- fit$data
+original_data <- fit@dmi@data
+dplyr::tbl_df(original_data)
+d <- data.table(original_data)
 
+## A different way to check data frame
 dplyr::tbl_df(original_data)
 d <- data.table(original_data)
 
@@ -386,9 +330,14 @@ p1 <- ggplot(combined_data, aes(RT, color = reps, size = type)) +
   theme(strip.background = element_blank(),
         legend.position="none") 
 
+png(file = "LBA3A.png", 800, 600)
 print(p1)
+dev.off()
 
 ```
+
+![LBA3A]({{"/images/cognitive-model/LBA3A.png" | relative_url}})
+
 
 ## How to fix array dimension inconsistency
 If data were stored by a previous version of ggdmc or by DMC, their arraies
@@ -397,16 +346,20 @@ following is one convenient way to transpose them.
 
 ```
 ## First make sure they are indeed needed to be transposed
+dim(fit0@theta)
+dim(fit0@summed_log_prior)
+dim(fit0@log_likelihoods)
+
 dim(fit0$theta)
 dim(fit0$summed_log_prior)
 dim(fit0$log_likelihoods)
 
-## Use aperm and t to transpose arraies and matrices
-fit0$theta <- aperm(fit0$theta, c(2, 1, 3))
-fit0$summed_log_prior <- t(fit0$summed_log_prior)
-fit0$log_likelihoods <- t(fit0$log_likelihoods)
+## Use aperm and t to transpose arrays and matrices
+fit0@theta <- aperm(fit0@theta, c(2, 1, 3))
+fit0@summed_log_prior <- t(fit0@summed_log_prior)
+fit0@log_likelihoods <- t(fit0@log_likelihoods)
 
-## Attach the model class to the samples. 
-class(fit0) <- c("list", "model")
+## Make the new object a posterior class
+class(fit0) <- c("posterior")
 
 ```
