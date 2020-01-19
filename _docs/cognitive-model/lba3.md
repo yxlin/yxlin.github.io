@@ -339,6 +339,129 @@ dev.off()
 ![LBA3A]({{"/images/cognitive-model/LBA3A.png" | relative_url}})
 
 
+## Extending to four or more accumulators
+
+Here is a barebone template of 4 stimuli mapping to 4 responses. This is a 15-parameter model; thus, one should expect it would take up a lot of computation time, especially in fitting hierarchical model. It would save time, if one fits fixed-effect model first, using multiple cores.
+
+```
+require(ggdmc)
+## Assume four stimuli that have a shape and color (blue_diamond, blue_heart, 
+## green_diamond, and green_heart) (courtesy of davidt0x)
+## 
+## I assume a difficulty hierarchy (with no theoretical basis) (from easy to hard): green_diamond (e1) > green_heart (e2) > blue_diamond (e3) > blue_heart (e4). I also assume the easier stimulus, the higher its drift rate is and the more variable (hence the higher value) its drift rate standard deviation would be. 
+
+model <- BuildModel(
+    p.map     = list(A = "1", B = "R", t0 = "1", mean_v = c("S", "M"),
+                     sd_v = "M", st0 = "1"),
+    match.map = list(M = list("blue_diamond" = "BD", "blue_heart" = "BH",
+                              "green_diamond" = "GD", "green_heart" = "GH")),
+    factors   = list(S = c("blue_diamond", "blue_heart", "green_diamond", "green_heart")),
+    constants = c(sd_v.false = 1, st0 = 0),
+    responses = c("BD", "BH", "GD", "GH"),
+    type      = "norm")
+
+pop.mean <- c(A=.4, B.BD=.5, B.BH=.6, B.GD=.7, B.GH=.8,
+              t0=.3,
+              mean_v.blue_diamond.true   = 1.5,
+              mean_v.blue_heart.true     = 1.0,
+              mean_v.green_diamond.true  = 2.5,
+              mean_v.green_heart.true    = 2.0,
+              mean_v.blue_diamond.false  = .20,
+              mean_v.blue_heart.false    = .25,
+              mean_v.green_diamond.false = .10,
+              mean_v.green_heart.false   = .15,
+              sd_v.true = .25)
+
+pop.scale <-c(A=.1, B.BD=.1, B.BH=.1, B.GD=.1, B.GH=.1,
+              t0=.05,
+              mean_v.blue_diamond.true   = .2,
+              mean_v.blue_heart.true     = .2,
+              mean_v.green_diamond.true  = .2,
+              mean_v.green_heart.true    = .2,
+              mean_v.blue_diamond.false  = .2,
+              mean_v.blue_heart.false    = .2,
+              mean_v.green_diamond.false = .2,
+              mean_v.green_heart.false   = .2,
+              sd_v.true = .1)
+
+pop.prior <- BuildPrior(
+     dists = rep("tnorm", model@npar),
+     p1 = pop.mean,
+     p2 = pop.scale,
+     lower = c(0,0,0,0,0,        .05, NA,NA,NA,NA, NA,NA,NA,NA, 0),
+    upper = c(NA,NA,NA,NA,NA,    1, NA,NA,NA,NA, NA,NA,NA,NA, NA))
+
+## plot(pop.prior)
+## Simulate some data ----------
+## Assume 12 participants, each contributing 30 trials per condition.
+dat <- simulate(model, nsub = 12, nsim = 30, prior = pop.prior)
+dmi <- BuildDMI(dat, model)
+ps <- attr(dat, "parameters")
+
+p.prior <- BuildPrior(
+    dists = rep("tnorm", model@npar),
+    p1   = pop.mean,
+    p2   = pop.scale*5,
+    lower = c(0,0,0,0,0,        .05, NA,NA,NA,NA, NA,NA,NA,NA, 0),
+    upper = c(NA,NA,NA,NA,NA,    1, NA,NA,NA,NA, NA,NA,NA,NA, NA))
+
+mu.prior <- BuildPrior(
+    dists = rep("tnorm",  model@npar),
+    p1    = pop.mean,
+    p2    = c(1,1,1,1,1,  1, 2,2,2,2, 2,2,2,2, 2),
+    lower = c(0,0,0,0,0,       .05, NA,NA,NA,NA, NA,NA,NA,NA, 0),
+    upper = c(NA,NA,NA,NA,NA,    1, NA,NA,NA,NA, NA,NA,NA,NA, NA))
+
+plot(p.prior, ps=ps)
+plot(mu.prior, ps = pop.mean)
+
+sigma.prior <- BuildPrior(
+    dists = rep("unif", model@npar),
+    p1    = c(A = 0, B.BD = 0, B.BH = 0, B.GD=0, B.GH=0,
+              t0 = 0,
+              mean_v.blue_diamond.true   = 0,
+              mean_v.blue_heart.true     = 0,
+              mean_v.green_diamond.true  = 0,
+              mean_v.green_heart.true    = 0,
+              mean_v.blue_diamond.false  = 0,
+              mean_v.blue_heart.false    = 0,
+              mean_v.green_diamond.false = 0,
+              mean_v.green_heart.false   = 0,
+              sd_v.true = 0),
+    p2    = rep(5, model@npar))
+
+## plot(sigma.prior, ps=pop.scale)
+## Sampling -------------
+priors <- list(pprior=p.prior, location=mu.prior, scale=sigma.prior)
+
+## Enter only the participant-level prior distribution will render the function to
+## run fixed-effect model
+## Use nmc = 10 to estimate how much time would take.
+## 42.22
+
+fit0 <- StartNewsamples(dmi, prior=p.prior, block = FALSE, ncore=12)  ## Fixed-effect model fit
+fit  <- run(fit0, ncore = 12, block = FALSE)
+
+hfit0 <- StartNewsamples(dmi, prior=priors)  ## Random-effect model fit
+hfit  <- run(hfit0, ncore = 4)
+
+
+## Model diagnoses
+plot(fit)
+plot(fit, subchain=TRUE, nsubchain=3)
+plot(fit, subchain=TRUE, nsubchain=2)
+
+res <- gelman(fit, verbose = TRUE)
+res <- gelman(fit, verbose = TRUE, subchain=1:4)
+res <- gelman(fit, verbose = TRUE, subchain=5:8)
+res <- gelman(fit, verbose = TRUE, subchain=9:12)
+
+## Check if parameter recovery well in fixed-effect model fit
+est0 <- summary(fit, recovery = TRUE, ps = ps, verbose =TRUE)
+
+```
+
+
 ## How to fix array dimension inconsistency
 If data were stored by a previous version of ggdmc or by DMC, their arraies
 are arranged differently as noted [here](https://github.com/yxlin/ggdmc). The 
