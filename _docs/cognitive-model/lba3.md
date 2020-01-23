@@ -1,4 +1,4 @@
----
+y---
 title: Three-accumulator LBA Model
 category: Cognitive Model
 order: 7
@@ -443,7 +443,7 @@ fit0 <- StartNewsamples(dmi, prior=p.prior, block = FALSE, ncore=12)  ## Fixed-e
 fit  <- run(fit0, ncore = 12, block = FALSE)
 
 hfit0 <- StartNewsamples(dmi, prior=priors)  ## Random-effect model fit
-hfit  <- run(hfit0, ncore = 4)
+hfit  <- run(hfit0)      ## ncore has no effect in hierarchical fit
 
 
 ## Model diagnoses

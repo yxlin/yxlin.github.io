@@ -140,6 +140,8 @@ res <- gelman(fit, verbose = TRUE, subchain=9:12)
 
 ## Mean    8    5    2    6   12    7   10    3    4    9    1   11 
 ## 1.33 1.06 1.14 1.15 1.18 1.26 1.26 1.31 1.34 1.35 1.36 1.59 1.94 
+## Mean    8    5    2    6   10   12    7    3    9    4    1   11 
+## 1.25 1.04 1.12 1.13 1.13 1.17 1.18 1.24 1.30 1.30 1.34 1.47 1.63
 
 load('data/LBA4A.RData'); ls()
 est0 <- summary(fit, recovery = TRUE, ps = ps, verbose =TRUE)
@@ -171,3 +173,8 @@ est0 <- summary(fit, recovery = TRUE, ps = ps, verbose =TRUE)
 ## True          0.1943          0.1948          0.1579    0.1037
 ## Diff         -0.0945         -0.0724         -0.0445   -0.0193
 
+load('data/HLBA4A.RData'); ls()
+plot(fit)
+
+176612.76  / 60 / 60
+49/24
