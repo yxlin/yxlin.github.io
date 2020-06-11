@@ -7,11 +7,11 @@ order: 1
 Fixed-effects models assume each participant has his/her own specific 
 mechanism of parameter generation. This assumption is relative to the 
 random-effect models, which assume one common mechanism is responsible 
-for generating parameters for all participants.  The latter is sometimes dubbed
-as hierarchical or multi-level models, although the three terms could carry 
-subtle different ideas.
+for generating parameters for all participants.  The latter is sometimes 
+dubbed, hierarchical or multi-level models, although the three terms could 
+carry subtle different ideas.
 
-In this tutorial, I illustrate the method of conducting the 
+In this tutorial, I illustrated the method of conducting the 
 fixed-effects modelling. Given many observations of response times (RT)
 and choices, one modelling aim is to estimate the parameters that
 generate the observations. 
@@ -63,13 +63,13 @@ the parameters. In Bayesian inference, we also need prior distributions, so
 let's build a set of prior distributions for each DDM parameters.
 
 A beta distribution with _shape1_ = 1 and _shape2_ = 1, equals to a uniform
-distribution (_beta(1, 1)_). This choice is to regularize the parameters,
+distribution (_beta(1, 1)_). This choice was to regularize the parameters,
 (1) the start point, _z_, (2) its variability _sz_ and (3) _t0_. All three 
-are bounded by 0 and 1. Others use truncated normal distributions bounded 
+were bounded by 0 and 1. Others used truncated normal distributions bounded 
 by _lower_ and _upper_ arguments.
 
-_plot_ draws the prior distributions, providing a visual check method. This 
-method, in the case of parameter recovery study, is to make sure the prior
+_plot_ drew the prior distributions, providing a visual check method. This 
+method, in the case of parameter recovery study, was to make sure the prior
 distribution does cover the true values.
 
 ```
@@ -85,12 +85,12 @@ plot(p.prior, ps = p.vector)
 ![prior]({{"/images/fixed-effect-model/prior.png" | relative_url}})
 
 
-By default _StartNewsamples_ uses p.prior to randomly draw start
-points and samples 200 MCMC samples.  This step uses a mixture of 
+By default _StartNewsamples_ used p.prior to randomly draw start
+points and samples 200 MCMC samples.  This step used a mixture of 
 crossover and migration operators. The _run_ function by default 
-draws 500 MCMC samples, using only crossover operator. _gelman_ function
-reports PSRF value of 1.06 in this case. A potential scale reduction 
-factor (PSRF[^2]) less than 1.1 suggests chains are converged.
+drew 500 MCMC samples, using only crossover operator. _gelman_ function
+reported PSRF value of 1.06 in this case. A potential scale reduction 
+factor (PSRF[^2]) less than 1.1 suggested chains are converged.
 
 ```
 fit0 <- StartNewsamples(dmi, p.prior)
@@ -101,8 +101,8 @@ es   <- effectiveSize(fit)
 
 ```
 
-_plot_ by default draws posterior log-likelihood, with the option, _start_,
-to change to a latter start iteration to draw. 
+_plot_ by default drew posterior log-likelihood. With the option, _start_,
+it changed to a latter start iteration to draw. 
 
 ```
 p0 <- plot(fit0)
@@ -117,7 +117,7 @@ dev.off()
 ![pll]({{"/images/fixed-effect-model/pll.png" | relative_url}})
 
 The upper panel showed the chains quickly converged to posterior log-likelihoods
-near 100th iteration and the right panel confirmed the rhat value (< 1.1).
+near 100th iteration and the bottom panel confirmed the rhat value (< 1.1).
 
 ```
 p2 <- plot(fit, pll = FALSE, den= FALSE)
@@ -135,7 +135,7 @@ using _summary_
 
 ```
 est <- summary(fit, recover = TRUE, ps = p.vector, verbose = TRUE)
-## Recovery summarises only default quantiles: 2.5% 25% 50% 75% 97.5% 
+## Recovery summarises only default quantiles: 2.5% 50% 97.5% 
 ##                     a     sv      sz      t0      v     z
 ## True           1.0000 0.2000  0.2500  0.1500 1.2000 0.3800
 ## 2.5% Estimate  0.9656 0.0401  0.0112  0.1338 1.1463 0.3504
@@ -145,9 +145,9 @@ est <- summary(fit, recover = TRUE, ps = p.vector, verbose = TRUE)
 
 ```
 
-Finally, we may want to check whether the model fits the data
+Finally, we might want to check whether the model fits the data
 well.  There are many methods to quantify the goodness of fit.
-Here, I illustrate two methods. First method is to calculate DIC
+Here, I illustrated two methods. First method is to calculate DIC
 and BPIC. These information criteria are useful for model selection. 
 (need > ggdmc 2.5.5)
 ```
@@ -155,12 +155,83 @@ DIC(fit)
 DIC(fit, BPIC=TRUE)
 ```
 
-Secondly, I simulate post-predictive data, based on the estimated parameters.
-_xlim_ trims off outlier values in the simulation data.
+Secondly, I simulated post-predictive data. _xlim_ trims off outlier values
+in the simulation. Note there are two different versions of the 
+post-predictive functions, because the ggdmc version > 0.2.7.5 starts to 
+use S4 class, which use _@_, instead of _$_ to extract elemnts in an object.
 
 ```
 
 predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
+                        xlim = NA, seed = NULL)
+{
+    require(ggdmc)
+    if(packageVersion('ggdmc') == '0.2.6.0') {
+        message('Using $ to extract object in v 0.2.6.0')
+        out <- predict_one0260(object, npost = 100, rand, factors, xlim, seed)
+    } else {
+        message('Using @ to extract object in v 0.2.6.0')
+        out <- predict_one0280(object, npost = 100, rand, factors, xlim, seed)
+    }
+    return(out)
+}
+    
+predict_one0260 <- function(object, npost = 100, rand = TRUE, factors = NA,
+                        xlim = NA, seed = NULL)
+{
+  model <- attr(object$data, 'model')
+  facs <- names(attr(model, "factors")); 
+  
+  if (!is.null(factors))
+  {
+    if (any(is.na(factors))) factors <- facs
+    if (!all(factors %in% facs))
+      stop(paste("Factors argument must contain one or more of:", paste(facs, collapse=",")))
+  }
+  
+  resp <- names(attr(model, "responses"))
+  ns   <- table(object$data[,facs], dnn = facs)
+  npar   <- object$n.pars
+  nchain <- object$n.chains
+  nmc    <- object$nmc
+  ntsample <- nchain * nmc
+  pnames   <- object$p.names
+  thetas <- matrix(aperm(object$theta, c(3,2,1)), ncol = npar)
+  
+  colnames(thetas) <- pnames
+
+  if (is.na(npost)) {
+    use <- 1:ntsample
+  } else {
+    if (rand) {
+      use <- sample(1:ntsample, npost, replace = F)
+    } else {
+      ## Debugging purpose
+      use <- round(seq(1, ntsample, length.out = npost))
+    }
+  }
+  
+  npost  <- length(use)
+  posts   <- thetas[use, ]
+  nttrial <- sum(ns) ## number of total trials
+  
+  v <- lapply(1:npost, function(i) {
+    ggdmc:::simulate_one(model, n = ns, ps = posts[i,], seed = seed)
+  })
+  
+  out <- data.table::rbindlist(v)
+  reps <- rep(1:npost, each = nttrial)
+  out <- cbind(reps, out)
+  
+  if (!any(is.na(xlim)))
+  {
+    out <- out[RT > xlim[1] & RT < xlim[2]]
+  }
+  
+  return(out)
+}
+
+predict_one0280 <- function(object, npost = 100, rand = TRUE, factors = NA,
                         xlim = NA, seed = NULL)
 {
     ## Update for using S4 class
@@ -219,7 +290,8 @@ predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
 
 
 pp  <- predict_one(fit, xlim = c(0, 5))
-dat <- fit@dmi@data
+dat <- fit@dmi@data  ## use this line for version > 0.2.7.5
+## dat <- fit$data   ## use this line for version 0.2.6.0
 
 dat$C <- ifelse(dat$S == "s1"  & dat$R == "r1",  TRUE,
          ifelse(dat$S == "s2" & dat$R == "r2", TRUE,
@@ -245,14 +317,6 @@ p1 <- ggplot(DT, aes(RT, color = reps, size = type)) +
   theme(legend.position = "none") +
   facet_grid(S ~ C)
 
-
-d <- data.table::data.table(dat)
-d[, .N, .(S, R)]
-##     S  R  N
-## 1: s1 r1 87
-## 2: s1 r2 13
-## 3: s2 r1 34
-## 4: s2 r2 66
 ```
 ![post-predictive]({{"/images/fixed-effect-model/post-predictive.png" | relative_url}})
 

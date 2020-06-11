@@ -31,7 +31,7 @@ Here is a quick getting start guide:
 
 #### Installation
 
-1. Download **_ggdmc_** from [CRAN](https://cran.r-project.org/web/packages/ggdmc/index.html),
+1. Download **_ggdmc_** from [CRAN](https://cran.r-project.org/web/packages/ggdmc/index.html), or
 [GitHub](https://github.com/yxlin/ggdmc).
 2. [Windows only] Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile
 C++ codes in **_ggdmc_**.
@@ -46,6 +46,18 @@ or from GitHub
 or from source tarball. 
 
 > install.packages('ggdmc_0.2.6.0.tar.gz', repos = NULL, type='source')
+
+* As to 06-01-2020, because Microsoft R uses R version 3.5.3, the user who wishes
+deploys ggdmc on Microsoft R may encounter two challenges. First is
+RcppArmadillo on MRAN is behind the one on R CRAN. The RcppArmadillo on MRAN 
+has yet introduced recent Armadillo functions, for instance randperm in C++. 
+This can be resolved by installing RcppArmadillo directly from its source 
+tarball, downloaded from CRAN. Secondly, the default installation process on 
+Windows is to look for the package binary matching the R version on Windows 
+machine. This may result in Microsoft R looks for a version of ggdmc matching 
+R 3.5.3 and thereby, it cannot find one. This can be resolved similarly by 
+installing from the source tarball. 
+
 
 #### Load _ggdmc_ Package
 
