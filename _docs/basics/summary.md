@@ -1,7 +1,7 @@
 ---
 title: Summary Statistics
 category: Modelling Basics
-order: 3
+order: 4
 ---
 
 In analyzing response time data with two choices, researchers would usually

@@ -1,7 +1,7 @@
 ---
 title: Least Square Method
 category: Modelling Basics
-order: 6
+order: 5
 ---
 
 This is a short note for one method to conduct least square minimization, using R,
