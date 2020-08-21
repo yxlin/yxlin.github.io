@@ -168,16 +168,15 @@ predict_one <- function(object, npost = 100, rand = TRUE, factors = NA,
     require(ggdmc)
     if(packageVersion('ggdmc') == '0.2.6.0') {
         message('Using $ to extract object in v 0.2.6.0')
-        out <- predict_one0260(object, npost = 100, rand, factors, xlim, seed)
+        out <- predict_one0260(object, npost, rand, factors, xlim, seed)
     } else {
         message('Using @ to extract object in v 0.2.6.0')
-        out <- predict_one0280(object, npost = 100, rand, factors, xlim, seed)
+        out <- predict_one0280(object, npost, rand, factors, xlim, seed)
     }
     return(out)
 }
     
-predict_one0260 <- function(object, npost = 100, rand = TRUE, factors = NA,
-                        xlim = NA, seed = NULL)
+predict_one0260 <- function(object, npost, rand, factors, xlim, seed)
 {
   model <- attr(object$data, 'model')
   facs <- names(attr(model, "factors")); 
@@ -231,8 +230,7 @@ predict_one0260 <- function(object, npost = 100, rand = TRUE, factors = NA,
   return(out)
 }
 
-predict_one0280 <- function(object, npost = 100, rand = TRUE, factors = NA,
-                        xlim = NA, seed = NULL)
+predict_one0280 <- function(object, npost, rand, factors, xlim, seed)
 {
     ## Update for using S4 class
     model <- object@dmi@model

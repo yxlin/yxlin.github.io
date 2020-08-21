@@ -1,0 +1,27 @@
+Hi Valerio,
+
+Thank you again for the question and being interested in our work.  I apologized that for Example #1, the last bit of the code,
+
+"est <- summary(sam, recovery = TRUE, ps = p.vector, verbose = TRUE)"
+
+has one inconsistency.  That is, the "sam" object should be "fit".  I did not spot the inconsistency at the proof reading process and appreciate you worked through the confusion code.
+
+
+Here I attached two R scripts for your reference. The first one was to preprocess
+Pleskac et al's (2018) data. The second one was to fit hierarchical Wiener diffusion model
+to their study 1 data. The process of fitting study 2 to 4 is similar to the study 1, but
+became complicated, because of the increase of data point and conditions.
+
+I hope these two scripts help.
+
+Best,
+
+Yi-Shin
+
+
+Question 1: "Unfortunately, I have been finding it more difficult to reproduce Example #2, despite I have been working on my script for a bit now. I am sure the unsuccessful attempts are due by my lack of expertise – I am very new to Bayesian methods and decided to get a grasp of both those and the DDM by looking at your practical tutorial."
+
+
+Anyhow, I was wondering whether you have and could share the RMarkdown file (or script, GitHub repo, or similar…) used for the publication. Hopefully, that would help me breaking down the process in a more manageable way.
+
+Any other readings and/or resources that you might deem helpful to start off learning about the topics of DDM/Bayes would be very much appreciated.
