@@ -95,6 +95,8 @@
 								
 									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
 								
+									<li class="nav-item "><a href="/basics/leastsq/">Least Square Method</a></li>
+								
 									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
 								
 							</ul>
@@ -265,7 +267,7 @@ the crossover operator.</p>
 <h4 id="installation">Installation</h4>
 
 <ol>
-  <li>Download <strong><em>ggdmc</em></strong> from <a href="https://cran.r-project.org/web/packages/ggdmc/index.html">CRAN</a>,
+  <li>Download <strong><em>ggdmc</em></strong> from <a href="https://cran.r-project.org/web/packages/ggdmc/index.html">CRAN</a>, or
 <a href="https://github.com/yxlin/ggdmc">GitHub</a>.</li>
   <li>[Windows only] Install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> to compile
 C++ codes in <strong><em>ggdmc</em></strong>.</li>
@@ -287,6 +289,19 @@ C++ codes in <strong><em>ggdmc</em></strong>.</li>
 <blockquote>
   <p>install.packages(‘ggdmc_0.2.6.0.tar.gz’, repos = NULL, type=’source’)</p>
 </blockquote>
+
+<ul>
+  <li>As to 06-01-2020, because Microsoft R uses R version 3.5.3, the user who wishes
+deploys ggdmc on Microsoft R may encounter two challenges. First is
+RcppArmadillo on MRAN is behind the one on R CRAN. The RcppArmadillo on MRAN 
+has yet introduced recent Armadillo functions, for instance randperm in C++. 
+This can be resolved by installing RcppArmadillo directly from its source 
+tarball, downloaded from CRAN. Secondly, the default installation process on 
+Windows is to look for the package binary matching the R version on Windows 
+machine. This may result in Microsoft R looks for a version of ggdmc matching 
+R 3.5.3 and thereby, it cannot find one. This can be resolved similarly by 
+installing from the source tarball.</li>
+</ul>
 
 <h4 id="load-ggdmc-package">Load <em>ggdmc</em> Package</h4>
 

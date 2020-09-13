@@ -97,6 +97,8 @@
 								
 									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
 								
+									<li class="nav-item "><a href="/basics/leastsq/">Least Square Method</a></li>
+								
 									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
 								
 							</ul>
@@ -249,6 +251,7 @@ function of the diffusion decision model when high precision is needed
 (precision &gt; 4)</li>
   <li>2019-11-15 Upgrade informal S3 class to formal S4 class</li>
   <li>2019-11-22 vectorized rlba_norm to accommodate PM model</li>
+  <li>2020-06-01 remove test_dbvnorm and #include &lt;gsl/gsl_randist.h&gt;</li>
 </ul>
 
 <p><strong>Fixes:</strong></p>
@@ -264,6 +267,7 @@ FCalculator.hpp to accommodate that Windows, because it does not have GSL
 library (ie gsl_integration.h).</li>
   <li>2019-11-28 Fixed simulate_one in model-class.R when trial numbers are 0 for 
 some design cell.</li>
+  <li>2020-06-11 a typographic error was found in the <a href="https://espace.curtin.edu.au/bitstream/handle/20.500.11937/77775/77957.pdf?sequence=3">paper</a>, page 153. The closing double quote for the RACE factor associated with the <em>v</em> parameter should be placed right after the “E” letter, instead of right after the opening double quote. Thanks to Jordan Wilson found this error.</li>
 </ul>
 
 

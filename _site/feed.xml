@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-19T14:22:09+00:00</updated><id>http://localhost:4000/</id><title type="html">Cognitive Models</title><subtitle>Dynamic Models of Choice with Better Graphic Tools and Quicker Computations</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Software</title><link href="http://localhost:4000/2018/07/14/software/" rel="alternate" type="text/html" title="Software" /><published>2018-07-14T00:00:00+00:00</published><updated>2018-07-14T00:00:00+00:00</updated><id>http://localhost:4000/2018/07/14/software</id><content type="html" xml:base="http://localhost:4000/2018/07/14/software/">&lt;p&gt;Here lists new featues and bug fixes.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-13T07:27:27+00:00</updated><id>http://localhost:4000/</id><title type="html">Cognitive Models</title><subtitle>Dynamic Models of Choice with Better Graphic Tools and Quicker Computations</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Software</title><link href="http://localhost:4000/2018/07/14/software/" rel="alternate" type="text/html" title="Software" /><published>2018-07-14T00:00:00+00:00</published><updated>2018-07-14T00:00:00+00:00</updated><id>http://localhost:4000/2018/07/14/software</id><content type="html" xml:base="http://localhost:4000/2018/07/14/software/">&lt;p&gt;Here lists new featues and bug fixes.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Features:&lt;/strong&gt;&lt;/p&gt;
 
@@ -16,6 +16,7 @@ function of the diffusion decision model when high precision is needed
 (precision &amp;gt; 4)&lt;/li&gt;
   &lt;li&gt;2019-11-15 Upgrade informal S3 class to formal S4 class&lt;/li&gt;
   &lt;li&gt;2019-11-22 vectorized rlba_norm to accommodate PM model&lt;/li&gt;
+  &lt;li&gt;2020-06-01 remove test_dbvnorm and #include &amp;lt;gsl/gsl_randist.h&amp;gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;strong&gt;Fixes:&lt;/strong&gt;&lt;/p&gt;
@@ -31,6 +32,7 @@ FCalculator.hpp to accommodate that Windows, because it does not have GSL
 library (ie gsl_integration.h).&lt;/li&gt;
   &lt;li&gt;2019-11-28 Fixed simulate_one in model-class.R when trial numbers are 0 for 
 some design cell.&lt;/li&gt;
+  &lt;li&gt;2020-06-11 a typographic error was found in the &lt;a href=&quot;https://espace.curtin.edu.au/bitstream/handle/20.500.11937/77775/77957.pdf?sequence=3&quot;&gt;paper&lt;/a&gt;, page 153. The closing double quote for the RACE factor associated with the &lt;em&gt;v&lt;/em&gt; parameter should be placed right after the “E” letter, instead of right after the opening double quote. Thanks to Jordan Wilson found this error.&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">Here lists new featues and bug fixes.</summary></entry><entry><title type="html">Documents</title><link href="http://localhost:4000/2018/07/14/document/" rel="alternate" type="text/html" title="Documents" /><published>2018-07-14T00:00:00+00:00</published><updated>2018-07-14T00:00:00+00:00</updated><id>http://localhost:4000/2018/07/14/document</id><content type="html" xml:base="http://localhost:4000/2018/07/14/document/">&lt;p&gt;Hist lists the changes and NEWS in the documentations.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Features:&lt;/strong&gt;&lt;/p&gt;

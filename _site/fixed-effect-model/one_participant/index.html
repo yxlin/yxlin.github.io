@@ -10,15 +10,15 @@
 <meta name="generator" content="Jekyll v3.7.2" />
 <meta property="og:title" content="One Participant" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed as hierarchical or multi-level models, although the three terms could carry subtle different ideas." />
-<meta property="og:description" content="Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed as hierarchical or multi-level models, although the three terms could carry subtle different ideas." />
+<meta name="description" content="Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed, hierarchical or multi-level models, although the three terms could carry subtle different ideas." />
+<meta property="og:description" content="Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed, hierarchical or multi-level models, although the three terms could carry subtle different ideas." />
 <link rel="canonical" href="http://localhost:4000/fixed-effect-model/one_participant/" />
 <meta property="og:url" content="http://localhost:4000/fixed-effect-model/one_participant/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-01-19T14:22:09+00:00" />
+<meta property="article:published_time" content="2020-09-13T07:27:27+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2020-01-19T14:22:09+00:00","description":"Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed as hierarchical or multi-level models, although the three terms could carry subtle different ideas.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/one_participant/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"One Participant","dateModified":"2020-01-19T14:22:09+00:00","@context":"http://schema.org"}</script>
+{"datePublished":"2020-09-13T07:27:27+00:00","description":"Fixed-effects models assume each participant has his/her own specific mechanism of parameter generation. This assumption is relative to the random-effect models, which assume one common mechanism is responsible for generating parameters for all participants. The latter is sometimes dubbed, hierarchical or multi-level models, although the three terms could carry subtle different ideas.","@type":"Article","url":"http://localhost:4000/fixed-effect-model/one_participant/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"One Participant","dateModified":"2020-09-13T07:27:27+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -96,6 +96,8 @@
 									<li class="nav-item "><a href="/basics/descriptive/">Descriptive Statistics</a></li>
 								
 									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
+								
+									<li class="nav-item "><a href="/basics/leastsq/">Least Square Method</a></li>
 								
 									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
 								
@@ -234,11 +236,11 @@
 				<p>Fixed-effects models assume each participant has his/her own specific 
 mechanism of parameter generation. This assumption is relative to the 
 random-effect models, which assume one common mechanism is responsible 
-for generating parameters for all participants.  The latter is sometimes dubbed
-as hierarchical or multi-level models, although the three terms could carry 
-subtle different ideas.</p>
+for generating parameters for all participants.  The latter is sometimes 
+dubbed, hierarchical or multi-level models, although the three terms could 
+carry subtle different ideas.</p>
 
-<p>In this tutorial, I illustrate the method of conducting the 
+<p>In this tutorial, I illustrated the method of conducting the 
 fixed-effects modelling. Given many observations of response times (RT)
 and choices, one modelling aim is to estimate the parameters that
 generate the observations.</p>
@@ -289,13 +291,13 @@ the parameters. In Bayesian inference, we also need prior distributions, so
 let’s build a set of prior distributions for each DDM parameters.</p>
 
 <p>A beta distribution with <em>shape1</em> = 1 and <em>shape2</em> = 1, equals to a uniform
-distribution (<em>beta(1, 1)</em>). This choice is to regularize the parameters,
+distribution (<em>beta(1, 1)</em>). This choice was to regularize the parameters,
 (1) the start point, <em>z</em>, (2) its variability <em>sz</em> and (3) <em>t0</em>. All three 
-are bounded by 0 and 1. Others use truncated normal distributions bounded 
+were bounded by 0 and 1. Others used truncated normal distributions bounded 
 by <em>lower</em> and <em>upper</em> arguments.</p>
 
-<p><em>plot</em> draws the prior distributions, providing a visual check method. This 
-method, in the case of parameter recovery study, is to make sure the prior
+<p><em>plot</em> drew the prior distributions, providing a visual check method. This 
+method, in the case of parameter recovery study, was to make sure the prior
 distribution does cover the true values.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p.prior  &lt;- BuildPrior(
@@ -309,12 +311,12 @@ plot(p.prior, ps = p.vector)
 
 <p><img src="/images/fixed-effect-model/prior.png" alt="prior" /></p>
 
-<p>By default <em>StartNewsamples</em> uses p.prior to randomly draw start
-points and samples 200 MCMC samples.  This step uses a mixture of 
+<p>By default <em>StartNewsamples</em> used p.prior to randomly draw start
+points and samples 200 MCMC samples.  This step used a mixture of 
 crossover and migration operators. The <em>run</em> function by default 
-draws 500 MCMC samples, using only crossover operator. <em>gelman</em> function
-reports PSRF value of 1.06 in this case. A potential scale reduction 
-factor (PSRF<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>) less than 1.1 suggests chains are converged.</p>
+drew 500 MCMC samples, using only crossover operator. <em>gelman</em> function
+reported PSRF value of 1.06 in this case. A potential scale reduction 
+factor (PSRF<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>) less than 1.1 suggested chains are converged.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fit0 &lt;- StartNewsamples(dmi, p.prior)
 fit  &lt;- run(fit0)
@@ -324,8 +326,8 @@ es   &lt;- effectiveSize(fit)
 
 </code></pre></div></div>
 
-<p><em>plot</em> by default draws posterior log-likelihood, with the option, <em>start</em>,
-to change to a latter start iteration to draw.</p>
+<p><em>plot</em> by default drew posterior log-likelihood. With the option, <em>start</em>,
+it changed to a latter start iteration to draw.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p0 &lt;- plot(fit0)
 ## p0 &lt;- plot(fit0, start = 101)
@@ -339,7 +341,7 @@ dev.off()
 <p><img src="/images/fixed-effect-model/pll.png" alt="pll" /></p>
 
 <p>The upper panel showed the chains quickly converged to posterior log-likelihoods
-near 100th iteration and the right panel confirmed the rhat value (&lt; 1.1).</p>
+near 100th iteration and the bottom panel confirmed the rhat value (&lt; 1.1).</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>p2 &lt;- plot(fit, pll = FALSE, den= FALSE)
 p3 &lt;- plot(fit, pll = FALSE, den= TRUE)
@@ -355,7 +357,7 @@ dev.off()
 using <em>summary</em></p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>est &lt;- summary(fit, recover = TRUE, ps = p.vector, verbose = TRUE)
-## Recovery summarises only default quantiles: 2.5% 25% 50% 75% 97.5% 
+## Recovery summarises only default quantiles: 2.5% 50% 97.5% 
 ##                     a     sv      sz      t0      v     z
 ## True           1.0000 0.2000  0.2500  0.1500 1.2000 0.3800
 ## 2.5% Estimate  0.9656 0.0401  0.0112  0.1338 1.1463 0.3504
@@ -365,21 +367,90 @@ using <em>summary</em></p>
 
 </code></pre></div></div>
 
-<p>Finally, we may want to check whether the model fits the data
+<p>Finally, we might want to check whether the model fits the data
 well.  There are many methods to quantify the goodness of fit.
-Here, I illustrate two methods. First method is to calculate DIC
+Here, I illustrated two methods. First method is to calculate DIC
 and BPIC. These information criteria are useful for model selection. 
 (need &gt; ggdmc 2.5.5)</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DIC(fit)
 DIC(fit, BPIC=TRUE)
 </code></pre></div></div>
 
-<p>Secondly, I simulate post-predictive data, based on the estimated parameters.
-<em>xlim</em> trims off outlier values in the simulation data.</p>
+<p>Secondly, I simulated post-predictive data. <em>xlim</em> trims off outlier values
+in the simulation. Note there are two different versions of the 
+post-predictive functions, because the ggdmc version &gt; 0.2.7.5 starts to 
+use S4 class, which use <em>@</em>, instead of <em>$</em> to extract elemnts in an object.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="n">predict_one</span> <span class="p">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">rand</span> <span class="p">=</span> <span class="nb">TRUE</span><span class="p">,</span> <span class="n">factors</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span>
                         <span class="n">xlim</span> <span class="p">=</span> <span class="n">NA</span><span class="p">,</span> <span class="n">seed</span> <span class="p">=</span> <span class="n">NULL</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">require</span><span class="p">(</span><span class="n">ggdmc</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">packageVersion</span><span class="p">(</span><span class="s1">'ggdmc'</span><span class="p">)</span> <span class="p">==</span> <span class="s1">'0.2.6.0'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">message</span><span class="p">(</span><span class="s1">'Using $ to extract object in v 0.2.6.0'</span><span class="p">)</span>
+        <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">predict_one0260</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">rand</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">message</span><span class="p">(</span><span class="s1">'Using @ to extract object in v 0.2.6.0'</span><span class="p">)</span>
+        <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">predict_one0280</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">rand</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">return</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">}</span>
+    
+<span class="n">predict_one0260</span> <span class="p">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">rand</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">attr</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">data</span><span class="p">,</span> <span class="s1">'model'</span><span class="p">)</span>
+  <span class="n">facs</span> <span class="p">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="s2">"factors"</span><span class="p">));</span> 
+  
+  <span class="k">if</span> <span class="p">(</span><span class="c1">!is.null(factors))
+</span>  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="n">is</span><span class="p">.</span><span class="n">na</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span> <span class="n">factors</span> <span class="p">&lt;-</span> <span class="n">facs</span>
+    <span class="k">if</span> <span class="p">(</span><span class="c1">!all(factors %in% facs))
+</span>      <span class="nf">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">"Factors argument must contain one or more of:"</span><span class="p">,</span> <span class="n">paste</span><span class="p">(</span><span class="n">facs</span><span class="p">,</span> <span class="n">collapse</span><span class="p">=</span><span class="s2">","</span><span class="p">)))</span>
+  <span class="p">}</span>
+  
+  <span class="n">resp</span> <span class="p">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="s2">"responses"</span><span class="p">))</span>
+  <span class="n">ns</span>   <span class="p">&lt;-</span> <span class="n">table</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">data</span><span class="p">[,</span><span class="n">facs</span><span class="p">],</span> <span class="n">dnn</span> <span class="p">=</span> <span class="n">facs</span><span class="p">)</span>
+  <span class="n">npar</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">n</span><span class="p">.</span><span class="n">pars</span>
+  <span class="n">nchain</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">n</span><span class="p">.</span><span class="n">chains</span>
+  <span class="n">nmc</span>    <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">nmc</span>
+  <span class="n">ntsample</span> <span class="p">&lt;-</span> <span class="n">nchain</span> <span class="p">*</span> <span class="n">nmc</span>
+  <span class="n">pnames</span>   <span class="p">&lt;-</span> <span class="n">object</span><span class="p">$</span><span class="n">p</span><span class="p">.</span><span class="n">names</span>
+  <span class="n">thetas</span> <span class="p">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">aperm</span><span class="p">(</span><span class="n">object</span><span class="p">$</span><span class="n">theta</span><span class="p">,</span> <span class="n">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">1</span><span class="p">)),</span> <span class="n">ncol</span> <span class="p">=</span> <span class="n">npar</span><span class="p">)</span>
+  
+  <span class="n">colnames</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="p">&lt;-</span> <span class="n">pnames</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">is</span><span class="p">.</span><span class="n">na</span><span class="p">(</span><span class="n">npost</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">use</span> <span class="p">&lt;-</span> <span class="m">1</span><span class="p">:</span><span class="n">ntsample</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rand</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">use</span> <span class="p">&lt;-</span> <span class="n">sample</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">ntsample</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">replace</span> <span class="p">=</span> <span class="n">F</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="p">##</span> <span class="n">Debugging</span> <span class="n">purpose</span>
+      <span class="n">use</span> <span class="p">&lt;-</span> <span class="nb">round</span><span class="p">(</span><span class="n">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">ntsample</span><span class="p">,</span> <span class="n">length</span><span class="p">.</span><span class="n">out</span> <span class="p">=</span> <span class="n">npost</span><span class="p">))</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="n">npost</span>  <span class="p">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">use</span><span class="p">)</span>
+  <span class="n">posts</span>   <span class="p">&lt;-</span> <span class="n">thetas</span><span class="p">[</span><span class="n">use</span><span class="p">,</span> <span class="p">]</span>
+  <span class="n">nttrial</span> <span class="p">&lt;-</span> <span class="k">sum</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span> <span class="p">##</span> <span class="n">number</span> <span class="k">of</span> <span class="n">total</span> <span class="n">trials</span>
+  
+  <span class="n">v</span> <span class="p">&lt;-</span> <span class="n">lapply</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">npost</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ggdmc</span><span class="p">:::</span><span class="n">simulate_one</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">n</span> <span class="p">=</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ps</span> <span class="p">=</span> <span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">,],</span> <span class="n">seed</span> <span class="p">=</span> <span class="n">seed</span><span class="p">)</span>
+  <span class="p">})</span>
+  
+  <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">data</span><span class="p">.</span><span class="n">table</span><span class="p">::</span><span class="n">rbindlist</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+  <span class="n">reps</span> <span class="p">&lt;-</span> <span class="n">rep</span><span class="p">(</span><span class="m">1</span><span class="p">:</span><span class="n">npost</span><span class="p">,</span> <span class="n">each</span> <span class="p">=</span> <span class="n">nttrial</span><span class="p">)</span>
+  <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">reps</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="c1">!any(is.na(xlim)))
+</span>  <span class="p">{</span>
+    <span class="n">out</span> <span class="p">&lt;-</span> <span class="n">out</span><span class="p">[</span><span class="n">RT</span> <span class="p">&gt;</span> <span class="n">xlim</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">&amp;</span> <span class="n">RT</span> <span class="p">&lt;</span> <span class="n">xlim</span><span class="p">[</span><span class="m">2</span><span class="p">]]</span>
+  <span class="p">}</span>
+  
+  <span class="n">return</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">predict_one0280</span> <span class="p">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">npost</span><span class="p">,</span> <span class="n">rand</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="p">##</span> <span class="n">Update</span> <span class="n">for</span> <span class="n">using</span> <span class="n">S4</span> <span class="n">class</span>
     <span class="k">model</span> <span class="p">&lt;-</span> <span class="n">object</span><span class="p">@</span><span class="n">dmi</span><span class="p">@</span><span class="k">model</span>
@@ -437,7 +508,8 @@ DIC(fit, BPIC=TRUE)
 
 
 <span class="n">pp</span>  <span class="p">&lt;-</span> <span class="n">predict_one</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlim</span> <span class="p">=</span> <span class="n">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">))</span>
-<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">fit</span><span class="p">@</span><span class="n">dmi</span><span class="p">@</span><span class="n">data</span>
+<span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">fit</span><span class="p">@</span><span class="n">dmi</span><span class="p">@</span><span class="n">data</span>  <span class="p">##</span> <span class="n">use</span> <span class="n">this</span> <span class="n">line</span> <span class="n">for</span> <span class="k">version</span> <span class="p">&gt;</span> <span class="m">0.2.7.5</span>
+<span class="p">##</span> <span class="n">dat</span> <span class="p">&lt;-</span> <span class="n">fit</span><span class="p">$</span><span class="n">data</span>   <span class="p">##</span> <span class="n">use</span> <span class="n">this</span> <span class="n">line</span> <span class="n">for</span> <span class="k">version</span> <span class="m">0.2.6.0</span>
 
 <span class="n">dat</span><span class="p">$</span><span class="n">C</span> <span class="p">&lt;-</span> <span class="n">ifelse</span><span class="p">(</span><span class="n">dat</span><span class="p">$</span><span class="n">S</span> <span class="p">==</span> <span class="s2">"s1"</span>  <span class="p">&amp;</span> <span class="n">dat</span><span class="p">$</span><span class="n">R</span> <span class="p">==</span> <span class="s2">"r1"</span><span class="p">,</span>  <span class="nb">TRUE</span><span class="p">,</span>
          <span class="n">ifelse</span><span class="p">(</span><span class="n">dat</span><span class="p">$</span><span class="n">S</span> <span class="p">==</span> <span class="s2">"s2"</span> <span class="p">&amp;</span> <span class="n">dat</span><span class="p">$</span><span class="n">R</span> <span class="p">==</span> <span class="s2">"r2"</span><span class="p">,</span> <span class="nb">TRUE</span><span class="p">,</span>
@@ -463,14 +535,6 @@ DIC(fit, BPIC=TRUE)
   <span class="n">theme</span><span class="p">(</span><span class="n">legend</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="s2">"none"</span><span class="p">)</span> <span class="p">+</span>
   <span class="n">facet_grid</span><span class="p">(</span><span class="n">S</span> <span class="p">~</span> <span class="n">C</span><span class="p">)</span>
 
-
-<span class="n">d</span> <span class="p">&lt;-</span> <span class="n">data</span><span class="p">.</span><span class="n">table</span><span class="p">::</span><span class="n">data</span><span class="p">.</span><span class="n">table</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
-<span class="n">d</span><span class="p">[,</span> <span class="p">.</span><span class="n">N</span><span class="p">,</span> <span class="p">.(</span><span class="n">S</span><span class="p">,</span> <span class="n">R</span><span class="p">)]</span>
-<span class="p">##</span>     <span class="n">S</span>  <span class="n">R</span>  <span class="n">N</span>
-<span class="p">##</span> <span class="m">1</span><span class="p">:</span> <span class="n">s1</span> <span class="n">r1</span> <span class="m">87</span>
-<span class="p">##</span> <span class="m">2</span><span class="p">:</span> <span class="n">s1</span> <span class="n">r2</span> <span class="m">13</span>
-<span class="p">##</span> <span class="m">3</span><span class="p">:</span> <span class="n">s2</span> <span class="n">r1</span> <span class="m">34</span>
-<span class="p">##</span> <span class="m">4</span><span class="p">:</span> <span class="n">s2</span> <span class="n">r2</span> <span class="m">66</span>
 </code></pre></div></div>
 <p><img src="/images/fixed-effect-model/post-predictive.png" alt="post-predictive" /></p>
 
