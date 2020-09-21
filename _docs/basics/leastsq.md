@@ -12,39 +12,44 @@ which returns the difference between the data and model predictions.
 
 One possible reason to fit data to a process model, instead of 
 a standard model [e.g., ex-Wald, (Schwarz, 2001; Schwarz, 2002; Heathcote, 2004)] 
-where one can find the analytic likelihood 
-function, is to retain some flexibilities for later tweaking the process. This 
-strategy might be useful when one wants to test a number of differernt variants 
-of the process. For instance, one might want to test a hypothesis that because
-participants might pay more attention to a centre region of a stimulus,
-their drift rate at the centre region is faster than the drift rates at 
-the other regions. This might be achieved by assigning a larger mean drift rate
-to the centre, comparing with assigning smaller mean drift rates to other 
-regions. Another possible hypothetical variant is that one might
-want to assume within a trial, participants change their drift rate 
-significantly. This can be tested by tweaking the standrd diffusion process, 
-such as, constructing a series of different Gaussian models, which are used 
-to sample different drift rates at different time point in a process. Nevertheless, 
-one must note that the more elements one adds
-to a process model that deviates from the standard process, the more likely that 
-the altered process becomes difficult to fit (as well as prone to overfit the data).
+is to retain some flexibilities for later tweaking the process. A standard model
+usually has been thoroughtly studied, and thereby provides analytic likelihood 
+functions. For example, one can find the analytic likelihood function of the 
+drift-diffusion model in van Zandt (2000). (See, also e.g., equation (5) in 
+Bogacz et al., 2006 for the standard stochastic process equation of the DDM). 
+
+The method of least square minimization is useful when one wants to test a number 
+of differernt variants that deviate from the standard stochastic process. For 
+instance, one might hypothesize that people deploy different drift rates to 
+different regions in the visual field because people perhaps pay more attention 
+to a more interesting centre region of a stimulus, than other regions. One 
+could assign a larger mean drift rate to the centre region, comparing with 
+assigning smaller mean drift rates to the others. Another possible hypothetical 
+variant is that one might assume within a trial, people change their drift rate 
+significantly (not just small variation due to within-trial variability). This 
+could be tested by tweaking the standrd diffusion process, such as, constructing a
+series of different Gaussian models, each of which sample different drift rates at
+different time point in a process. 
+
+Nevertheless, one must note that the more variants one introduces to a process 
+model that deviates from the standard process, the more likely that the altered 
+process becomes difficult to fit (as well as prone to overfit the data).
 
 Only a handful of process models, for example the full drift-diffusion model (DDM; 
 see e.g., the Appendix in Van Zandt, 2000 for its PDF and CDF), have derived 
-their analytic likelihood functions. After one tweaks a standard process, if one 
-wants to apply model fitting methods involving likelihood functions, one must also 
-derive the new probability density function (PDF; sometimes as well as CDF) based on 
-the altered new process (see the video provided by StatQuesta for a brief and 
+their analytic likelihood functions. After tweaking a standard process, one must 
+also derive a new probability density function (PDF; sometimes as well as CDF) 
+based on the altered new process. (See the video provided by StatQuesta for an
 excellent explantion regarding the probability and the likelihood at 
-https://www.youtube.com/watch?v=pYxNSUDSFH4). (see, also e.g., equation (5) in 
-Bogacz et al., 2006 for the standard stochastic process equation of the DDM). 
+https://www.youtube.com/watch?v=pYxNSUDSFH4).). The process of deriving a new
+likelihood function could be sometimes cumbersome, if not very difficult or 
+impossible. This of course assumes that one wants to apply the model fitting 
+methods using likelihood functions. One advantage of deriving the analytic 
+solution for a process model is that one can use the powerful maximum likelihood 
+method to conduct model fitting. 
 
-One advantage of deriving the analytic solution for a process model (a 
-challenging job indeed) is that one can use the powerful maximum likelihood method 
-to conduct model fitting. 
-
-The LSM, often used in machine learning, is an alternative method for model
-fitting, without using the likelihood function.
+On the other hand, the LSM, often used in machine learning, is one method
+for model fitting, without using the likelihood function.
 
 The following code snippet is an R progrmme for a 1-D diffusion (process)
 model. The R code snippet is perhaps easier for readers to understand and 
@@ -56,31 +61,35 @@ diffusion process.  See code comments to get further details.
 ```
 r1d_R <- function(pvec, tmax, h)
 {
+  ## p.vector <- c(v=0, a=1, z=.5, t0=0, s=1)
   Tvec <- seq(0, tmax, h)
   nmax <- length(Tvec)
   
   ## Unit travelling distance; ie how far a particle travels per unit time 
-  ## 1. Here we used h (usually set to 1 ms) as the unit time
-  ## 2. In the constant-drift model, the drift rate does not change within
-  ## a process, although it is subjected to the influence of within-trial 
-  ## variability. That is, the "constant" refers to the mean drift rate is
-  ## constant.
+  ## 1. Here we used h (presumably to 1 ms) as the unit time
+  ## 2. In the constant-drift model, the mean drift rate does not change 
+  ##    within a process, although it is subjected to the influence of 
+  ##    within-trial standard deviation (variability). That is, 
+  ##    the "constant" refers to the mean drift rate is constant.
   ## 3. travel distance = drift rate * unit time 
-  ## the 1 vector ( ie rep(1, nmax) ) is to make "mut" a vector. This
-  ## pre-calculation help to reduce computation time.
+  ##    the following one vector ( ie rep(1, nmax) ) is to make "mut" a 
+  ##    vector. This pre-calculation helps to reduce computation time.
   mut <- h * pvec[1] * rep(1, nmax)
   
-  ## Within-trial standard deviation, assuming standard normal noise 
-  ## (mu = 0, sd = 1) 
+  ## - Within-trial standard deviation, 
+  ## - The fifth element of pvec is the within-trial standard deviation
   sigma_wt <- sqrt(h) * pvec[5] * rnorm(nmax) 
   
-  ## Evidence value store; Xt records the trace of the particle 
+  ## - Xt stores evidence values; 
+  ## - To plot the trace of a particle, we could return Xt.
+  ## - Xt is the assumed input (ie 'features' in ML terminology).
+  ## - In EAM, we assume Xt is from neural responses to visual stimuli
   Xt <- rep(NA, nmax)
   
-  ## The first value of the evidnece is the assumed starting point
-  ## pvec[3] expects the user enters the relative starting point, zr
-  Xt[1] <- pvec[3] * pvec[2]  ## convert zr to z, assuming symmetric
-  current_evidence <- Xt[1];  ## transient storage for the current evidence
+  ## - The first value of the evidnece is the assumed starting point
+  ## - pvec[3] is the relative starting point, zr
+  ## Xt[1] <- pvec[3] * pvec[2]  ## convert zr to z, assuming symmetric
+  current_evidence <- Xt[1];     ## transient storage for the evidence
   
   ## Start the evidence accumulation process
   ## Note 1. We did not know when the process would stop beforehand
@@ -89,7 +98,8 @@ r1d_R <- function(pvec, tmax, h)
   ##         the process stops.
   i <- 2
   
-  ## pvec[2] is the upper bound; 0 is the lower bound.
+  ## - pvec[2] is the upper bound; 
+  ## - 0 is the lower bound.
   while (current_evidence < pvec[2] && current_evidence > 0 && i < nmax)
   {
     ## This is the typical diffusion process equation
@@ -100,9 +110,8 @@ r1d_R <- function(pvec, tmax, h)
     i <- i + 1;  ## increment step 
   }
   
-  ## cat("i nmax, current_evidence", i, " ", nmax, " ", current_evidence, "\n")
-  RT <- i * h + pvec[4];     ## decision time + t0 = response time 
-  is_broken <- i == nmax;    ## whether the simulation suppasses the assumed max time 
+  RT <- i * h + pvec[4];   ## decision time + t0 = response time 
+  is_broken <- i == nmax;  ## whether the simulation suppasses the assumed max time 
   
   ## hit upper bound (1) or lower bound (0)
   R <- ifelse(current_evidence > pvec[2], 1, 0) 
@@ -173,19 +182,15 @@ The input, however, is not.
 
 
 ## Responses, Choices, and Accuracy
-In a typical psychological task, a participant responds usually by entering 
-her response via a computer keyboard, for example, "z" for option 1, and "/" for 
-option 2. This action is usually recorded, namely either "z" or
-"/", for every trial.  The researcher can then later know which option a 
-participant has chosen in a trial. This is the researcher infers what a 
-participant thought by asking her to report via a computer keyboard. (other 
-oft-used methods have right-left mouse clicks, touching different screen 
-location, attaching sensors onto participants' hands or fingers)
+In a typical psychological task, participants respond usually by entering 
+their response via pressing some keys on a computer keyboard. For example,
+pressing "z" for option 1, and "/" for option 2. This action is recorded, 
+in every trial.  Researchers can then later infer which option 
+participants have chosen in every single trial. 
 
-One must note that a participant may decide to indicate she thinks a 
-stimulus belongs to option 1, but in reality, the stimulus could belong to
-option 2. This is an outcome of mismatch. This brings us to the idea of matching 
-responses to stimuli.
+Note that participants may commit to choose option 1, (optio 2); however,
+a stimulus could belong to option 2. This is an outcome of mismatch. This 
+brings us to the idea of matching responses to stimuli.
 
 In other words, a response, in a binary task, could result in two
 different outcomes, correct or incorrect. For example in a two-choice lexical 
@@ -392,8 +397,115 @@ parameters <- parallel::mclapply(1:100, function(i) try(doit(p.vector, n, tmax, 
 ```
 
 ## Results
-
 The figure showed most estimated drift rates are around the true value (red line), 
 with a roughly normally distributed shape.
 
-![1D-DDM-Est]({{"/images/basics/one-D-result.png" | relative_url}})
+![1D-DDM-Est]({{"/images/basics/one-v.png" | relative_url}})
+
+
+## Recovering the Boundary Separation
+To recover the parameter of boundary separation, I added the error rate 
+statistics in the cost function. Moverover, I add a normalization factor,
+becaues the error rate and the RT percentiles are on different scales.
+
+```
+mymean <- function(x=NULL, nozero=0)
+{
+  ## A function from Bogacz and Cohen (2004)
+    if(is.null(x)) {
+      out <- 1
+    } else {
+      out <- ifelse(mean(x)==0 && nozero, 1, mean(x))
+    }
+    return(out)
+}
+
+
+doit <- function(p.vector, n, tmax, h, nsim)
+{
+    tmp <- rdiffusion(n, p.vector, tmax, h)
+    tmp <- tmp[!is.na(tmp[,2]), ]
+    tmp <- tmp[!is.na(tmp[,1]), ]
+    over_tmax <- tmp[,2] == 2
+    dat <- tmp[!over_tmax, ]
+    fit <- subplex(par = runif(1), fn = objective_fun, hessian = FALSE,
+                   data = dat, tmax=tmax, h=h, nsim=nsim)
+    return(fit)
+}
+
+objective_fun <- function(par, data, tmax, h, nsim) {
+    pvec <- c(2.35, par, .75, 0, 1)
+    tmp <- rdiffusion(nsim, pvec, tmax, h)
+    tmp <- tmp[!is.na(tmp[,2]), ]
+    tmp <- tmp[!is.na(tmp[,1]), ]
+    over_tmax <- tmp[,2] == 2
+    sim <- tmp[!over_tmax, ]
+    
+    pred_RT <- sim[,1]
+    pred_R  <- sim[,2]
+
+    upper <- pred_R == 1
+    lower <- pred_R == 0
+    upper_count <- sum(upper)
+    lower_count <- sum(lower)
+    
+    if ( (any(is.na(pred_R))) || is.na(sum(upper_count)) ||
+         is.na(sum(lower_count)) || (length(pred_RT) == 0) ) {
+        error <- 1e9
+    } else {
+        data_RT <- data[,1]
+        data_R  <- data[,2]
+        d_upper <- data[,2] == 1
+        d_lower <- data[,2] == 0
+        RT_c0   <- data_RT[d_upper]
+        RT_c1   <- data_RT[d_lower]
+
+        data_er <- 1 - mean(data_R)
+        pred_er <- 1 - mean(pred_R)
+        
+        pred_c0 <- pred_RT[upper]
+        pred_c1 <- pred_RT[lower]
+        
+        pred_q0 <- quantile(pred_c0, probs = seq(.1, .9, .2))
+        pred_q1 <- quantile(pred_c1, probs = seq(.1, .9, .2))
+        data_q0 <- quantile(RT_c0, probs = seq(.1, .9, .2))
+        data_q1 <- quantile(RT_c1, probs = seq(.1, .9, .2))
+
+        error <- sum( (data_q0 - pred_q0)^2 / mymean(data_q0, 1)^2 ) +
+                 sum( (data_q1 - pred_q1)^2 / mymean(data_q1, 1)^2 ) +
+            sum( (data_er - pred_er)^2 / mymean(data_er)^2 )
+    }
+  return(error)
+}
+```
+
+This time I used a different optimization routine, subplex (Rowan, 1990).
+
+```
+tmax <- 2
+h <- 1e-3
+n <- 1e3    ## Assumed number of data points
+p.vector <- c(v=2.35, a=1.8, z=.75, t0=0, s=1)  ## True values
+nsim <- 1e4  ## number of model simulation
+ncore <- 3
+
+## 3176.639 s
+parameters <- parallel::mclapply(1:100, function(i) 
+              try(doit(p.vector, n, tmax, h, nsim), TRUE),
+                       mc.cores = getOption("mc.cores", ncore))
+save(parameters, p.vector, file = "data/fit_one_a.RData")
+```
+
+
+
+## Results
+The figure showed estimates distributed around the true value, 1.8 (red line).
+
+
+![1D-DDM-Est2]({{"/images/basics/one-a.png" | relative_url}})
+
+## Next 
+To fit empirical data, one must adjust the difference in time units in the 
+model and experiment. That is, the model simulates a presumed unit, such 
+as _h_ used above, but a real experiment woule measure RTs in seconds or 
+milliseconds. 
