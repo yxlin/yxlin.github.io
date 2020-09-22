@@ -51,9 +51,9 @@ method to conduct model fitting.
 On the other hand, the LSM, often used in machine learning, is one method
 for model fitting, without using the likelihood function.
 
-The following code snippet is an R progrmme for a 1-D diffusion (process)
-model. The R code snippet is perhaps easier for readers to understand and 
-to implement themselves. The real working programe is written in C++.
+The following code snippet is an R programme for a 1-D diffusion (process)
+model. The code snippet is to demonstrate how the process model
+is constructed. The real working programme is written in C++.
 
 I assumed a within-trial constant (mean) drift rate as in a typical case of 
 diffusion process.  See code comments to get further details.
@@ -66,7 +66,7 @@ r1d_R <- function(pvec, tmax, h)
   nmax <- length(Tvec)
   
   ## Unit travelling distance; ie how far a particle travels per unit time 
-  ## 1. Here we used h (presumably to 1 ms) as the unit time
+  ## 1. Here I used h (presumably to 1 ms) as the unit time
   ## 2. In the constant-drift model, the mean drift rate does not change 
   ##    within a process, although it is subjected to the influence of 
   ##    within-trial standard deviation (variability). That is, 
@@ -81,32 +81,35 @@ r1d_R <- function(pvec, tmax, h)
   sigma_wt <- sqrt(h) * pvec[5] * rnorm(nmax) 
   
   ## - Xt stores evidence values; 
-  ## - To plot the trace of a particle, we could return Xt.
+  ## - To plot the trace of a particle, one can return Xt.
   ## - Xt is the assumed input (ie 'features' in ML terminology).
-  ## - In EAM, we assume Xt is from neural responses to visual stimuli
+  ## - In EAM, we assume Xt is due to neuronal responses to sensory stimuli.
+  ##   Thus, Xt is often called sensory evidence
   Xt <- rep(NA, nmax)
   
-  ## - The first value of the evidnece is the assumed starting point
-  ## - pvec[3] is the relative starting point, zr
-  ## Xt[1] <- pvec[3] * pvec[2]  ## convert zr to z, assuming symmetric
+  ## - The first value for the evidnece vector is the assumed starting point
+  ## - pvec[3] is the absolute value of the starting point.
+  ## - If one wants to limit the symmetric process, uncomment the following
+  ##   line
+  ## Xt[1] <- pvec[3] * pvec[2]  ## assume pvec[3] is zr and convert it to z.
   current_evidence <- Xt[1];     ## transient storage for the evidence
   
   ## Start the evidence accumulation process
   ## Note 1. We did not know when the process would stop beforehand
   ## Note 2. We assumed the studied process cannot exceed nmax * h seconds
   ## Note 3. Only when the latest evidence value exceeds the threshold value,
-  ##         the process stops.
-  i <- 2
+  ##         a or 0, the process stops.
+  i <- 2     ## starting from i == 2
   
-  ## - pvec[2] is the upper bound; 
-  ## - 0 is the lower bound.
+  ## - pvec[2] is the upper boundary; 
+  ## - 0 is the lower boundary.
   while (current_evidence < pvec[2] && current_evidence > 0 && i < nmax)
   {
     ## This is the typical diffusion process equation
     ## the updated evidence value = the latest evidence value + 
     ##    (drift rate * unit time) + within-trial standard deviation 
     Xt[i] <- Xt[i-1] + mut[i] + sigma_wt[i] 
-    current_evidence <- Xt[i];  ## Store the updatd evidence value for while check
+    current_evidence <- Xt[i];  ## Store the updatd evidence value 
     i <- i + 1;  ## increment step 
   }
   
@@ -145,13 +148,11 @@ res1 <- r1d_R(pvec=p.vector, tmax=tmax, h=h)
 ## To locate the first instance of NA
 idx <- sum(!is.na(res1$Xt)); 
 
-z <- p.vector[2] * p.vector[3]; z  ## zr * a = z
-
 plot(res1$Tvec[1:idx], res1$Xt[1:idx], type='l', ylim=c(0, 1), xlab='DT (s)',
      ylab='Evidence')
-abline(h=1, lty='dotted', lwd=1.5)
+abline(h=p.vector[2], lty='dotted', lwd=1.5)
 abline(h=0, lty='dotted', lwd=1.5)
-points(x=0, y=z, col='red', cex =2)
+points(x=0, y=p.vector[3], col='red', cex =2)
 ```
 
 ![1D-DDM]({{"/images/basics/one-diffusion.png" | relative_url}})
@@ -504,8 +505,18 @@ The figure showed estimates distributed around the true value, 1.8 (red line).
 
 ![1D-DDM-Est2]({{"/images/basics/one-a.png" | relative_url}})
 
+## Recovering More Than One Parameter
+Searching high-dimensional space might take substantial amount of time, but
+the computer codes essentially do not change too much. A parameter-recovery
+study to recover both the drift rate and the boundary separation took about
+93 minutes, using a high-end CPU (2020)
+
+![1D-DDM-Est3]({{"/images/basics/one-av.png" | relative_url}})
+
 ## Next 
 To fit empirical data, one must adjust the difference in time units in the 
-model and experiment. That is, the model simulates a presumed unit, such 
-as _h_ used above, but a real experiment woule measure RTs in seconds or 
-milliseconds. 
+model and experiment. Smart readers would have noticed that the above model 
+assumed a time unit, _h_, which is part of the model assumption. In order
+to fit empirical data, one must check whether this assumption is plausible
+and perhaps adjust accordingly.
+
