@@ -1,7 +1,7 @@
 ---
 title: Circular Drift-diffusion Model
 category: Cognitive Model
-order: 5
+order: 6
 ---
 
 > **Disclaimer**: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This tutorial requires the CDDM module, which is part of an ongoing research project, so has not released, yet.
