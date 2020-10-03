@@ -92,6 +92,7 @@ r1d_R <- function(pvec, tmax, h)
   ## - If one wants to limit the process to a symmetric process, uncomment 
   ## the following line
   ## Xt[1] <- pvec[3] * pvec[2]  ## assume pvec[3] is zr and convert it to z.
+  Xt[1] <- pvec[3]               ## assume pvec[3] is z
   current_evidence <- Xt[1];     ## transient storage for the evidence
   
   ## Start the evidence accumulation process

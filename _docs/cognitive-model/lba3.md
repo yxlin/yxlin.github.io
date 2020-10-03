@@ -1,7 +1,7 @@
 ---
 title: Three-accumulator LBA Model
 category: Cognitive Model
-order: 7
+order: 8
 ---
 
 > 1. We have striven to minimize the number of errors. However, we canot 
