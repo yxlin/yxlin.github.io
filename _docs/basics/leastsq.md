@@ -89,8 +89,8 @@ r1d_R <- function(pvec, tmax, h)
   
   ## - The first value for the evidnece vector is the assumed starting point
   ## - pvec[3] is the absolute value of the starting point.
-  ## - If one wants to limit the symmetric process, uncomment the following
-  ##   line
+  ## - If one wants to limit the process to a symmetric process, uncomment 
+  ## the following line
   ## Xt[1] <- pvec[3] * pvec[2]  ## assume pvec[3] is zr and convert it to z.
   current_evidence <- Xt[1];     ## transient storage for the evidence
   
@@ -109,7 +109,7 @@ r1d_R <- function(pvec, tmax, h)
     ## the updated evidence value = the latest evidence value + 
     ##    (drift rate * unit time) + within-trial standard deviation 
     Xt[i] <- Xt[i-1] + mut[i] + sigma_wt[i] 
-    current_evidence <- Xt[i];  ## Store the updatd evidence value 
+    current_evidence <- Xt[i];  ## Store the updated evidence value 
     i <- i + 1;  ## increment step 
   }
   
@@ -119,8 +119,7 @@ r1d_R <- function(pvec, tmax, h)
   ## hit upper bound (1) or lower bound (0)
   R <- ifelse(current_evidence > pvec[2], 1, 0) 
   
-  ## Using list to return extra information.
-  ## We do not usually return Xt, Tvec and is_broken
+  ## I use an R list to return extra information.
   return(list(Xt = Xt, Tvec= Tvec, RT=RT, R = R, is_broken=is_broken))
 }
 
@@ -132,12 +131,10 @@ a parameter vector and considered it as a "true" parameter vector.
 
 This is just to conduct the simulation. In a regular model fitting, 
 one would not know the true values of the parameters. One aim of fitting 
-a model to data is to find a set optimal parameters that accounts the 
+a model to data is to find a set optimal parameters describing the
 data.
 
-I assumed a two-second time span for the diffusion process 
-and used a 1-ms time step. 
-
+I assumed a two-second time span for the diffusion process.
 
 ```
 tmax <- 2
@@ -158,22 +155,21 @@ points(x=0, y=p.vector[3], col='red', cex =2)
 ![1D-DDM]({{"/images/basics/one-diffusion.png" | relative_url}})
 
 Usually, the instance represents or, said simulates, an unobservable cognitve
-process that happens when one responds to a trial. For example, in a driving
-simulator study for an automatic vehicle, in a trial, a participant may sit 
-insider the simulator and engage in some tasks. When, for example, the 
-simulated fog is unveiled, the participant suddenly is able to see the front
-view and perhaps notice another vehcile is in the front. At this moment,
-the participant was instructed to make a judgement to decide whether to 
-take over control of the vehicle and disengage the automatic driving system.
+process that happens when one responds to a stimulus. For example, in a driving
+simulation study, assuming the vehicle is automatically self-driving and
+a driver can decide to engage manually driving when needed. A participant sits
+in the simulator and meanwhile engages in some other tasks. The 
+participant is instructed to make a decision to disengage the automatic driving,
+if, for example, a patch of simulated fog is unveiled and the front view shows
+a possible immediate collision with another vehicle(s).
 
 One might assume the stimulus composes of the front vehicle, its 
-surrondings, as well as the participant's own kinetmatic sense of her 
-vehicle (speed, accelaration etc), her psychological assessment of the 
-distance between her AV and the vehicle in the front. 
+surrondings, as well as the participant's own kinetmatic sense of her/his 
+vehicle (speed, accelaration etc), her/his assessment of the 
+distance between her/his AV and the vehicle in the front. 
 
-The stimulus then presumably elicits usually unobservable "sensory evidence" 
-in the particpant's mind. The "sensory evidence" is the input (i.e., 
-"Evidence" in the previous figure).
+The stimulus then presumably elicits some unobservable "sensory evidence". 
+The "sensory evidence" is the input (i.e., "Evidence" in the previous figure).
 
 In a 2AFC diffusion model, the outputs usually are a pair of numbers. The 
 most well-known is the response time (RT) and the other is response choice.
@@ -183,15 +179,16 @@ The input, however, is not.
 
 
 ## Responses, Choices, and Accuracy
-In a typical psychological task, participants respond usually by entering 
-their response via pressing some keys on a computer keyboard. For example,
-pressing "z" for option 1, and "/" for option 2. This action is recorded, 
-in every trial.  Researchers can then later infer which option 
-participants have chosen in every single trial. 
+In a typical psychological task, participants respond by pressing
+pressing some keys via a device, such as customised key pad, a computer 
+keyboard, a computer mouse, or a touch screen. For example, one can
+configure pressing "z" for option 1, and "/" for option 2. This action then 
+is recorded for every response trial. Researchers then later infer which 
+option participants have chosen in every single trial. 
 
-Note that participants may commit to choose option 1, (optio 2); however,
-a stimulus could belong to option 2. This is an outcome of mismatch. This 
-brings us to the idea of matching responses to stimuli.
+Note that participants may commit to choose option 1, (or option 2); however,
+a stimulus could belong to option 2 (or option 1). This is an outcome of 
+mismatch. This brings us to the idea of matching responses to stimuli.
 
 In other words, a response, in a binary task, could result in two
 different outcomes, correct or incorrect. For example in a two-choice lexical 
@@ -209,12 +206,13 @@ Table 1. A binary-choice stimulus-response table.
 
 
 ## Objective Function
-In the following, I showed a simple method to fit a two-choice
-diffusion model, using the LSM.  First, I set up an objective function. The 
-aim of designing the objective function is to get the difference of the 
+In the following, I presented a simple method to fit a two-choice
+diffusion model, using the LSM.  First, I set up an objective function,
+which is designed to describe the difference between the model 
 predictions and the data. As typically been done in the literature 
-applying diffusion models, I compared the five percentils, .1, .3, .5, .7 and 
-.9. The following code snippet showed this calculation.
+applying diffusion models, I compared the five percentils, .1, .3, .5, .7 
+and .9. I added error rates in the second model-fitting example. The 
+following code snippet showed this calculation.
 
 ```
 sq_diff <- c( (pred_q0 - data_q0)^2, (pred_q1 - data_q1)^2) 
@@ -227,7 +225,7 @@ r1d function and added a few checks on the data quality. I named this function,
 "rdiffusion".
 
 Next, the objective function took the drift rate parameter from the optimization 
-routine and put it at the first position of the "pvec" object.  I fixed the second
+routine and put it in the first position of the "pvec" object.  I fixed the second
 to fifth parameters by manually entering their values. The objective function then 
 simulated "nsim" number of diffusion processes. I passed 10,000 to the nsim 
 object.
@@ -236,9 +234,9 @@ object.
 nsim <- 1e4
 ```
 
-Then, I removed the problematic trials, storing their indices into the "bad" object. 
+Then, I removed the outlier trials, storing their indices into the "bad" object. 
 I designated NA to those process suppassing the assumed upper time limit (i.e., tmax).
-I also designated 0 and 1, respectively, to the procoesses that result in hitting lower
+I also designated 0 and 1, respectively, to the processes that result in hitting lower
 and upper boundaries. Thus, the line with, "pred_R == 1", was to extract the 
 indices for the simulated trials hitting the upper boundary. 
 
@@ -515,8 +513,7 @@ study to recover both the drift rate and the boundary separation took about
 
 ## Next 
 To fit empirical data, one must adjust the difference in time units in the 
-model and experiment. Smart readers would have noticed that the above model 
-assumed a time unit, _h_, which is part of the model assumption. In order
-to fit empirical data, one must check whether this assumption is plausible
-and perhaps adjust accordingly.
+model and experiment. The above model assumed a time unit, _h_, which is part
+of the model assumption. To fit empirical data, one must check whether this 
+assumption is plausible and perhaps adjust accordingly.
 
