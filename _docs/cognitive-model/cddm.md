@@ -27,7 +27,7 @@ The 2-D diffusion model has four main parameters, _v1_, _v2_, _a_, and _t0_. _v1
 $$
 \begin{align*}
 & || v || = \sqrt{v_1^2 + v_2^2} 
-& \theta_v = tan^{-1}({v_2 / v1})
+& \theta_v = tan^{-1}({v_2 / v_1})
 
 \end{align*}
 $$
