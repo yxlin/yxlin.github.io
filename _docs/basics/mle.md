@@ -13,9 +13,9 @@ and its influence on the usage of optimiser that must be addressed.
 Otherwise, you would not recover the parameters in the LBA model (or
 cognitive models in general).
 
-In short, you must adjust either the objective function, the processing
-of data preparation, or how to propose parameters according to a
-specific cognitive model.  For example, the non-decision time must not go
+In short, you must adjust either the objective function, the method of
+data preparation, or the method of proposing parameters according to a
+specific cognitive model. For example, the non-decision time must not go
 below 0 second. If you do not (or cannot) add this constraint on
 the optimiser (e.g., the R function, _optim_), the resulting
 fit may not converge or the estimates (even converged)
@@ -25,11 +25,11 @@ Below I use _ggdmc_ to conduct a simulation study to demonstrate the point.
 
 ## Simulation study
 
-Firstly, as usual, I use the BuildModel function to set up a null model
+Firstly, I use the BuildModel function to set up a null model
 with only a stimulus factor (denoted _S_).  That is, the model parameters
 do not associate with any factors.
 
-Next I arbitrarily set up a true parameter vector, _p.vector_, and request 100
+Next I arbitrarily set up a true parameter vector, _p.vector_ and request 100
 trials per condition. My aim is to recover the true parameters.
 
 ```
@@ -46,52 +46,58 @@ model <- BuildModel(
 p.vector <- c(A = .75, B = 1.25, t0 = .15, mean_v.true = 2.5, mean_v.false = 1.5)
 ntrial <- 1e2
 
-## use the seed option to make sure I always replicate the result
-## remove it, if you want to see the stochastic process.
+## I used the seed option to make sure I always replicate the result.
 dat <- simulate(model, nsim = ntrial, ps = p.vector, seed = 123)
 dmi <- BuildDMI(dat, model)
 ```
 
 
 ## Description statistics
-As a good practice, we would mostly like to check basic descriptive
-statistics.  Let's see the RT distributions.
+As a good practice, we check some basic descriptive statistics. Here is the response
+time distributions, drawn as one correct RT and one error RT histograms.
 
 ![mle_data]({{"/images/basics/mle_data.png" | relative_url}})
 
 Note there are two histograms (i.e., distributions). This is one of
-the specifics in the choice RT models. This is sometimes dubbed defective
-distributions, meaning multiple distributions jointly composing a
+the specific feature in the choice RT models. This is sometimes dubbed 
+defective distributions, meaning multiple distributions jointly composing a
 complete model (integrated to 1).
 
-The _likelihood_norm_ function in the _ggdmc_ has considered this,
+The _likelihood_ function in the _ggdmc_ has considered this,
 so you will not see how the internal C++ codes handle this triviality.
 But if you use the bare-bones LBA density functions, say
 "ggdmc:::n1PDFfixedt0" (meaning node 1 probability density
 function), "ggdmc:::fptcdf" or "ggdmc:::fptpdf", you need to handle
-the calculation of "defective distributions" accordingly. By the
-way, the top x axis in the above figure labels _TRUE_, representing
+the calculation of "defective distributions" accordingly. These 
+are the functions originally from Brown and Heathcote(2008), but since
+version 0.2.6.7, _ggdmc_ has no longer exposed them in R interface.
+
+By the way, the top x axis in the above figure labels _TRUE_, representing
 correct responses and _FALSE_, representing error responses. It is
 not unusual to observe more correct responses than error responses, so
 the simulation produces realistic data.
 
 
+Since version 0.2.7.6, _ggdmc_ uses S4 class to replace original 
+informal S3 class. So the data is now stored as a slot in the dmi object.
+
 ```
 ## This is to create a column in the data frame to indicate
 ## correct and error responses.
-dmi$C <- ifelse(dmi$S == "s1" & dmi$R == "r1", TRUE,
-         ifelse(dmi$S == "s2" & dmi$R == "r2", TRUE,
-         ifelse(dmi$S == "s1" & dmi$R == "r2" ,FALSE,
-         ifelse(dmi$S == "s2" & dmi$R == "r1", FALSE, NA))))
+dmi@data$C <- ifelse(dmi@data$S == "s1" & dmi@data$R == "r1", TRUE,
+              ifelse(dmi@data$S == "s2" & dmi@data$R == "r2", TRUE,
+              ifelse(dmi@data$S == "s1" & dmi@data$R == "r2" ,FALSE,
+              ifelse(dmi@data$S == "s2" & dmi@data$R == "r1", FALSE, NA))))
 					 
-prop.table(table(dmi$C))
+prop.table(table(dmi@data$C))
 ## FALSE == error responses (25.5%)
 ## TRUE == correct responses (74.5%)
 ## FALSE  TRUE 
 ## 0.255 0.745
 
 ## The maximum (log) likelihoods
-den <- likelihood_norm(p.vector, dmi)
+## 
+den <- likelihood(p.vector, dmi)
 sum(log(den))
 ## [1] -112.7387
 
@@ -108,7 +114,10 @@ you must handle these trivialities. Also I use negative log likelihood.
 
 ```
 objective_fun <- function(par, data) {
-  den <- likelihood_norm(par, data)
+  ## Internally, C++ likelihood function will read model type, and
+  ## new Likelihood constructor (in Likelihood.hpp) will read S4 slot.
+  ## So here data variable is OK to be a data-model instance
+  den <- likelihood(par, data)
   return(-sum(log(den)))
 }
 ```
@@ -122,7 +131,7 @@ time less than minimal RT in the data.
 
 ```
 init_par <- runif(5)
-init_par[3] <- runif(1, 0, min(dmi$RT)) 
+init_par[3] <- runif(1, 0, min(dmi@data$RT)) 
 names(init_par) <- c("A", "B", "t0", "mean_v.true", "mean_v.false")
 res <- nlminb(objective_fun, start = init_par, data = dmi, lower = 0)
 round(res$par, 2)  ## remember to check res$convergence
@@ -161,7 +170,8 @@ infinite log-likelihoods.
 
 ## Bonus
 A better way to initialise a parameter proposal is to use prior
-distributions. _rprior_ in _ggdmc_ allows you to easily do this.
+distributions. _rprior_ in _ggdmc_ allows you to easily do this. This is 
+a step towards Bayesian. 
 
 ```
 p.prior <- BuildPrior(

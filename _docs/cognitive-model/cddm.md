@@ -1,7 +1,7 @@
 ---
 title: Circular Drift-diffusion Model
 category: Cognitive Model
-order: 5
+order: 6
 ---
 
 > **Disclaimer**: We have striven to minimize the number of errors. However, we cannot guarantee the note is 100% accurate. This tutorial requires the CDDM module, which is part of an ongoing research project, so has not released, yet.
@@ -139,7 +139,7 @@ res0 <- rcircle(n=n, P=p.vector, tmax=tmax, h=h, nw=11)
 ## The simulation result is stored as a numerical matrix, so we convert it to 
 ## an R data.frame
 d <- data.frame(R = factor(round(res0[,1], 2)), RT = res0[,2], A = res0[,3])
-```
+``` 
 
 Because we divide the hitting angles into 11 bins and are handeling bivariate data, we create a customerised histogram function to count the numbers of observation in each bin. Note one bin in this case is indexed by both the response times and hitting angles, so the densities, **Gt**, is a nw $$\times$$ ntime matrix.
 

@@ -10,15 +10,15 @@
 <meta name="generator" content="Jekyll v3.7.2" />
 <meta property="og:title" content="Model Array" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold." />
+<meta name="description" content="The method ggdmc adapting different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables (i.e., model parameters). The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold." />
 <meta property="og:description" content="The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold." />
 <link rel="canonical" href="http://localhost:4000/basics/model_array/" />
 <meta property="og:url" content="http://localhost:4000/basics/model_array/" />
 <meta property="og:site_name" content="Cognitive Models" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-10-10T09:40:41+00:00" />
+<meta property="article:published_time" content="2020-10-03T06:11:35+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2019-10-10T09:40:41+00:00","description":"The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold.","@type":"Article","url":"http://localhost:4000/basics/model_array/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Model Array","dateModified":"2019-10-10T09:40:41+00:00","@context":"http://schema.org"}</script>
+{"datePublished":"2020-10-03T06:11:35+00:00","description":"The method ggdmc adapts different factorial designs is to use Boolean model matrices, which associate experimental conditions with latent variables / model (free) parameters. The model parameters are often designed to account for cognitive operations that cannot be directly observed. Three examples are the rate of the degradation of memory strength, the rate of (sensory) evidence accumulation, and the response threshold.","@type":"Article","url":"http://localhost:4000/basics/model_array/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/siteicon.png"}},"headline":"Model Array","dateModified":"2020-10-03T06:11:35+00:00","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cognitive Models" />
@@ -97,6 +97,8 @@
 								
 									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
 								
+									<li class="nav-item "><a href="/basics/leastsq/">Least Square Method</a></li>
+								
 									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
 								
 							</ul>
@@ -132,6 +134,8 @@
 									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm1c/">One-choice Diffusion Decision Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
@@ -252,7 +256,7 @@ processing etc.).</p>
 
 <p>It is therefore and often needed to refine the basic regression model
 to further accommodate many intricate cognitive constructs. <strong><em>ggdmc</em></strong>
-hard-wires, the diffusion decision and the linear ballistic models
+hardwires, the diffusion decision and the linear ballistic models
 and applies the method of Boolean matrices to serve the purpose
 of adapting factorial designs and that of accounting for latent
 variables of RT models.</p>
@@ -290,7 +294,7 @@ model.</p>
 </code></pre></div></div>
 
 <p><em>p.map</em> means parameter map. <em>match.map</em> matches the stimulus type to the response
-type to determine if a response is correct or error. <em>factors</em> means
+type to determine if a response is correct or incorrect. <em>factors</em> means
 experimental factors, <em>constants</em> specifies which model parameter to fix as 
 constant values. This is to enforce model assumptions. <em>responses</em> indicates response
 types, by specifying character strings or numbers. Lastly, <em>type</em> specifies
@@ -327,8 +331,8 @@ been added into in the <em>BuildModel</em> step.</p>
 
 <p><em>print</em>, when supplied with a true parameter vector, will show how the factorial
 design is assigned to model parameters.  Understanding the assigning process is
-an advanced topic.  I will return to it at a different tutorial.  Note that I,
-using Brown and Heathcote’s (2008) convention, differentiate the lowercase
+an advanced topic.  I hope to return to it in a different tutorial.  Note that,
+using Brown and Heathcote’s (2008) convention, I differentiate the lowercase
 <em>b</em> and uppercase <em>B</em> in the LBA model. The former means the threshold parameter,
 and the latter is the travel distance parameter. The LBA model assumes
 <em>b = A + B</em>.</p>

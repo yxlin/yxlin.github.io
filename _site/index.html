@@ -95,6 +95,8 @@
 								
 									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
 								
+									<li class="nav-item "><a href="/basics/leastsq/">Least Square Method</a></li>
+								
 									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
 								
 							</ul>
@@ -130,6 +132,8 @@
 									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm1c/">One-choice Diffusion Decision Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
@@ -248,7 +252,7 @@ this in our software.</p>
     <p>An HMC example aiming for conducting hierarchical Bayesian models is Ahn, Haines,
 and Zhang’s <em>hBayesDM</em>, which is an R package providing convenient wrapper functions
 for the well-known Stan software. It is a great package and has included interface to
-fit models for different cognitive task.  However, in <em>hBayesDM</em>, the user still needs
+fit models for different cognitive tasks.  However, in <em>hBayesDM</em>, the user still needs
 to modify their own Stan codes for models when s/he uses different designs, not included
 in the package.  <em>DMC</em> expands this function, (Heathcote et al., 2018), so does <em>ggdmc</em>.</p>
   </li>
@@ -265,7 +269,7 @@ the crossover operator.</p>
 <h4 id="installation">Installation</h4>
 
 <ol>
-  <li>Download <strong><em>ggdmc</em></strong> from <a href="https://cran.r-project.org/web/packages/ggdmc/index.html">CRAN</a>,
+  <li>Download <strong><em>ggdmc</em></strong> from <a href="https://cran.r-project.org/web/packages/ggdmc/index.html">CRAN</a>, or
 <a href="https://github.com/yxlin/ggdmc">GitHub</a>.</li>
   <li>[Windows only] Install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> to compile
 C++ codes in <strong><em>ggdmc</em></strong>.</li>
@@ -273,21 +277,33 @@ C++ codes in <strong><em>ggdmc</em></strong>.</li>
 </ol>
 
 <blockquote>
-  <p>install.packages(“ggdmc”)</p>
+  <p>install.packages(‘ggdmc’)</p>
 </blockquote>
 
 <p>or from GitHub</p>
 
 <blockquote>
-  <p>devtools::install_github(“yxlin/ggdmc”)</p>
+  <p>devtools::install_github(‘yxlin/ggdmc’)</p>
 </blockquote>
 
-<p>or from source tarball. You can email me at, <a href="mailto:yishinlin001@gmail.com">yishinlin001@gmail.com</a>
-to request a free copy of the latest software)</p>
+<p>or from source tarball.</p>
 
 <blockquote>
-  <p>install.packages(“ggdmc_0.2.6.0.tar.gz”, repos = NULL, type=”source”)</p>
+  <p>install.packages(‘ggdmc_0.2.6.0.tar.gz’, repos = NULL, type=’source’)</p>
 </blockquote>
+
+<ul>
+  <li>As to 06-01-2020, because Microsoft R uses R version 3.5.3, the user who wishes
+deploys ggdmc on Microsoft R may encounter two challenges. First is
+RcppArmadillo on MRAN is behind the one on R CRAN. The RcppArmadillo on MRAN 
+has yet introduced recent Armadillo functions, for instance randperm in C++. 
+This can be resolved by installing RcppArmadillo directly from its source 
+tarball, downloaded from CRAN. Secondly, the default installation process on 
+Windows is to look for the package binary matching the R version on Windows 
+machine. This may result in Microsoft R looks for a version of ggdmc matching 
+R 3.5.3 and thereby, it cannot find one. This can be resolved similarly by 
+installing from the source tarball.</li>
+</ul>
 
 <h4 id="load-ggdmc-package">Load <em>ggdmc</em> Package</h4>
 

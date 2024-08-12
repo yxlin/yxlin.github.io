@@ -95,6 +95,8 @@
 								
 									<li class="nav-item "><a href="/basics/summary/">Summary Statistics</a></li>
 								
+									<li class="nav-item "><a href="/basics/leastsq/">Least Square Method</a></li>
+								
 									<li class="nav-item "><a href="/basics/mle/">Maximising Likelihoods</a></li>
 								
 							</ul>
@@ -130,6 +132,8 @@
 									<li class="nav-item "><a href="/cognitive-model/plba/">PLBA Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/ddm/">Diffusion Decision Model</a></li>
+								
+									<li class="nav-item "><a href="/cognitive-model/ddm1c/">One-choice Diffusion Decision Model</a></li>
 								
 									<li class="nav-item "><a href="/cognitive-model/cddm/">Circular Drift-diffusion Model</a></li>
 								
@@ -239,21 +243,41 @@
 			<h3>Software</h3>
 			<p><span class="date">July 14, 2018</span> <span class="badge major">major</span></p>
 
-			<p>This release add new featues and fixes a few minor issues.</p>
+			<p>Here lists new featues and bug fixes.</p>
 
 <p><strong>Features:</strong></p>
 
 <ul>
   <li>2019-09-05 Add help page for the DIC and BPIC function.</li>
-  <li>2019-09-05 Expand DIC and BPIC functions to handle model object with many subjects.</li>
+  <li>2019-09-05 Expand DIC and BPIC functions to handle model object with many 
+subjects.</li>
   <li>2019-09-22 Add 2-D diffusion model, CDDM.cpp and CDDM.hpp.</li>
-  <li>2019-09-29 Modified lba_ in Likelihood.hpp and rlba_norm in random.R to adapt for PM model. Adapted two bessel-function routines, gsl_sf_bessel_zero_J0 &amp; gsl_sf_bessel_J1 from GSL for the zero-drift process.</li>
+  <li>2019-09-29 Modified lba_ in Likelihood.hpp and rlba_norm in random.R to adapt 
+for PM model. Adapted two bessel-function routines, gsl_sf_bessel_zero_J0 &amp; 
+gsl_sf_bessel_J1 from GSL for the zero-drift process.</li>
+  <li>2019-10-14 Add model selection modules.</li>
+  <li>2019-11-07 Add FCalculation_new. This adds a faster version of distribution 
+function of the diffusion decision model when high precision is needed 
+(precision &gt; 4)</li>
+  <li>2019-11-15 Upgrade informal S3 class to formal S4 class</li>
+  <li>2019-11-22 vectorized rlba_norm to accommodate PM model</li>
+  <li>2020-06-01 remove test_dbvnorm and #include &lt;gsl/gsl_randist.h&gt;</li>
 </ul>
 
 <p><strong>Fixes:</strong></p>
 
 <ul>
-  <li>2019-09-22 Fix run_many and rerun_many in sampling.R to cope with the change in mclapply. Now the ncore option is entered mclapply via getOption(“mc.cores”, ncore)).</li>
+  <li>2019-09-22 Fix run_many and rerun_many in sampling.R to cope with the change 
+in mclapply. Now the ncore option enters mclapply via 
+getOption(“mc.cores”, ncore)).</li>
+  <li>2019-10-13 Fix deviance.model dimension error, in ‘apply’ function from across 
+column to across row</li>
+  <li>2019-11-26 Temporarily remove FCalculation_new.cpp and class CDF in 
+FCalculator.hpp to accommodate that Windows, because it does not have GSL 
+library (ie gsl_integration.h).</li>
+  <li>2019-11-28 Fixed simulate_one in model-class.R when trial numbers are 0 for 
+some design cell.</li>
+  <li>2020-06-11 a typographic error was found in the <a href="https://espace.curtin.edu.au/bitstream/handle/20.500.11937/77775/77957.pdf?sequence=3">paper</a>, page 153. The closing double quote for the RACE factor associated with the <em>v</em> parameter should be placed right after the “E” letter, instead of right after the opening double quote. Thanks to Jordan Wilson found this error.</li>
 </ul>
 
 
@@ -265,14 +289,16 @@
 			<h3>Documents</h3>
 			<p><span class="date">July 14, 2018</span> <span class="badge major">major</span></p>
 
-			<p>The page log the changes and NEWS in the documentations.</p>
+			<p>Hist lists the changes and NEWS in the documentations.</p>
 
 <p><strong>Features:</strong></p>
 
 <ul>
-  <li>2019-09-05 Add the LCA model to the chapter of Cognitive Model</li>
-  <li>2019-09-21 Add 2-D diffusion model, Circular Drift-diffusion Model in the chapter of Cognition Model and CDDM and HCDDM in the chapters of Fixed-effect Model and Hierarchical Model</li>
+  <li>2019-09-05 Add the LCA model</li>
+  <li>2019-09-21 Add 2-D diffusion model and CDDM and HCDDM</li>
   <li>2019-09-28 Add PM Model in Cognitive Model.</li>
+  <li>2019-11-26 Update mle.md for S4 class</li>
+  <li>2019-12-02 Update one-participant.md for using S4 class</li>
 </ul>
 
 
