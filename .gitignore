@@ -2,3 +2,5 @@ tests
 .sass-cache
 .git
 *~
+*.R
+*.RData
