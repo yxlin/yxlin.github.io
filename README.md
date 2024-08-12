@@ -48,4 +48,4 @@ using devtools via GitHub
 
 or using source tarball you have downloaded from CRAN
 
-> install.packages("ggdmc_0.2.6.0.tar.gz", repos = NULL, type="source")
+> install.packages("ggdmc_0.2.8.1.tar.gz", repos = NULL, type="source")
