@@ -1,76 +1,71 @@
 ---
-title: 
+title: 📦 ggdmc
 ---
-This is the tutorial site for the software, [ggdmc](https://github.com/yxlin/ggdmc/).
 
-The package, evolving from dynamic model of choice (_DMC_,
-Heathcote, Lin, et al., 2018), is a generic tool for conducting Bayesian Computations 
-on cognitive models, with a specific emphasis on the challenging hierarchical
-choice response-time models.
+[![CRAN Status](https://www.r-pkg.org/badges/version/ggdmc)](https://cran.r-project.org/package=ggdmc)  
+[![Downloads](https://cranlogs.r-pkg.org/badges/ggdmc)](https://cran.r-project.org/package=ggdmc)  
+[![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  
 
-1. Instead of using Gibbs or HMC, **_ggdmc_** uses population-based MCMC (pMCMC) 
-samplers. A notable Gibbs example for the diffusion model is the Gibbs-based
-Python software, HDDM (Wiecki, Sofer & Frank, 2013). This Python-based method
-does not have convenient interface to model the parameter variability. We expand
-this in our software.
+This is the tutorial site for the R package **[ggdmc](https://github.com/yxlin/ggdmc/)**.  
 
-2. An HMC example aiming for conducting hierarchical Bayesian models is Ahn, Haines,
-and Zhang's _hBayesDM_, which is an R package providing convenient wrapper functions
-for the well-known Stan software. It is a great package and has included interface to
-fit models for different cognitive tasks.  However, in _hBayesDM_, the user still needs
-to modify their own Stan codes for models when s/he uses different designs, not included
-in the package.  _DMC_ expands this function, (Heathcote et al., 2018), so does _ggdmc_.
+**ggdmc** is a flexible and efficient Bayesian modelling toolkit for cognitive models, with a focus on *hierarchical choice response-time models*.  
+It evolved from the **Dynamic Models of Choice** framework (_DMC_, Heathcote, Lin, et al., 2018) and is designed for complex model fitting, simulation, and inference.
 
-3. **_ggdmc_** uses two different variants of _migration_ operator in addition to
-the crossover operator.
+---
 
-# Getting Started
+## 🔍 Key Features
 
-Here is a quick getting start guide:
+1. **Population-based MCMC (pMCMC) Samplers**  
+   Unlike traditional Gibbs or HMC approaches, **ggdmc** uses pMCMC methods.  
+   - Example: The Python package **HDDM** (Wiecki, Sofer & Frank, 2013) implements Gibbs sampling for the diffusion model, but has limited support for parameter variability. **ggdmc** addresses this limitation with flexible hierarchical structures.
 
-## Installation
+2. **Flexible Model Specification**  
+   - In **hBayesDM** (Ahn, Haines & Zhang), hierarchical Bayesian modelling is implemented via Stan, but custom experimental designs often require manual Stan code edits.  
+   - **ggdmc** allows you to adapt models to new designs without manually rewriting the underlying C++/Stan code.
 
-1. Download **_ggdmc_** from [CRAN](https://cran.r-project.org/web/packages/ggdmc/index.html), or
-[GitHub](https://github.com/yxlin/ggdmc).
-2. [Windows only] Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile
-C++ codes in **_ggdmc_**.
-3. Install the package:
+3. **Enhanced Evolutionary Operators**  
+   - Two migration variants and a crossover operator are available for efficient exploration of the posterior space.
 
-> install.packages('ggdmc')
+---
 
-or from GitHub 
+## 🚀 Getting Started
 
-> devtools::install_github('yxlin/ggdmc')
+### Installation
 
-or from source tarball. 
+You can install **ggdmc (v0.2.8.9)** in several ways:
 
-> install.packages('ggdmc_0.2.6.0.tar.gz', repos = NULL, type='source')
+#### 1. From CRAN *(stable release)*  
+```r
+install.packages("ggdmc")
+```
 
-## FAQ
-1. I cannot install the package on Microsoft R. 
-   
-   As of January 6, 2020, users deploying 'ggdmc' on Microsoft R (which uses R version 3.5.3) may encounter two issues:
+#### 2. From GitHub *(latest development version)*  
+```r
+install.packages("devtools")  # if not already installed
+devtools::install_github("yxlin/ggdmc")
+```
 
-   * **RcppArmadillo incompatibility**: The RcppArmadillo package on MRAN is outdated compared to the version on CRAN. This means it lacks recent Armadillo functions like randperm in C++. To resolve this, install RcppArmadillo directly from its source code on CRAN.
-   * **Package installation issues**: The default Windows installation process seeks a package binary matching the local R version. Since Microsoft R uses R 3.5.3, it may fail to find a suitable ggdmc package. To overcome this, install ggdmc from its source code as well.
+#### 3. From a Source Tarball  
+```r
+install.packages("ggdmc_0.2.8.9.tar.gz", repos = NULL, type = "source")
+```
 
-2. All three methods of the installation fail in my computer. 
-   
-   Installation problems can arise due to changes in supporting software. Luckily, most can be fixed by installing from the source code. Here's a recommended installation order (choose the method that suits your comfort level)
+> **Windows users**: Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile C++ code.  
+> **macOS users**: Ensure Xcode Command Line Tools are installed.
 
-   * **Simplest Method (For New Users): Install from CRAN**
+---
 
-    This method installs the official version (0.2.6) directly from the Comprehensive R Archive Network (CRAN). It's the easiest option and still worked on a Windows 11 computer.
+## ❓ FAQ
 
-   * **More Control (Requires R Packaging Knowledge): Install from Source**
+### 1. Installation fails on Microsoft R  
+Microsoft R (v3.5.3) may cause issues due to outdated dependencies:  
+- **RcppArmadillo incompatibility**: Install the latest version directly from CRAN.  
+- **Binary availability**: If a precompiled binary is unavailable, install **ggdmc** from source.
 
-    This method lets you install a newer custom-built version (0.2.8.1) from the source code on GitHub. However, it requires some familiarity with R packaging. Pre-packaged installation files are available on the project's [documentation](https://github.com/yxlin/ggdmc/tree/master/docs).
+### 2. All installation methods fail  
+Try installing from source in the following order:  
+- **Easiest**: Install from CRAN (stable release).  
+- **More control**: Install from GitHub (development version).  
+- **Advanced**: Compile from source tarball with Rtools (Windows) or Xcode tools (macOS/Linux).
 
-    Note: RStudio usually finds RTools automatically, which is necessary for this method on a Windows machine. If you use a different IDE, you might need to configure it to locate RTools tools.
-
-   * **Advanced Users (May Require Additional Packages): Install with devtools**
-
-    This method uses 'devtools' to install 'ggdmc' directly from GitHub. While convenient, it might install extra packages that have nothing to do with 'ggdmc'. You must install all the 'devtools' dependencies, which may require their own dependencies.
-
-    
 
