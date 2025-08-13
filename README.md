@@ -1,51 +1,49 @@
 # Cognitive Models
 
-This is the tutorial site for the software, [ggdmc](https://github.com/yxlin/ggdmc/).
+This site provides tutorials for the [**ggdmc**](https://github.com/yxlin/ggdmc/) R package.  
 
-The package, evolving from dynamic model of choice (_DMC_,
-Heathcote, Lin, et al., 2018), is a generic tool for conducting cognitive 
-models, Bayesian or non-Bayesian. The software emphasize on the challenging 
-hierarchical and likelihood-free modelling, but nontheless, it can work with the
-conventional modelling method, too.
+**ggdmc** is an open-source toolkit for conducting cognitive modelling, supporting both Bayesian and non-Bayesian approaches. Evolving from the *Dynamic Models of Choice* (DMC; Heathcote, Lin, et al., 2018), the package is designed to address challenging **hierarchical** and **likelihood-free** modelling problems, while still accommodating more conventional modelling workflows.  
 
-1. Instead of using Gibbs or HMC, **_ggdmc_** uses population-based MCMC (pMCMC) 
-samplers. A notable Gibbs example is the Python-based HDDM 
-(Wiecki, Sofer & Frank, 2013), which does not allow the user to 
-conveniently set the variability parameter in the diffusion decision model 
-(DDM). Note we do not argue for or against which of the sampling techniques is
-better than others, but simply provide an alternative choice. pMCMC is a
-differernt sampling technique, because it harnesses a large number 
-of chains to improve sampling efficency.
+The latest release (**v0.2.8.9**) introduces expanded functionality, improved sampler options, and enhanced monitoring tools for model fitting.
 
-2. Differing from DMC (Heathcote, Lin, et al., 2018), with only the DE-MCMC 
-(Turner, Sederberg, Brown, & Steyvers, 2013) sampler, **_ggdmc_** provides a 
-number of different pMCMC samplers. It is up to the user to decide which sampler
-works best for their models. 
+---
 
-3. **_ggdmc_** uses a different variant of _migration_ operator, which safeguards
-the detailed balance. These are provided via the _pm0_ and _pm1_ options in 
-the model fitting routines. It is not imperative to turn on/off the _migration_ 
-operator. But one might still consider to turn it off, because they are 
-essentially a sampler, similar to random-walk Metropolis, which are not
-efficient when they works alone.  Mostly, pMCMC is efficient when a combination
-of operators is applied together. **_ggdmc_** records rejection rates, 
-allowing the user to monitor a sampler's performance. 
+## Key Features
 
-### Getting Started
+1. **Population-based MCMC (pMCMC) sampling**  
+   **ggdmc** implements **population-based MCMC** samplers, which run multiple interacting chains in parallel to improve sampling efficiency.  
+   This approach provides an alternative to single-chain samplers and can offer better exploration of complex posterior landscapes in some modelling scenarios.
 
-Here is a quick getting start guide:
+2. **Multiple pMCMC samplers with parallel chain instances**  
+   - **ggdmc** now offers a broader set of samplers, giving users the flexibility to choose or compare methods for different models.  
+   - Version 0.2.8.9 introduces a new *parallel chain instance* concept. By default, hierarchical model fitting launches **three independent chain instances**. Within each instance, a **swarm of chains** (three times the number of parameters) is used to enable pMCMC to work effectively.  
+   - This design addresses the issue of non-independence in traditional pMCMC while also improving computational efficiency.
 
-1. Download **_ggdmc_** from [CRAN](https://cran.r-project.org/web/packages/ggdmc/index.html).
-2. [Windows only] Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile
-C++ codes in **_ggdmc_**.
-3. Install the package using install.packages function :
+3. **Flexible migration operator and blocking mechanism**  
+   - Users can enable migration sampling or apply a blocking mechanism at the **subject level**, **population level**, or both.  
+   - This flexibility allows the sampling strategy to be adapted for different model types and factorial designs, improving both convergence and efficiency.
 
-> install.packages("ggdmc")
+4. **Expanded model support and hierarchical tools** *(v0.2.8.9)*  
+   - Improved hierarchical model handling with clearer parameter control.  
+   - More flexible parameter variability settings for DDM and LBA.
 
-using devtools via GitHub 
+---
 
-> devtools::install_github("yxlin/ggdmc")
+## Getting Started
 
-or using source tarball you have downloaded from CRAN
+### Installation
 
-> install.packages("ggdmc_0.2.8.1.tar.gz", repos = NULL, type="source")
+#### From CRAN or source tarball
+```r
+install.packages("ggdmc")
+install.packages("ggdmc_0.2.8.9.tar.gz", repos = NULL, type = "source")
+
+```
+
+### From GitHub (development version)
+```r
+# Requires devtools
+install.packages("devtools")
+devtools::install_github("yxlin/ggdmc")
+```
+
