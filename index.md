@@ -2,52 +2,54 @@
 title: 📦 ggdmc
 ---
 
-[![CRAN Status](https://www.r-pkg.org/badges/version/ggdmc)](https://cran.r-project.org/package=ggdmc)  
-[![Downloads](https://cranlogs.r-pkg.org/badges/ggdmc)](https://cran.r-project.org/package=ggdmc)  
-[![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  
 
-This is the tutorial site for the R package **[ggdmc](https://github.com/yxlin/ggdmc/)**.  
+# Cognitive Models
 
-**ggdmc** is a flexible and efficient Bayesian modelling toolkit for cognitive models, with a focus on *hierarchical choice response-time models*.  
-It evolved from the **Dynamic Models of Choice** framework (_DMC_, Heathcote, Lin, et al., 2018) and is designed for complex model fitting, simulation, and inference.
+This site provides tutorials for the [**ggdmc**](https://github.com/yxlin/ggdmc/) R package.  
 
----
+**ggdmc** is an open-source toolkit for conducting cognitive modelling, supporting both Bayesian and non-Bayesian approaches. Evolving from the *Dynamic Models of Choice* (DMC; Heathcote, Lin, et al., 2018), the package is designed to address challenging **hierarchical** and **likelihood-free** modelling problems, while still accommodating more conventional modelling workflows.  
 
-## 🔍 Key Features
-
-1. **Population-based MCMC (pMCMC) Samplers**  
-   Unlike traditional Gibbs or HMC approaches, **ggdmc** uses pMCMC methods.  
-   - Example: The Python package **HDDM** (Wiecki, Sofer & Frank, 2013) implements Gibbs sampling for the diffusion model, but has limited support for parameter variability. **ggdmc** addresses this limitation with flexible hierarchical structures.
-
-2. **Flexible Model Specification**  
-   - In **hBayesDM** (Ahn, Haines & Zhang), hierarchical Bayesian modelling is implemented via Stan, but custom experimental designs often require manual Stan code edits.  
-   - **ggdmc** allows you to adapt models to new designs without manually rewriting the underlying C++/Stan code.
-
-3. **Enhanced Evolutionary Operators**  
-   - Two migration variants and a crossover operator are available for efficient exploration of the posterior space.
+The latest release (**v0.2.8.9**) introduces expanded functionality, improved sampler options, and enhanced monitoring tools for model fitting.
 
 ---
 
-## 🚀 Getting Started
+## Key Features
+
+1. **Population-based MCMC (pMCMC) sampling**  
+   **ggdmc** implements **population-based MCMC** samplers, which run multiple interacting chains in parallel to improve sampling efficiency.  
+   This approach provides an alternative to single-chain samplers and can offer better exploration of complex posterior landscapes in some modelling scenarios.
+
+2. **Multiple pMCMC samplers with parallel chain instances**  
+   - **ggdmc** now offers a broader set of samplers, giving users the flexibility to choose or compare methods for different models.  
+   - Version 0.2.8.9 introduces a new *parallel chain instance* concept. By default, hierarchical model fitting launches **three independent chain instances**. Within each instance, a **swarm of chains** (three times the number of parameters) is used to enable pMCMC to work effectively.  
+   - This design addresses the issue of non-independence in traditional pMCMC while also improving computational efficiency.
+
+3. **Flexible migration operator and blocking mechanism**  
+   - Users can enable migration sampling or apply a blocking mechanism at the **subject level**, **population level**, or both.  
+   - This flexibility allows the sampling strategy to be adapted for different model types and factorial designs, improving both convergence and efficiency.
+
+4. **Expanded model support and hierarchical tools** *(v0.2.8.9)*  
+   - Improved hierarchical model handling with clearer parameter control.  
+   - More flexible parameter variability settings for DDM and LBA.
+
+---
+
+## Getting Started
 
 ### Installation
 
-You can install **ggdmc (v0.2.8.9)** in several ways:
-
-#### 1. From CRAN *(stable release)*  
+#### From CRAN or source tarball
 ```r
 install.packages("ggdmc")
-```
-
-#### 2. From GitHub *(latest development version)*  
-```r
-install.packages("devtools")  # if not already installed
-devtools::install_github("yxlin/ggdmc")
-```
-
-#### 3. From a Source Tarball  
-```r
 install.packages("ggdmc_0.2.8.9.tar.gz", repos = NULL, type = "source")
+
+```
+
+### From GitHub (development version)
+```r
+# Requires devtools
+install.packages("devtools")
+devtools::install_github("yxlin/ggdmc")
 ```
 
 > **Windows users**: Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile C++ code.  
@@ -67,5 +69,4 @@ Try installing from source in the following order:
 - **Easiest**: Install from CRAN (stable release).  
 - **More control**: Install from GitHub (development version).  
 - **Advanced**: Compile from source tarball with Rtools (Windows) or Xcode tools (macOS/Linux).
-
 
