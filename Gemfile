@@ -1,9 +1,7 @@
-source 'https://rubygems.org'
+# Gemfile
+source "https://rubygems.org"
 
-gem 'jekyll', '3.7.4'
-
-group :jekyll_plugins do
-  gem 'jekyll-feed', '0.9.3'
-  gem 'jekyll-seo-tag', '2.4.0'
-  gem 'jekyll-sitemap', '1.2.0'
-end
+gem "github-pages", group: :jekyll_plugins
+# Pin safe minimums for the flagged gems:
+gem "rexml", "~> 3.3.9"
+gem "webrick", "~> 1.8.2"   # used for local `bundle exec jekyll serve`
