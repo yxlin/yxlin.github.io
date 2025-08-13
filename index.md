@@ -1,5 +1,6 @@
 ---
-title: 📦 ggdmc
+layout: home
+title: "ggdmc"
 ---
 
 
