@@ -1,49 +1,73 @@
-# Cognitive Models
+# Cognitive Models with ggdmc
 
-This site provides tutorials for the [**ggdmc**](https://github.com/yxlin/ggdmc/) R package.  
+The [`ggdmc`](https://github.com/yxlin/ggdmc/) R package provides tools and tutorials for **cognitive modelling**, supporting both **Bayesian** and **non-Bayesian** approaches.
 
-**ggdmc** is an open-source toolkit for conducting cognitive modelling, supporting both Bayesian and non-Bayesian approaches. Evolving from the *Dynamic Models of Choice* (DMC; Heathcote, Lin, et al., 2018), the package is designed to address challenging **hierarchical** and **likelihood-free** modelling problems, while still accommodating more conventional modelling workflows.  
+Originally developed from the Dynamic Models of Choice framework (DMC; Heathcote, Lin, et al., 2018), **ggdmc** is designed to tackle **hierarchical** and **likelihood-free** modelling problems, while still supporting conventional modelling workflows used by experimental psychologists and behavioural scientists.
 
-The latest release (**v0.2.8.9**) introduces expanded functionality, improved sampler options, and enhanced monitoring tools for model fitting.
+-----
 
----
+## 🚀 What’s New in v0.2.9.2
 
-## Key Features
+- **Expanded hierarchical model tools**
+  - Clearer parameter control for hierarchical designs.
+  - Flexible parameter variability settings for the **Diffusion Decision Model (DDM)**, **Linear Ballistic Accumulation (LBA)** Model.
+  - New genre of model, **Cognitive Diagnostic Model**.
 
-1. **Population-based MCMC (pMCMC) sampling**  
-   **ggdmc** implements **population-based MCMC** samplers, which run multiple interacting chains in parallel to improve sampling efficiency.  
-   This approach provides an alternative to single-chain samplers and can offer better exploration of complex posterior landscapes in some modelling scenarios.
+- **Improved sampling and monitoring**
+  - New sampler options with more robust defaults.
+  - Enhanced monitoring functions for diagnosing convergence and chain mixing.
+  - 
+- **Parallel chain instances for hierarchical models**
+  - By default, parameter optimisation now run multiple swarms of chains, resulting in true theoretically independent instances.
+  - Each instance launches **a swarm of chains** (3× the number of parameters), giving better exploration of the posterior space.
+  
+- **Migration operator & blocking mechanism**
+  - Migration sampling can now be applied at the subject or population level.
+  - Blocking mechanisms allow for efficient updates in complex factorial designs.
 
-2. **Multiple pMCMC samplers with parallel chain instances**  
-   - **ggdmc** now offers a broader set of samplers, giving users the flexibility to choose or compare methods for different models.  
-   - Version 0.2.8.9 introduces a new *parallel chain instance* concept. By default, hierarchical model fitting launches **three independent chain instances**. Within each instance, a **swarm of chains** (three times the number of parameters) is used to enable pMCMC to work effectively.  
-   - This design addresses the issue of non-independence in traditional pMCMC while also improving computational efficiency.
+------
 
-3. **Flexible migration operator and blocking mechanism**  
-   - Users can enable migration sampling or apply a blocking mechanism at the **subject level**, **population level**, or both.  
-   - This flexibility allows the sampling strategy to be adapted for different model types and factorial designs, improving both convergence and efficiency.
+## ✨ Key Features
 
-4. **Expanded model support and hierarchical tools** *(v0.2.8.9)*  
-   - Improved hierarchical model handling with clearer parameter control.  
-   - More flexible parameter variability settings for DDM and LBA.
+1. **Population-based MCMC (pMCMC) sampling**
+   - Multiple interacting chains utilising the idea of genetic evoltuion for efficient sampling.
+   - Better exploration of complex posteriors compared to single-chain samplers.
 
----
+2. **Multiple pMCMC samplers**
+   - Choose between different sampler types to match your model and data.
+   - The new parallel chain instance design improves both independence and computational speed.
 
-## Getting Started
+3. **Flexible sampling strategies**
+   - Enable migration operators or blocking at different levels (subject, population, or both).
+   - Adaptable to hierarchical designs, factorial experiments, and large-scale datasets.
 
-### Installation
+4. **Broader model support**
+   - Enhanced native support for hierarchical DDM, LBA, and CDM.
+   - Improved parameter variability handling for custom model specifications.
+   - For customised model, please see [`ppda`](https://github.com/yxlin/ppda) Github page for pLBA model.
 
-#### From CRAN or source tarball
+## 📦 Installation
+
+From CRAN or source tarball
 ```r
-install.packages("ggdmc")
-install.packages("ggdmc_0.2.8.9.tar.gz", repos = NULL, type = "source")
 
+install.packages("ggdmc")
+
+# Or install a specific release
+install.packages("ggdmc_0.2.9.2.tar.gz", repos = NULL, type = "source")
 ```
 
-### From GitHub (development version)
+From GitHub (development version)
+
 ```r
 # Requires devtools
 install.packages("devtools")
 devtools::install_github("yxlin/ggdmc")
+
 ```
 
+## 📖 Learn More
+Visit the tutorials on this site to explore:
+- How to specify models and parameters
+- How to run hierarchical Bayesian inference
+- How to monitor, diagnose, and interpret results
