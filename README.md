@@ -6,7 +6,7 @@ Originally developed from the Dynamic Models of Choice framework (DMC; Heathcote
 
 -----
 
-## 🚀 What’s New in v0.2.9.2
+## 🚀 What’s New in v0.2.9.0
 
 - **Expanded hierarchical model tools**
   - Clearer parameter control for hierarchical designs.
@@ -54,7 +54,7 @@ From CRAN or source tarball
 install.packages("ggdmc")
 
 # Or install a specific release
-install.packages("ggdmc_0.2.9.2.tar.gz", repos = NULL, type = "source")
+install.packages("ggdmc_0.2.9.0.tar.gz", repos = NULL, type = "source")
 ```
 
 From GitHub (development version)

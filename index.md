@@ -3,68 +3,160 @@ layout: home
 title: "ggdmc"
 ---
 
-This site provides tutorials for the [**ggdmc**](https://github.com/yxlin/ggdmc/) R package.  
+# Cognitive Models with **ggdmc**
 
-**ggdmc** is an open-source toolkit for conducting cognitive modelling, supporting both Bayesian and non-Bayesian approaches. Evolving from the *Dynamic Models of Choice* (DMC; Heathcote, Lin, et al., 2018), the package is designed to address challenging **hierarchical** and **likelihood-free** modelling problems, while still accommodating more conventional modelling workflows.  
+The [**ggdmc**](https://github.com/yxlin/ggdmc/) R package provides tools and tutorials for **cognitive modelling**, supporting both **Bayesian** and **non-Bayesian** approaches. Evolving from *Dynamic Models of Choice* (DMC; Heathcote, Lin, et al., 2018), **ggdmc** targets challenging **hierarchical** and **likelihood-free** problems while remaining friendly for conventional modelling workflows.
 
-The latest release (**v0.2.8.9**) introduces expanded functionality, improved sampler options, and enhanced monitoring tools for model fitting.
-
----
-
-## Key Features
-
-1. **Population-based MCMC (pMCMC) sampling**  
-   **ggdmc** implements **population-based MCMC** samplers, which run multiple interacting chains in parallel to improve sampling efficiency.  
-   This approach provides an alternative to single-chain samplers and can offer better exploration of complex posterior landscapes in some modelling scenarios.
-
-2. **Multiple pMCMC samplers with parallel chain instances**  
-   - **ggdmc** now offers a broader set of samplers, giving users the flexibility to choose or compare methods for different models.  
-   - Version 0.2.8.9 introduces a new *parallel chain instance* concept. By default, hierarchical model fitting launches **three independent chain instances**. Within each instance, a **swarm of chains** (three times the number of parameters) is used to enable pMCMC to work effectively.  
-   - This design addresses the issue of non-independence in traditional pMCMC while also improving computational efficiency.
-
-3. **Flexible migration operator and blocking mechanism**  
-   - Users can enable migration sampling or apply a blocking mechanism at the **subject level**, **population level**, or both.  
-   - This flexibility allows the sampling strategy to be adapted for different model types and factorial designs, improving both convergence and efficiency.
-
-4. **Expanded model support and hierarchical tools** *(v0.2.8.9)*  
-   - Improved hierarchical model handling with clearer parameter control.  
-   - More flexible parameter variability settings for DDM and LBA.
+> **Latest release: v0.2.9.0** — expanded hierarchical tools, improved samplers, and better monitoring for model fitting.
 
 ---
 
-## Getting Started
+## 🚀 What’s new in v0.2.9.0
 
-### Installation
+- **Parallel chain instances for hierarchical models**  
+  By default, hierarchical fits now launch **three independent chain instances**, each running a **swarm of chains** (≈ 3× the number of parameters) to improve posterior exploration and guard against cross-chain dependence.
 
-#### From CRAN or source tarball
+- **Sampler & monitoring improvements**  
+  More robust defaults and clearer diagnostics for convergence and mixing.
+
+- **Richer hierarchical controls**  
+  Cleaner parameter control plus more flexible variability settings for **DDM**, **LBA**, and **CDM**.
+
+- **Migration & blocking options**  
+  Enable migration and blocking at **subject** and/or **population** levels to speed convergence on complex factorial designs.
+
+---
+
+## ✨ Key Features
+
+1. **Population-based MCMC (pMCMC)**  
+   Multiple interacting chains for efficient exploration of complex posteriors.
+
+2. **Multiple samplers, parallelized**  
+   Compare/choose samplers; parallel chain instances provide independence checks and efficiency.
+
+3. **Flexible sampling strategies**  
+   Migration operators and blocking at different hierarchy levels.
+
+4. **Broader model coverage**  
+   Enhanced support for hierarchical **DDM**, **LBA**, and **CDM**, with clearer variability controls.
+
+---
+
+## 📦 Installation
+
+### CRAN (stable) or source tarball
 ```r
 install.packages("ggdmc")
-install.packages("ggdmc_0.2.8.9.tar.gz", repos = NULL, type = "source")
-
+# Or a specific release tarball:
+install.packages("ggdmc_0.2.9.0.tar.gz", repos = NULL, type = "source")
 ```
 
-### From GitHub (development version)
+## GitHub (development)
+
 ```r
 # Requires devtools
 install.packages("devtools")
 devtools::install_github("yxlin/ggdmc")
 ```
 
-> **Windows users**: Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile C++ code.  
-> **macOS users**: Ensure Xcode Command Line Tools are installed.
+- **Windows**: Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) to compile C++.
+- **macOS**: Install Xcode Command Line Tools.
+- **Linux**: Ensure a recent compiler toolchain is available.
 
----
+
+## 🧭 Quick start
+
+```r
+library(ggdmc)
+
+# 1) Specify a model (e.g., LBA/DDM/CDM) and priors
+# 2) Build a data-model instance (DMI)
+# 3) Configure pMCMC (chains, instances, migration/blocking)
+# 4) Run sampler, monitor convergence, and examine posterior summaries
+```
+
+<details>
+<summary>🔬 Advanced Example: CDM simulation & hierarchical fitting (click to expand)</summary>
+
+```r
+# Example workflow: build, simulate, fit
+pkg <- c("ggdmc", "ggdmcPrior", "ggdmcModel", "cdModel")
+sapply(pkg, require, character.only = TRUE)
+
+# Build a CDM model
+model <- BuildModel(
+  p_map = list(guess1="1", guess2="1", guess3="1",
+               slip1="1", slip2="1", slip3="1"),
+  type = "cdm"
+)
+
+# Define population priors
+pop_mean <- c(guess1=.1, guess2=.2, guess3=.3,
+              slip1=.01, slip2=.02, slip3=.03)
+pop_scale <- c(guess1=.01, guess2=.01, guess3=.01,
+               slip1=.05, slip2=.01, slip3=.01)
+pop_dist <- ggdmcPrior::BuildPrior(
+  p0=pop_mean, p1=pop_scale,
+  lower=rep(0, model@npar),
+  upper=rep(NA, model@npar),
+  dists=rep("tnorm", model@npar),
+  log_p=rep(FALSE, model@npar)
+)
+
+# Set CDM models
+sub_model <- setCDM(model)
+pop_model <- setCDM(model, population_distribution=pop_dist)
+
+# Simulate data
+dat <- simulate(sub_model, nsim=1000,
+                parameter_vector=pop_mean, nschool=1, seed=123)
+hdat <- simulate(pop_model, nsim=1000, nschool=32, seed=123)
+
+# Build DMIs
+sub_dmis <- BuildDMI(dat$responses, model, q_matrix=sub_model@q_matrix, rule="DINA")
+pop_dmis <- BuildDMI(hdat$responses, model, q_matrix=pop_model@q_matrix, rule="DINA")
+
+# Priors and initial samples
+p0 <- rep(0, model@npar); names(p0) <- model@pnames
+p_prior <- ggdmcPrior::BuildPrior(p0=p0, p1=rep(1.1, model@npar),
+                                  dist=rep("unif", model@npar), log_p=rep(TRUE, model@npar))
+sub_priors <- set_priors(p_prior=p_prior)
+sub_theta_input <- ggdmc::setThetaInput(nmc=500, pnames=model@pnames)
+sub_samples <- initialise_theta(sub_theta_input, sub_priors, sub_dmis[[1]])
+
+# Run sampling
+fits <- StartSampling_subject(sub_dmis[[1]], sub_priors,
+                              sub_migration_prob=0.02, thin=2, seed=9032)
+fit <- RebuildPosterior(fits)
+hat <- gelman(fit)
+cat("mpsrf = ", hat$mpsrf, "\n")
+```
+
+</details>
+
 
 ## ❓ FAQ
 
-### 1. Installation fails on Microsoft R  
-Microsoft R (v3.5.3) may cause issues due to outdated dependencies:  
-- **RcppArmadillo incompatibility**: Install the latest version directly from CRAN.  
-- **Binary availability**: If a precompiled binary is unavailable, install **ggdmc** from source.
+**Q1. Installation issues on older R / Microsoft R**  
+- `RcppArmadillo` may be outdated — install the latest from CRAN.  
+- If no binary is available, install from source (Rtools on Windows; Xcode on macOS).  
 
-### 2. All installation methods fail  
-Try installing from source in the following order:  
-- **Easiest**: Install from CRAN (stable release).  
-- **More control**: Install from GitHub (development version).  
-- **Advanced**: Compile from source tarball with Rtools (Windows) or Xcode tools (macOS/Linux).
+**Q2. All install methods fail?**  
+Try in this order:  
+1. CRAN (stable)  
+2. GitHub (development)  
+3. Source tarball with toolchain (Rtools/Xcode/GCC/Clang)  
+
+---
+
+## 🔗 Useful Links
+- [GitHub Source & Issues](https://github.com/yxlin/ggdmc)  
+- DMC Reference: Heathcote, Lin, et al. (2018)  
+- Related packages/tutorials: see repository README and vignettes  
+
+---
+
+**ggdmc** continues to evolve to meet research needs in psychology, cognitive science, and education — especially for **hierarchical Bayesian** and **large-scale applications**.
+
 
