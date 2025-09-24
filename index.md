@@ -1,9 +1,8 @@
 ---
 layout: home
-title: "ggdmc"
+title: "Cognitive Models with ggdmc"
 ---
 
-# Cognitive Models with **ggdmc**
 
 The [**ggdmc**](https://github.com/yxlin/ggdmc/) R package provides tools and tutorials for **cognitive modelling**, supporting both **Bayesian** and **non-Bayesian** approaches. Evolving from *Dynamic Models of Choice* (DMC; Heathcote, Lin, et al., 2018), **ggdmc** targets challenging **hierarchical** and **likelihood-free** problems while remaining friendly for conventional modelling workflows.
 
